@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RollForward>LatestMajor</RollForward>
+        <LangVersion>latest</LangVersion>
+        <IsPackable>true</IsPackable>
+        <Version>1.0.0-pre</Version>
+        <!-- <PublishAot>true</PublishAot>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
+        <!--<IlcDisableReflection>true</IlcDisableReflection>-->
+
+        <Description>By hook or by crook, perform operations on files and directories. If they are
+            in use by a process, kill the process.</Description>
+        <PackageProjectUrl>https://github.com/domsleee/forceops</PackageProjectUrl>
+        <RepositoryType>git</RepositoryType>
+
+        <PackAsTool>true</PackAsTool>
+        <ToolCommandName>forceops</ToolCommandName>
+        <PackageOutputPath>./nupkg</PackageOutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\ForceOps.Lib\ForceOps.Lib.csproj" />
+    </ItemGroup>
+</Project>
