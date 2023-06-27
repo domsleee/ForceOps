@@ -26,7 +26,7 @@ public static class TestUtil
 		process.ErrorDataReceived += (sender, e) =>
 		{
 			error += e.Data;
-		}
+		};
 		process.Start();
 		process.BeginOutputReadLine();
 		process.BeginErrorReadLine();
