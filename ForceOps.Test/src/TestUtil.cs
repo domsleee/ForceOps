@@ -12,8 +12,9 @@ public static class TestUtil
 		{
 			FileName = "cmd",
 			WorkingDirectory = workingDirectory,
-			Arguments = "/c \"echo loaded\" & pause",
+			Arguments = "/c \"echo loaded\" & timeout -T 5000",
 			RedirectStandardOutput = true,
+			RedirectStandardError = true,
 			CreateNoWindow = true
 		};
 		string output = "";
@@ -21,8 +22,14 @@ public static class TestUtil
 		{
 			output += e.Data;
 		};
+		string error = "";
+		process.ErrorDataReceived += (sender, e) =>
+		{
+			error += e.Data;
+		}
 		process.Start();
 		process.BeginOutputReadLine();
+		process.BeginErrorReadLine();
 
 		while (!output.StartsWith("loaded"))
 		{
