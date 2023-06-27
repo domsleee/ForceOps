@@ -29,7 +29,6 @@ jobs:
         run: dotnet --info
 
       - name: Build Deps
-      
         run: |
           cd subrepos/LockCheck;
           dotnet build -c release
