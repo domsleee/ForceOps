@@ -16,6 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+        with:
+          submodules: recursive
 
       - name: Install Dotnet
         uses: actions/setup-dotnet@607fce577a46308457984d59e4954e075820f10a
@@ -24,6 +26,12 @@ jobs:
 
       - name: Dotnet Installation Info
         run: dotnet --info
+
+      - name: Build Deps
+      
+        run: |
+          cd subrepos/LockCheck;
+          dotnet build -c release
 
       - name: Build
         run: dotnet build
