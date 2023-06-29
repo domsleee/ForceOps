@@ -6,14 +6,13 @@ public static class TestUtil
 {
 	public static IDisposable LaunchCMDInDirectory(string workingDirectory)
 	{
-		var startInfo = new ProcessStartInfo();
 		var process = new Process
 		{
 			StartInfo = new ProcessStartInfo
 			{
-				FileName = "cmd",
+				FileName = "powershell",
 				WorkingDirectory = workingDirectory,
-				Arguments = "/c \"echo loaded\" & timeout -T 5000 -nobreak",
+				Arguments = "-Command \"echo 'loaded'; sleep 10\"",
 				RedirectStandardOutput = true,
 				RedirectStandardError = true,
 				CreateNoWindow = true
