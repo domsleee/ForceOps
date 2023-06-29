@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using ForceOpsLib;
+using Moq;
+using System.Diagnostics;
 using System.Reactive.Disposables;
 
 namespace ForceOps.Test;
@@ -70,5 +72,14 @@ public static class TestUtil
 			}
 			catch { }
 		});
+	}
+
+	public static ForceOpsContext SetupTestContext()
+	{
+		var context = new ForceOpsContext();
+		var elevateUtilsMock = new Mock<IElevateUtils>();
+		elevateUtilsMock.Setup(t => t.IsProcessElevated()).Returns(false);
+		context.elevateUtils = elevateUtilsMock.Object;
+		return context;
 	}
 }

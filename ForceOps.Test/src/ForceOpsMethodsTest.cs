@@ -1,4 +1,3 @@
-using System.Reactive.Disposables;
 using static ForceOps.Test.TestUtil;
 
 namespace ForceOps.Test;
@@ -6,7 +5,7 @@ namespace ForceOps.Test;
 public class ForceOpsMethodsTest : IDisposable
 {
 	List<IDisposable> disposables = new List<IDisposable>();
-	ForceOpsContext forceOpsContext = new ForceOpsContext();
+	ForceOpsContext forceOpsContext;
 	FileAndFolderDeleter fileAndFolderDeleter;
 	string tempFolderPath;
 
@@ -41,6 +40,7 @@ public class ForceOpsMethodsTest : IDisposable
 	{
 		tempFolderPath = GetTemporaryFileName();
 		disposables.Add(CreateTemporaryDirectory(tempFolderPath));
+		forceOpsContext = SetupTestContext();
 		fileAndFolderDeleter = new FileAndFolderDeleter(forceOpsContext);
 	}
 

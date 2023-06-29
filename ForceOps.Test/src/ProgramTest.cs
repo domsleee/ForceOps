@@ -14,8 +14,8 @@ public class ProgramTest : IDisposable
 		using var launchedProcess = LaunchCMDInDirectory(tempDirectoryPath);
 		var launchAsElevatedMock = new Mock<IRelaunchAsElevated>();
 		Program.relaunchAsElevated = launchAsElevatedMock.Object;
+		Program.forceOpsContext = SetupTestContext();
 		Program.forceOpsContext.maxRetries = 0;
-		Program.forceOpsContext.processKiller = new Moq.Mock<IProcessKiller>().Object;
 		var exceptionWithNoRetries = Record.Exception(() => Program.DeleteCommand(new[] { tempDirectoryPath }));
 		Assert.IsType<AggregateException>(exceptionWithNoRetries);
 		launchAsElevatedMock.Verify(t => t.RelaunchAsElevated(), Times.Once());
