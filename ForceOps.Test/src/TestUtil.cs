@@ -13,7 +13,7 @@ public static class TestUtil
 			{
 				FileName = "cmd",
 				WorkingDirectory = workingDirectory,
-				Arguments = "/c \"echo loaded\" & timeout -T 5000",
+				Arguments = "/c \"echo loaded\" & timeout -T 5000 -nobreak",
 				RedirectStandardOutput = true,
 				RedirectStandardError = true,
 				CreateNoWindow = true
