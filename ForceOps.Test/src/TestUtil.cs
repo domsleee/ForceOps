@@ -4,18 +4,20 @@ using System.Reactive.Disposables;
 namespace ForceOps.Test;
 public static class TestUtil
 {
-	public static Process? LaunchCMDInDirectory(string workingDirectory)
+	public static IDisposable LaunchCMDInDirectory(string workingDirectory)
 	{
-		ProcessStartInfo startInfo = new ProcessStartInfo();
-		var process = new Process();
-		process.StartInfo = new ProcessStartInfo
+		var startInfo = new ProcessStartInfo();
+		var process = new Process
 		{
-			FileName = "cmd",
-			WorkingDirectory = workingDirectory,
-			Arguments = "/c \"echo loaded\" & timeout -T 5000",
-			RedirectStandardOutput = true,
-			RedirectStandardError = true,
-			CreateNoWindow = true
+			StartInfo = new ProcessStartInfo
+			{
+				FileName = "cmd",
+				WorkingDirectory = workingDirectory,
+				Arguments = "/c \"echo loaded\" & timeout -T 5000",
+				RedirectStandardOutput = true,
+				RedirectStandardError = true,
+				CreateNoWindow = true
+			}
 		};
 		string output = "";
 		process.OutputDataReceived += (sender, e) =>
@@ -31,11 +33,26 @@ public static class TestUtil
 		process.BeginOutputReadLine();
 		process.BeginErrorReadLine();
 
-		while (!output.StartsWith("loaded"))
+		var startTime = DateTime.Now;
+
+		while (!output.StartsWith("loaded") && !process.HasExited)
 		{
 			Thread.Sleep(50);
+			if (DateTime.Now.Subtract(startTime).TotalSeconds > 2) {
+				throw new Exception("Gave up after waiting 2 seconds");
+			}
 		}
-		return process;
+		
+		if (process.HasExited)
+		{
+			throw new Exception("Failed to run process.");
+		}
+
+		return Disposable.Create(() =>
+		{
+			process.Kill();
+			process.WaitForExit(1);
+		});
 	}
 
 	public static string GetTemporaryFileName()

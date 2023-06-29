@@ -1,6 +1,5 @@
 ﻿using ForceOps.src;
 using Moq;
-using System.Reactive.Disposables;
 using static ForceOps.Test.TestUtil;
 
 namespace ForceOps.Test;
@@ -12,16 +11,11 @@ public class ProgramTest : IDisposable
 	[Fact]
 	public void ExceptionsBubble()
 	{
-		var process = LaunchCMDInDirectory(tempDirectoryPath);
-		disposables.Add(Disposable.Create(() =>
-		{
-			process?.Kill();
-			process?.WaitForExit();
-		}));
-
+		using var launchedProcess = LaunchCMDInDirectory(tempDirectoryPath);
 		var launchAsElevatedMock = new Mock<IRelaunchAsElevated>();
 		Program.relaunchAsElevated = launchAsElevatedMock.Object;
 		Program.forceOpsContext.maxRetries = 0;
+		Program.forceOpsContext.processKiller = new Moq.Mock<IProcessKiller>().Object;
 		var exceptionWithNoRetries = Record.Exception(() => Program.DeleteCommand(new[] { tempDirectoryPath }));
 		Assert.IsType<AggregateException>(exceptionWithNoRetries);
 		launchAsElevatedMock.Verify(t => t.RelaunchAsElevated(), Times.Once());
