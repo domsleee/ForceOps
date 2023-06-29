@@ -45,7 +45,7 @@ public static class TestUtil
 		
 		if (process.HasExited)
 		{
-			throw new Exception("Failed to run process.");
+			throw new Exception($"Process has exited unexpectedly.\nOutput: {output}\nError: {error}");
 		}
 
 		return Disposable.Create(() =>
