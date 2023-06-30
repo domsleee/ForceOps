@@ -16,12 +16,25 @@
         <Description>By hook or by crook, perform operations on files and directories. If they are
             in use by a process, kill the process.</Description>
         <PackageProjectUrl>https://github.com/domsleee/forceops</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/domsleee/forceops</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
+        <Authors>Dom Slee</Authors>
+        <PackageTags>lock file directory force delete</PackageTags>
+        <PackageReleaseNotes>https://github.com/domsleee/forceops/blob/main/CHANGELOG.md</PackageReleaseNotes>
+
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>forceops</ToolCommandName>
         <PackageOutputPath>./nupkg</PackageOutputPath>
     </PropertyGroup>
+
+    <ItemGroup>
+        <!-- Include README here so it shows up in the nuget.org page -->
+        <None Include="..\README.md" Link="README.md" Pack="true" PackagePath="\" />
+        <None Include="..\LICENSE.txt" Pack="true" PackagePath=""/>
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
