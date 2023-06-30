@@ -1,7 +1,6 @@
 ﻿using ForceOps.src;
-using ForceOpsLib;
-using System.CommandLine;
 using Serilog;
+using System.CommandLine;
 using System.Runtime.Versioning;
 
 namespace ForceOps;
@@ -12,6 +11,7 @@ public class Program
 	static ILogger logger = ForceOpsLoggerFactory.CreateLogger<Program>();
 	internal static IRelaunchAsElevated relaunchAsElevated = new RelaunchAsElevated();
 	internal static ForceOpsContext forceOpsContext = new ForceOpsContext();
+	internal static bool CanRelaunchAsElevated = true;
 
 	static int Main(string[] args)
 	{
@@ -49,7 +49,7 @@ public class Program
 		{
 			action();
 		}
-		catch (Exception ex) when ((ex is IOException || ex is UnauthorizedAccessException) && !ElevateUtils.IsProcessElevated())
+		catch (Exception ex) when ((ex is IOException || ex is UnauthorizedAccessException) && !forceOpsContext.elevateUtils.IsProcessElevated())
 		{
 			logger.Information("Received IOException or UnauthorizedAccessException when trying to get process using file or directory. Retrying as elevated.");
 			var childProcessExitCode = relaunchAsElevated.RelaunchAsElevated();
