@@ -1,6 +1,5 @@
-using ForceOpsLib;
-using System.Runtime.Versioning;
 using Serilog;
+using System.Runtime.Versioning;
 using static ForceOps.DirectoryUtils;
 
 namespace ForceOps;
@@ -111,7 +110,7 @@ public class FileAndFolderDeleter
 
 	string GetAdminLogMessage()
 	{
-		if (!ElevateUtils.IsProcessElevated())
+		if (!forceOpsContext.elevateUtils.IsProcessElevated())
 		{
 			return "Process is NOT elevated";
 		}

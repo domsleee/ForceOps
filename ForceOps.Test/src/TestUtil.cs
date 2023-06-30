@@ -1,34 +1,59 @@
-﻿using System.Diagnostics;
+﻿using ForceOpsLib;
+using Moq;
+using System.Diagnostics;
 using System.Reactive.Disposables;
 
 namespace ForceOps.Test;
 public static class TestUtil
 {
-	public static Process? LaunchCMDInDirectory(string workingDirectory)
+	public static IDisposable LaunchCMDInDirectory(string workingDirectory)
 	{
-		ProcessStartInfo startInfo = new ProcessStartInfo();
-		var process = new Process();
-		process.StartInfo = new ProcessStartInfo
+		var process = new Process
 		{
-			FileName = "cmd",
-			WorkingDirectory = workingDirectory,
-			Arguments = "/c \"echo loaded\" & pause",
-			RedirectStandardOutput = true,
-			CreateNoWindow = true
+			StartInfo = new ProcessStartInfo
+			{
+				FileName = "powershell",
+				WorkingDirectory = workingDirectory,
+				Arguments = "-Command \"echo 'loaded'; sleep 10\"",
+				RedirectStandardOutput = true,
+				RedirectStandardError = true,
+				CreateNoWindow = true
+			}
 		};
 		string output = "";
 		process.OutputDataReceived += (sender, e) =>
 		{
 			output += e.Data;
 		};
+		string error = "";
+		process.ErrorDataReceived += (sender, e) =>
+		{
+			error += e.Data;
+		};
 		process.Start();
 		process.BeginOutputReadLine();
+		process.BeginErrorReadLine();
 
-		while (!output.StartsWith("loaded"))
+		var startTime = DateTime.Now;
+
+		while (!output.StartsWith("loaded") && !process.HasExited)
 		{
 			Thread.Sleep(50);
+			if (DateTime.Now.Subtract(startTime).TotalSeconds > 2) {
+				throw new Exception("Gave up after waiting 2 seconds");
+			}
 		}
-		return process;
+		
+		if (process.HasExited)
+		{
+			throw new Exception($"Process has exited unexpectedly.\nOutput: {output}\nError: {error}");
+		}
+
+		return Disposable.Create(() =>
+		{
+			process.Kill();
+			process.WaitForExit(1);
+		});
 	}
 
 	public static string GetTemporaryFileName()
@@ -47,5 +72,14 @@ public static class TestUtil
 			}
 			catch { }
 		});
+	}
+
+	public static ForceOpsContext SetupTestContext()
+	{
+		var context = new ForceOpsContext();
+		var elevateUtilsMock = new Mock<IElevateUtils>();
+		elevateUtilsMock.Setup(t => t.IsProcessElevated()).Returns(false);
+		context.elevateUtils = elevateUtilsMock.Object;
+		return context;
 	}
 }

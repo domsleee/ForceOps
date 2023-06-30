@@ -7,7 +7,7 @@
 		<RootNamespace>ForceOps</RootNamespace>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="LockCheck" Version="0.9.24-gde836fbd3e" />
+		<PackageReference Include="LockCheck" Version="0.9.25-g8ea8d862e5" />
 		<PackageReference Include="Serilog" Version="3.0.1" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
 	</ItemGroup>

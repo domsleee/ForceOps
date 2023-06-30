@@ -1,4 +1,3 @@
-using System.Reactive.Disposables;
 using static ForceOps.Test.TestUtil;
 
 namespace ForceOps.Test;
@@ -6,19 +5,14 @@ namespace ForceOps.Test;
 public class ForceOpsMethodsTest : IDisposable
 {
 	List<IDisposable> disposables = new List<IDisposable>();
-	ForceOpsContext forceOpsContext = new ForceOpsContext();
+	ForceOpsContext forceOpsContext;
 	FileAndFolderDeleter fileAndFolderDeleter;
 	string tempFolderPath;
 
 	[Fact]
 	public void DeletingDirectoryOpenInCMDWindow()
 	{
-		var process = LaunchCMDInDirectory(tempFolderPath);
-		disposables.Add(Disposable.Create(() =>
-		{
-			process?.Kill();
-			process?.WaitForExit();
-		}));
+		using var launchedProcess = LaunchCMDInDirectory(tempFolderPath);
 
 		forceOpsContext.maxRetries = 0;
 		var exceptionWithNoRetries = Record.Exception(() => fileAndFolderDeleter.DeleteDirectory(new DirectoryInfo(tempFolderPath)));
@@ -32,7 +26,7 @@ public class ForceOpsMethodsTest : IDisposable
 	[Fact]
 	public void DeletingFile()
 	{
-		var process = LaunchCMDInDirectory(tempFolderPath);
+		using var launchedProcess = LaunchCMDInDirectory(tempFolderPath);
 		var tempFilePath = GetTemporaryFileName();
 		File.Open(tempFilePath, FileMode.OpenOrCreate);
 
@@ -46,6 +40,7 @@ public class ForceOpsMethodsTest : IDisposable
 	{
 		tempFolderPath = GetTemporaryFileName();
 		disposables.Add(CreateTemporaryDirectory(tempFolderPath));
+		forceOpsContext = SetupTestContext();
 		fileAndFolderDeleter = new FileAndFolderDeleter(forceOpsContext);
 	}
 
