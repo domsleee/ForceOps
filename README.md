@@ -1,5 +1,8 @@
 # forceops
 
+[![main build](https://github.com/domsleee/forceops/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/domsleee/forceops/actions/workflows/ci.yaml)
+![Nuget](https://img.shields.io/nuget/dt/ForceOps)
+
 Forcefully perform file operations by terminating processes that are using the file.
 
 Currently only supports windows.
@@ -14,6 +17,12 @@ Operations like `move` and `copy` can have similar issues if they are overriding
 
 ## Usage
 
+To install:
+```bash
+dotnet tool install -g --prerelease forceops
+```
+
+To delete a file:
 ```bash
 forceops delete file.txt
 ```
