@@ -16,16 +16,28 @@ public class Program
 	{
 		var rootCommand = new RootCommand("By hook or by crook, perform operations on files and directories. If they are in use by a process, kill the process.") { Name = "forceops" };
 
-		var filesToDeleteArgument = new Argument<string[]>(
+		var filesToDeleteArg = new Argument<string[]>(
 			name: "files",
 			description: "Files or directories to delete.")
 		{
 			Arity = ArgumentArity.OneOrMore
 		};
-		var deleteCommand = new Command("delete", "Delete files or a directories recursively.") { filesToDeleteArgument };
+		var deleteCommand = new Command("delete", "Delete files or a directories recursively.") { filesToDeleteArg };
 		deleteCommand.AddAlias("rm");
-		deleteCommand.SetHandler(DeleteCommand, filesToDeleteArgument);
+		deleteCommand.SetHandler(DeleteCommand, filesToDeleteArg);
 		rootCommand.AddCommand(deleteCommand);
+
+		var sourceFileNameArg = new Argument<string>(
+			name: "sourceFileName",
+			description: "Source file or directory to move");
+		var destFileNameArg = new Argument<string>(
+			name: "destFileName",
+			description: "Destination for the file or folder");
+
+		var moveCommand = new Command("move", "Move a file or a directory") { sourceFileNameArg, destFileNameArg };
+		moveCommand.SetHandler(MoveCommand, sourceFileNameArg, destFileNameArg);
+		moveCommand.AddAlias("mv");
+		rootCommand.AddCommand(moveCommand);
 
 		return rootCommand.Invoke(args);
 	}
@@ -34,11 +46,23 @@ public class Program
 	{
 		RunWithRelaunchAsElevated(() =>
 		{
-			var deleter = new FileAndFolderDeleter(forceOpsContext);
+			filesOrDirectoriesToDelete = filesOrDirectoriesToDelete.Select(file => Path.Combine(Environment.CurrentDirectory, file)).ToArray();
+			var deleter = new FileAndDirectoryDeleter(forceOpsContext);
 			foreach (var file in filesOrDirectoriesToDelete)
 			{
 				deleter.DeleteFileOrDirectory(file);
 			}
+		});
+	}
+
+	internal static void MoveCommand(string sourceFileName, string destFileName)
+	{
+		RunWithRelaunchAsElevated(() =>
+		{
+			sourceFileName = Path.Combine(Environment.CurrentDirectory, sourceFileName);
+			destFileName = Path.Combine(Environment.CurrentDirectory, destFileName);
+			var mover = new FileAndDirectoryMover(forceOpsContext);
+			mover.MoveFileOrDirectory(sourceFileName,  destFileName);
 		});
 	}
 

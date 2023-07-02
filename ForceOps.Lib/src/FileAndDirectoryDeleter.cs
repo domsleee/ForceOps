@@ -5,15 +5,17 @@ using static ForceOps.Lib.DirectoryUtils;
 namespace ForceOps.Lib;
 
 [SupportedOSPlatform("windows")]
-public class FileAndFolderDeleter
+public class FileAndDirectoryDeleter
 {
 	readonly ILogger logger;
 	readonly ForceOpsContext forceOpsContext;
+    readonly ProcessInfoHelper processInfoHelper;
 
-	public FileAndFolderDeleter(ForceOpsContext forceOpsContext, ILogger? logger = null)
+	public FileAndDirectoryDeleter(ForceOpsContext? forceOpsContext, ILogger? logger = null)
 	{
-		this.forceOpsContext = forceOpsContext;
-		this.logger = logger ?? ForceOpsLoggerFactory.CreateLogger<FileAndFolderDeleter>();
+		this.forceOpsContext = forceOpsContext ?? new ForceOpsContext();
+		this.logger = logger ?? ForceOpsLoggerFactory.CreateLogger<FileAndDirectoryDeleter>();
+		processInfoHelper = new ProcessInfoHelper(forceOpsContext!);
 	}
 
 	/// Delete a file or a folder, not following symlinks.
@@ -50,8 +52,8 @@ public class FileAndFolderDeleter
 			catch when (!file.Exists) { }
 			catch (Exception ex) when ((ex is IOException || ex is System.UnauthorizedAccessException) && retries > 0)
 			{
-				var processes = FilterNullProcesses(LockCheck.LockManager.GetLockingProcessInfos(new[] { file.FullName }));
-				logger.Information($"DeleteFolder found these processes: {GetProcessLogString(processes)}");
+				var processes = processInfoHelper.FilterNullProcesses(LockCheck.LockManager.GetLockingProcessInfos(new[] { file.FullName }));
+				logger.Information($"DeleteFolder found these processes: {ProcessInfoHelper.GetProcessLogString(processes)}");
 				forceOpsContext.processKiller!.KillProcesses(processes);
 			}
 		} while (retries-- > 0);
@@ -75,8 +77,8 @@ public class FileAndFolderDeleter
 			catch when (!directory.Exists) { }
 			catch (Exception ex) when (ex is IOException && retries > 0)
 			{
-				var processes = FilterNullProcesses(LockCheck.LockManager.GetLockingProcessInfos(new[] { directory.FullName }, LockCheck.LockManagerFeatures.UseLowLevelApi));
-				logger.Information($"DeleteFolder found these processes: {GetProcessLogString(processes)}");
+				var processes = processInfoHelper.FilterNullProcesses(LockCheck.LockManager.GetLockingProcessInfos(new[] { directory.FullName }, LockCheck.LockManagerFeatures.UseLowLevelApi));
+				logger.Information($"DeleteFolder found these processes: {ProcessInfoHelper.GetProcessLogString(processes)}");
 				forceOpsContext.processKiller.KillProcesses(processes);
 			}
 		} while (retries-- > 0);
@@ -93,32 +95,5 @@ public class FileAndFolderDeleter
 		{
 			DeleteDirectory(subDirectory);
 		}
-	}
-
-	IEnumerable<LockCheck.ProcessInfo> FilterNullProcesses(IEnumerable<LockCheck.ProcessInfo> processInfos)
-	{
-		foreach (var processInfo in processInfos)
-		{
-			if (processInfo == null)
-			{
-				logger.Error($"LockCheck API returned a null process. {GetAdminLogMessage()}");
-				continue;
-			}
-			yield return processInfo;
-		}
-	}
-
-	string GetAdminLogMessage()
-	{
-		if (!forceOpsContext.elevateUtils.IsProcessElevated())
-		{
-			return "Process is NOT elevated";
-		}
-		return "Process is elevated";
-	}
-
-	string GetProcessLogString(IEnumerable<LockCheck.ProcessInfo> processes)
-	{
-		return $"[{string.Join(", ", processes.Select(process => $"{process?.ProcessId} - {process?.ExecutableName}"))}]";
 	}
 }

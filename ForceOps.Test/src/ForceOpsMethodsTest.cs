@@ -7,7 +7,7 @@ public class ForceOpsMethodsTest : IDisposable
 {
 	readonly List<IDisposable> disposables = new();
 	readonly ForceOpsContext forceOpsContext;
-	readonly FileAndFolderDeleter fileAndFolderDeleter;
+	readonly FileAndDirectoryDeleter fileAndFolderDeleter;
 	readonly string tempFolderPath;
 
 	[Fact]
@@ -43,7 +43,7 @@ public class ForceOpsMethodsTest : IDisposable
 		disposables.Add(CreateTemporaryDirectory(tempFolderPath));
 		var testContext = TestUtil.CreateTestContext();
 		forceOpsContext = testContext.forceOpsContext;
-		fileAndFolderDeleter = new FileAndFolderDeleter(forceOpsContext);
+		fileAndFolderDeleter = new FileAndDirectoryDeleter(forceOpsContext);
 	}
 
 	void IDisposable.Dispose()
