@@ -1,4 +1,4 @@
-﻿namespace ForceOps;
+﻿namespace ForceOps.Lib;
 
 public static class DirectoryUtils
 {

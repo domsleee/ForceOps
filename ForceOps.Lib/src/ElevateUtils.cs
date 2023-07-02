@@ -1,6 +1,6 @@
 using System.Security.Principal;
 
-namespace ForceOpsLib;
+namespace ForceOps.Lib;
 
 public class ElevateUtils : IElevateUtils
 {
