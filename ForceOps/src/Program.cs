@@ -34,7 +34,8 @@ public class Program
 	{
 		RunWithRelaunchAsElevated(() =>
 		{
-			var deleter = new FileAndFolderDeleter(forceOpsContext);
+			var deleter = new FileAndDirectoryDeleter(forceOpsContext);
+			filesOrDirectoriesToDelete = filesOrDirectoriesToDelete.Select(file => DirectoryUtils.CombineWithCWDAndGetAbsolutePath(file)).ToArray();
 			foreach (var file in filesOrDirectoriesToDelete)
 			{
 				deleter.DeleteFileOrDirectory(file);
@@ -56,7 +57,7 @@ public class Program
 				? "Successfully deleted as admin"
 				: $"Failed with exit code {childProcessExitCode}";
 			logger.Information(childResultMessage);
-			throw new AggregateException($"Child process failed with {childProcessExitCode}. See inner exception for local exception.", ex);
+			throw new AggregateException($"Child process failed with {childProcessExitCode}. See inner exception for the previous exception.", ex);
 		}
 	}
 }

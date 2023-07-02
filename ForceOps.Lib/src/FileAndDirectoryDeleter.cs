@@ -5,19 +5,22 @@ using static ForceOps.Lib.DirectoryUtils;
 namespace ForceOps.Lib;
 
 [SupportedOSPlatform("windows")]
-public class FileAndFolderDeleter
+public class FileAndDirectoryDeleter
 {
 	readonly ILogger logger;
 	readonly ForceOpsContext forceOpsContext;
 
-	public FileAndFolderDeleter(ForceOpsContext forceOpsContext, ILogger? logger = null)
+	public FileAndDirectoryDeleter(ForceOpsContext forceOpsContext, ILogger? logger = null)
 	{
 		this.forceOpsContext = forceOpsContext;
-		this.logger = logger ?? ForceOpsLoggerFactory.CreateLogger<FileAndFolderDeleter>();
+		this.logger = logger ?? ForceOpsLoggerFactory.CreateLogger<FileAndDirectoryDeleter>();
 	}
 
+	/// <summary>
 	/// Delete a file or a folder, not following symlinks.
 	/// If the delete fails, it will attempt to find processes using the file or directory
+	/// </summary>
+	/// <param name="fileOrDirectory">File or directory to delete.</param>
 	public void DeleteFileOrDirectory(string fileOrDirectory)
 	{
 		fileOrDirectory = CombineWithCWDAndGetAbsolutePath(fileOrDirectory);
@@ -38,8 +41,7 @@ public class FileAndFolderDeleter
 
 	internal void DeleteFile(FileInfo file)
 	{
-		var retries = forceOpsContext.maxRetries;
-		do
+		for (var retries = forceOpsContext.maxRetries; retries >= 0; retries--)
 		{
 			try
 			{
@@ -54,7 +56,7 @@ public class FileAndFolderDeleter
 				logger.Information($"DeleteFolder found these processes: {GetProcessLogString(processes)}");
 				forceOpsContext.processKiller!.KillProcesses(processes);
 			}
-		} while (retries-- > 0);
+		}
 	}
 
 	internal void DeleteDirectory(DirectoryInfo directory)
@@ -64,8 +66,7 @@ public class FileAndFolderDeleter
 			DeleteFilesInFolder(directory);
 		}
 
-		var retries = forceOpsContext.maxRetries;
-		do
+		for (var retries = forceOpsContext.maxRetries; retries >= 0; retries--)
 		{
 			try
 			{
@@ -79,8 +80,7 @@ public class FileAndFolderDeleter
 				logger.Information($"DeleteFolder found these processes: {GetProcessLogString(processes)}");
 				forceOpsContext.processKiller.KillProcesses(processes);
 			}
-		} while (retries-- > 0);
-
+		}
 	}
 
 	void DeleteFilesInFolder(DirectoryInfo directory)
@@ -101,16 +101,25 @@ public class FileAndFolderDeleter
 		{
 			if (processInfo == null)
 			{
-				logger.Error($"LockCheck API returned a null process. {GetAdminLogMessage()}");
+				var isProcessElevated = forceOpsContext.elevateUtils.IsProcessElevated();
+				var message = $"LockCheck API returned a null process. {GetAdminLogMessage(isProcessElevated)}";
+				if (isProcessElevated)
+				{
+					logger.Error(message);
+				}
+				else
+				{
+					logger.Warning(message);
+				}
 				continue;
 			}
 			yield return processInfo;
 		}
 	}
 
-	string GetAdminLogMessage()
+	string GetAdminLogMessage(bool isProcessElevated)
 	{
-		if (!forceOpsContext.elevateUtils.IsProcessElevated())
+		if (!isProcessElevated)
 		{
 			return "Process is NOT elevated";
 		}
