@@ -13,7 +13,7 @@ public class FileAndDirectoryDeleter
 	public FileAndDirectoryDeleter(ForceOpsContext forceOpsContext, ILogger? logger = null)
 	{
 		this.forceOpsContext = forceOpsContext;
-		this.logger = logger ?? ForceOpsLoggerFactory.CreateLogger<FileAndDirectoryDeleter>();
+		this.logger = logger ?? forceOpsContext.loggerFactory.CreateLogger<FileAndDirectoryDeleter>();
 	}
 
 	/// <summary>
@@ -35,7 +35,7 @@ public class FileAndDirectoryDeleter
 			return;
 		}
 		// if the file/folder doesn't exist, it has already been deleted
-		logger.Debug($"{fileOrDirectory} deleted.");
+		logger.Debug($"{fileOrDirectory} already deleted.");
 		return;
 	}
 

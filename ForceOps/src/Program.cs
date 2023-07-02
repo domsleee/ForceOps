@@ -8,8 +8,8 @@ namespace ForceOps;
 [SupportedOSPlatform("windows")]
 public class Program
 {
-	static readonly ILogger logger = ForceOpsLoggerFactory.CreateLogger<Program>();
 	internal static ForceOpsContext forceOpsContext = new();
+	static readonly ILogger logger = forceOpsContext.loggerFactory.CreateLogger<Program>();
 	internal static bool CanRelaunchAsElevated = true;
 
 	static int Main(string[] args)
