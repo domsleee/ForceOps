@@ -8,26 +8,12 @@
         <RollForward>LatestMajor</RollForward>
         <LangVersion>latest</LangVersion>
         <IsPackable>true</IsPackable>
-        <Version>1.0.0-pre</Version>
         <!-- <PublishAot>true</PublishAot>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
         <!--<IlcDisableReflection>true</IlcDisableReflection>-->
 
-        <Description>By hook or by crook, perform operations on files and directories. If they are
-            in use by a process, kill the process.</Description>
-        <PackageProjectUrl>https://github.com/domsleee/forceops</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/domsleee/forceops</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <Authors>Dom Slee</Authors>
-        <PackageTags>lock file directory force delete</PackageTags>
-        <PackageReleaseNotes>https://github.com/domsleee/forceops/blob/main/CHANGELOG.md</PackageReleaseNotes>
-
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>forceops</ToolCommandName>
-        <PackageOutputPath>./nupkg</PackageOutputPath>
     </PropertyGroup>
 
     <ItemGroup>
