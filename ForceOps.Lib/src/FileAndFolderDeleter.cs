@@ -1,8 +1,8 @@
-using Serilog;
 using System.Runtime.Versioning;
-using static ForceOps.DirectoryUtils;
+using Serilog;
+using static ForceOps.Lib.DirectoryUtils;
 
-namespace ForceOps;
+namespace ForceOps.Lib;
 
 [SupportedOSPlatform("windows")]
 public class FileAndFolderDeleter

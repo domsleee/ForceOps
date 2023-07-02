@@ -1,13 +1,14 @@
+using ForceOps.Lib;
 using static ForceOps.Test.TestUtil;
 
 namespace ForceOps.Test;
 
 public class ForceOpsMethodsTest : IDisposable
 {
-	List<IDisposable> disposables = new List<IDisposable>();
-	ForceOpsContext forceOpsContext;
-	FileAndFolderDeleter fileAndFolderDeleter;
-	string tempFolderPath;
+	readonly List<IDisposable> disposables = new();
+	readonly ForceOpsContext forceOpsContext;
+	readonly FileAndFolderDeleter fileAndFolderDeleter;
+	readonly string tempFolderPath;
 
 	[Fact]
 	public void DeletingDirectoryOpenInCMDWindow()
@@ -40,7 +41,8 @@ public class ForceOpsMethodsTest : IDisposable
 	{
 		tempFolderPath = GetTemporaryFileName();
 		disposables.Add(CreateTemporaryDirectory(tempFolderPath));
-		forceOpsContext = SetupTestContext();
+		var testContext = TestUtil.CreateTestContext();
+		forceOpsContext = testContext.forceOpsContext;
 		fileAndFolderDeleter = new FileAndFolderDeleter(forceOpsContext);
 	}
 

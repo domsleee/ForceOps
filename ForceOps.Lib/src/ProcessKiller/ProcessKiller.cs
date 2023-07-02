@@ -1,7 +1,8 @@
-﻿using LockCheck;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using LockCheck;
 
-namespace ForceOps;
+namespace ForceOps.Lib;
+
 internal class ProcessKiller : IProcessKiller
 {
 	public void KillProcesses(IEnumerable<ProcessInfo> processes)

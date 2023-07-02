@@ -1,9 +1,10 @@
-﻿using ForceOpsLib;
-using Moq;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reactive.Disposables;
+using ForceOps.Lib;
+using Moq;
 
 namespace ForceOps.Test;
+
 public static class TestUtil
 {
 	public static IDisposable LaunchCMDInDirectory(string workingDirectory)
@@ -39,11 +40,12 @@ public static class TestUtil
 		while (!output.StartsWith("loaded") && !process.HasExited)
 		{
 			Thread.Sleep(50);
-			if (DateTime.Now.Subtract(startTime).TotalSeconds > 2) {
+			if (DateTime.Now.Subtract(startTime).TotalSeconds > 2)
+			{
 				throw new Exception("Gave up after waiting 2 seconds");
 			}
 		}
-		
+
 		if (process.HasExited)
 		{
 			throw new Exception($"Process has exited unexpectedly.\nOutput: {output}\nError: {error}");
@@ -74,12 +76,26 @@ public static class TestUtil
 		});
 	}
 
-	public static ForceOpsContext SetupTestContext()
+	public record TestContext {
+		public required ForceOpsContext forceOpsContext;
+		public required Mock<IElevateUtils> elevateUtilsMock;
+		public required Mock<IRelaunchAsElevated> relaunchAsElevatedMock;
+	}
+
+	public static TestContext CreateTestContext()
 	{
-		var context = new ForceOpsContext();
+		var forceOpsContext = new ForceOpsContext();
+
 		var elevateUtilsMock = new Mock<IElevateUtils>();
 		elevateUtilsMock.Setup(t => t.IsProcessElevated()).Returns(false);
-		context.elevateUtils = elevateUtilsMock.Object;
-		return context;
+		forceOpsContext.elevateUtils = elevateUtilsMock.Object;
+		var relaunchAsElevatedMock = new Mock<IRelaunchAsElevated>();
+		forceOpsContext.relaunchAsElevated = relaunchAsElevatedMock.Object;
+
+		return new TestContext {
+			forceOpsContext = forceOpsContext,
+			elevateUtilsMock = elevateUtilsMock,
+			relaunchAsElevatedMock = relaunchAsElevatedMock
+		};
 	}
 }

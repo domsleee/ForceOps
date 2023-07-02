@@ -1,10 +1,10 @@
 ﻿using Serilog;
 
-namespace ForceOps;
+namespace ForceOps.Lib;
 
 public class ForceOpsLoggerFactory
 {
-	static ILogger logger = new LoggerConfiguration()
+	static readonly ILogger logger = new LoggerConfiguration()
 		   .WriteTo.Console()
 		   .CreateLogger();
 

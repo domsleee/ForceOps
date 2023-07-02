@@ -8,3 +8,5 @@ csharp_hide_private_members = true:suggestion
 dotnet_diagnostic.CS0127.severity = none
 dotnet_diagnostic.CA1416.severity = none
 dotnet_diagnostic.IDE0005.severity = error
+dotnet_diagnostic.IDE0044.severity = error
+dotnet_sort_system_directives_first = true
