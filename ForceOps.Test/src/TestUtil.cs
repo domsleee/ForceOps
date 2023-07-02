@@ -76,7 +76,8 @@ public static class TestUtil
 		});
 	}
 
-	public record TestContext {
+	public record TestContext
+	{
 		public required ForceOpsContext forceOpsContext;
 		public required Mock<IElevateUtils> elevateUtilsMock;
 		public required Mock<IRelaunchAsElevated> relaunchAsElevatedMock;
@@ -92,7 +93,8 @@ public static class TestUtil
 		var relaunchAsElevatedMock = new Mock<IRelaunchAsElevated>();
 		forceOpsContext.relaunchAsElevated = relaunchAsElevatedMock.Object;
 
-		return new TestContext {
+		return new TestContext
+		{
 			forceOpsContext = forceOpsContext,
 			elevateUtilsMock = elevateUtilsMock,
 			relaunchAsElevatedMock = relaunchAsElevatedMock

@@ -13,7 +13,7 @@ public sealed class ProgramTest : IDisposable
 	{
 		using var launchedProcess = LaunchCMDInDirectory(tempDirectoryPath);
 		var testContext = CreateTestContext();
-		Program.forceOpsContext = testContext.forceOpsContext; 
+		Program.forceOpsContext = testContext.forceOpsContext;
 		Program.forceOpsContext.maxRetries = 0;
 		var exceptionWithNoRetries = Record.Exception(() => Program.DeleteCommand(new[] { tempDirectoryPath }));
 		Assert.IsType<AggregateException>(exceptionWithNoRetries);

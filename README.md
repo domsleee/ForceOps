@@ -1,4 +1,4 @@
-# forceops
+# ForceOps
 
 [![main build](https://github.com/domsleee/forceops/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/domsleee/forceops/actions/workflows/ci.yaml)
 ![Nuget](https://img.shields.io/nuget/v/ForceOps)
