@@ -19,7 +19,7 @@ Operations like `move` and `copy` can have similar issues if they are overriding
 
 To install:
 ```bash
-dotnet tool install -g --prerelease forceops
+dotnet tool install -g forceops
 ```
 
 To delete a file:
