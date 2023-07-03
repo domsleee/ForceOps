@@ -1,6 +1,7 @@
 using System.Runtime.Versioning;
 using Serilog;
 using static ForceOps.Lib.DirectoryUtils;
+using static LockCheck.LockManager;
 
 namespace ForceOps.Lib;
 
@@ -41,7 +42,7 @@ public class FileAndDirectoryDeleter
 
 	internal void DeleteFile(FileInfo file)
 	{
-		for (var retries = forceOpsContext.maxRetries; retries >= 0; retries--)
+		for (var attempt = 1; attempt <= forceOpsContext.maxAttempts; attempt++)
 		{
 			try
 			{
@@ -50,13 +51,41 @@ public class FileAndDirectoryDeleter
 				break;
 			}
 			catch when (!file.Exists) { }
-			catch (Exception ex) when ((ex is IOException || ex is System.UnauthorizedAccessException) && retries > 0)
+			catch (Exception ex) when (ex is IOException || ex is System.UnauthorizedAccessException)
 			{
-				var processes = FilterNullProcesses(LockCheck.LockManager.GetLockingProcessInfos(new[] { file.FullName }));
-				logger.Information($"DeleteFolder found these processes: {GetProcessLogString(processes)}");
-				forceOpsContext.processKiller!.KillProcesses(processes);
+				var getProcessesLockingFileFunc = () => GetLockingProcessInfos(new[] { file.FullName });
+				var shouldThrow = KillProcessesAndLogInfo("DeleteFile", attempt, file.FullName, getProcessesLockingFileFunc);
+				if (shouldThrow) throw;
 			}
 		}
+	}
+
+	bool KillProcessesAndLogInfo(string actionName, int attemptNumber, string fileOrDirectoryPath, Func<IEnumerable<LockCheck.ProcessInfo>> getProcessesLockingFileFunc)
+	{
+		var isProcessElevated = forceOpsContext.elevateUtils.IsProcessElevated();
+		var processElevatedMessage = isProcessElevated
+			? "ForceOps process is elevated"
+			: "ForceOps process is not elevated";
+		var messagePrefix = $"{actionName} failed attempt {attemptNumber}/{forceOpsContext.maxAttempts} for [{fileOrDirectoryPath}]. {processElevatedMessage}.";
+
+		if (attemptNumber == forceOpsContext.maxAttempts) {
+			logger.Information($"{messagePrefix} No attempts remain, so the exception will be thrown.");
+			return true;
+		}
+
+		var processes = getProcessesLockingFileFunc().ToList();
+		var processPlural = processes.Count == 1 ? "process" : "processes";
+		var processLogString = string.Join(", ", processes.Select(process => ProcessInfoToString(process)));
+		logger.Information($"{messagePrefix} Found {processes.Count} {processPlural} to try to kill: [{processLogString}]");
+		forceOpsContext.processKiller.KillProcesses(processes);
+		return false;
+	}
+
+	static string ProcessInfoToString(LockCheck.ProcessInfo? process) {
+		if (process == null) {
+			return "<null>";
+		}
+		return $"{process?.ProcessId} - {process?.ExecutableName}";
 	}
 
 	internal void DeleteDirectory(DirectoryInfo directory)
@@ -66,7 +95,7 @@ public class FileAndDirectoryDeleter
 			DeleteFilesInFolder(directory);
 		}
 
-		for (var retries = forceOpsContext.maxRetries; retries >= 0; retries--)
+		for (var attempt = 1; attempt <= forceOpsContext.maxAttempts; attempt++)
 		{
 			try
 			{
@@ -74,11 +103,11 @@ public class FileAndDirectoryDeleter
 				break;
 			}
 			catch when (!directory.Exists) { }
-			catch (Exception ex) when (ex is IOException && retries > 0)
+			catch (Exception ex) when (ex is IOException)
 			{
-				var processes = FilterNullProcesses(LockCheck.LockManager.GetLockingProcessInfos(new[] { directory.FullName }, LockCheck.LockManagerFeatures.UseLowLevelApi));
-				logger.Information($"DeleteFolder found these processes: {GetProcessLogString(processes)}");
-				forceOpsContext.processKiller.KillProcesses(processes);
+				var getProcessesLockingFileFunc = () => GetLockingProcessInfos(new[] { directory.FullName }, LockCheck.LockManagerFeatures.UseLowLevelApi);
+				var shouldThrow = KillProcessesAndLogInfo("DeleteDirectory", attempt, directory.FullName, getProcessesLockingFileFunc);
+				if (shouldThrow) throw;
 			}
 		}
 	}
@@ -93,41 +122,5 @@ public class FileAndDirectoryDeleter
 		{
 			DeleteDirectory(subDirectory);
 		}
-	}
-
-	IEnumerable<LockCheck.ProcessInfo> FilterNullProcesses(IEnumerable<LockCheck.ProcessInfo> processInfos)
-	{
-		foreach (var processInfo in processInfos)
-		{
-			if (processInfo == null)
-			{
-				var isProcessElevated = forceOpsContext.elevateUtils.IsProcessElevated();
-				var message = $"LockCheck API returned a null process. {GetAdminLogMessage(isProcessElevated)}";
-				if (isProcessElevated)
-				{
-					logger.Error(message);
-				}
-				else
-				{
-					logger.Warning(message);
-				}
-				continue;
-			}
-			yield return processInfo;
-		}
-	}
-
-	string GetAdminLogMessage(bool isProcessElevated)
-	{
-		if (!isProcessElevated)
-		{
-			return "Process is NOT elevated";
-		}
-		return "Process is elevated";
-	}
-
-	string GetProcessLogString(IEnumerable<LockCheck.ProcessInfo> processes)
-	{
-		return $"[{string.Join(", ", processes.Select(process => $"{process?.ProcessId} - {process?.ExecutableName}"))}]";
 	}
 }

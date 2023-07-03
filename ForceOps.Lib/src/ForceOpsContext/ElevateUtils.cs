@@ -11,8 +11,3 @@ public class ElevateUtils : IElevateUtils
 		return principal.IsInRole(WindowsBuiltInRole.Administrator);
 	}
 }
-
-public interface IElevateUtils
-{
-	public bool IsProcessElevated();
-}

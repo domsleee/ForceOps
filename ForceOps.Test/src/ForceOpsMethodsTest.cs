@@ -9,39 +9,50 @@ public class ForceOpsMethodsTest : IDisposable
 	readonly ForceOpsContext forceOpsContext;
 	readonly FileAndDirectoryDeleter fileAndDirectoryDeleter;
 	readonly string tempFolderPath;
+	readonly TestContext testContext;
 
 	[Fact]
-	public void DeletingDirectoryOpenInCMDWindow()
+	public void DeletingDirectoryOpenInPowershellWorkingDirectory()
 	{
-		using var launchedProcess = LaunchCMDInDirectory(tempFolderPath);
+		using var launchedProcess = LaunchProcessInDirectory(tempFolderPath);
 
-		forceOpsContext.maxRetries = 0;
+		forceOpsContext.maxAttempts = 1;
 		var exceptionWithNoRetries = Record.Exception(() => fileAndDirectoryDeleter.DeleteDirectory(new DirectoryInfo(tempFolderPath)));
 		Assert.IsType<IOException>(exceptionWithNoRetries);
 		Assert.StartsWith("The process cannot access the file", exceptionWithNoRetries.Message);
-		forceOpsContext.maxRetries = 3;
+
+		forceOpsContext.maxAttempts = 5;
 		var exceptionWithDirectoryStrategy = Record.Exception(() => fileAndDirectoryDeleter.DeleteDirectory(new DirectoryInfo(tempFolderPath)));
-		Assert.Null(exceptionWithDirectoryStrategy);
+		Assert.True(null == exceptionWithDirectoryStrategy, testContext.fakeLoggerFactory.GetAllLogsString());
+
+		Assert.Matches(@"DeleteDirectory failed attempt 1/1 for \[.*\]. ForceOps process is not elevated. No attempts remain, so the exception will be thrown.
+DeleteDirectory failed attempt 1/5 for \[.*\]. ForceOps process is not elevated. Found 1 process to try to kill: \[\d+ \- powershell.exe\]", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
 
 	[Fact]
-	public void DeletingFile()
+	public void DeletingFileOpenByPowershell()
 	{
-		using var launchedProcess = LaunchCMDInDirectory(tempFolderPath);
 		var tempFilePath = GetTemporaryFileName();
-		File.Open(tempFilePath, FileMode.OpenOrCreate);
+		using var launchedProcess = HoldLockOnFileUsingPowershell(tempFilePath);
 
-		forceOpsContext.maxRetries = 0;
+		forceOpsContext.maxAttempts = 1;
 		var exceptionWithNoRetries = Record.Exception(() => fileAndDirectoryDeleter.DeleteFile(new FileInfo(tempFilePath)));
 		Assert.IsType<IOException>(exceptionWithNoRetries);
-		var ioException = exceptionWithNoRetries as IOException;
+		Assert.StartsWith("The process cannot access the file", exceptionWithNoRetries.Message);
+
+		forceOpsContext.maxAttempts = 5;
+		var exceptionWithDirectoryStrategy = Record.Exception(() => fileAndDirectoryDeleter.DeleteFile(new FileInfo(tempFilePath)));
+		Assert.True(null == exceptionWithDirectoryStrategy, testContext.fakeLoggerFactory.GetAllLogsString());
+
+		Assert.Matches($@"DeleteFile failed attempt 1/1 for \[.*\]. ForceOps process is not elevated. No attempts remain, so the exception will be thrown.
+DeleteFile failed attempt 1/5 for \[.*\]. ForceOps process is not elevated. Found 1 process to try to kill: \[\d+ \- powershell.exe\]", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
 
 	public ForceOpsMethodsTest()
 	{
 		tempFolderPath = GetTemporaryFileName();
 		disposables.Add(CreateTemporaryDirectory(tempFolderPath));
-		var testContext = TestUtil.CreateTestContext();
+		testContext = new TestContext();
 		forceOpsContext = testContext.forceOpsContext;
 		fileAndDirectoryDeleter = new FileAndDirectoryDeleter(forceOpsContext);
 	}

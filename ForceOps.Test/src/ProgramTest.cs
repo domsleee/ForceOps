@@ -11,11 +11,12 @@ public sealed class ProgramTest : IDisposable
 	[Fact]
 	public void ExceptionsBubble()
 	{
-		using var launchedProcess = LaunchCMDInDirectory(tempDirectoryPath);
-		var testContext = CreateTestContext();
+		using var launchedProcess = LaunchProcessInDirectory(tempDirectoryPath);
+		var testContext = new TestContext();
 		Program.forceOpsContext = testContext.forceOpsContext;
-		Program.forceOpsContext.maxRetries = 0;
+		Program.forceOpsContext.maxAttempts = 1;
 		var exceptionWithNoRetries = Record.Exception(() => Program.DeleteCommand(new[] { tempDirectoryPath }));
+
 		Assert.IsType<AggregateException>(exceptionWithNoRetries);
 		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(), Times.Once());
 	}

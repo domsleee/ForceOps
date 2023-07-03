@@ -1,13 +1,21 @@
 ﻿using System.Diagnostics;
 using System.Reactive.Disposables;
-using ForceOps.Lib;
-using Moq;
 
 namespace ForceOps.Test;
 
 public static class TestUtil
 {
-	public static IDisposable LaunchCMDInDirectory(string workingDirectory)
+	public static IDisposable LaunchProcessInDirectory(string workingDirectory)
+	{
+		return LaunchPowershellWithCommand(workingDirectory: workingDirectory);
+	}
+
+	public static IDisposable HoldLockOnFileUsingPowershell(string filePath)
+	{
+		return LaunchPowershellWithCommand(command: $"[System.IO.File]::Open('{filePath}', 'OpenOrCreate')");
+	}
+
+	public static IDisposable LaunchPowershellWithCommand(string command = "", string workingDirectory = "")
 	{
 		var process = new Process
 		{
@@ -15,29 +23,31 @@ public static class TestUtil
 			{
 				FileName = "powershell",
 				WorkingDirectory = workingDirectory,
-				Arguments = "-Command \"echo 'loaded'; sleep 10\"",
+				Arguments = $"-NoProfile -Command \"{command}; echo 'process has been loaded'; sleep 10\"",
 				RedirectStandardOutput = true,
 				RedirectStandardError = true,
 				CreateNoWindow = true
 			}
 		};
-		string output = "";
+
+		List<string> output = new();
+		List<string> error = new();
 		process.OutputDataReceived += (sender, e) =>
 		{
-			output += e.Data;
+			if (e.Data != null) output.Add(e.Data);
 		};
-		string error = "";
 		process.ErrorDataReceived += (sender, e) =>
 		{
-			error += e.Data;
+			if (e.Data != null) error.Add(e.Data);
 		};
+
 		process.Start();
 		process.BeginOutputReadLine();
 		process.BeginErrorReadLine();
 
 		var startTime = DateTime.Now;
 
-		while (!output.StartsWith("loaded") && !process.HasExited)
+		while (!(output.LastOrDefault() ?? "").EndsWith("process has been loaded") && !process.HasExited)
 		{
 			Thread.Sleep(50);
 			if (DateTime.Now.Subtract(startTime).TotalSeconds > 2)
@@ -48,7 +58,7 @@ public static class TestUtil
 
 		if (process.HasExited)
 		{
-			throw new Exception($"Process has exited unexpectedly.\nOutput: {output}\nError: {error}");
+			throw new Exception($"Process has exited unexpectedly.\nOutput: {string.Join("\n", output)}\nError: {string.Join("\n", error)}");
 		}
 
 		return Disposable.Create(() =>
@@ -74,30 +84,5 @@ public static class TestUtil
 			}
 			catch { }
 		});
-	}
-
-	public record TestContext
-	{
-		public required ForceOpsContext forceOpsContext;
-		public required Mock<IElevateUtils> elevateUtilsMock;
-		public required Mock<IRelaunchAsElevated> relaunchAsElevatedMock;
-	}
-
-	public static TestContext CreateTestContext()
-	{
-		var forceOpsContext = new ForceOpsContext();
-
-		var elevateUtilsMock = new Mock<IElevateUtils>();
-		elevateUtilsMock.Setup(t => t.IsProcessElevated()).Returns(false);
-		forceOpsContext.elevateUtils = elevateUtilsMock.Object;
-		var relaunchAsElevatedMock = new Mock<IRelaunchAsElevated>();
-		forceOpsContext.relaunchAsElevated = relaunchAsElevatedMock.Object;
-
-		return new TestContext
-		{
-			forceOpsContext = forceOpsContext,
-			elevateUtilsMock = elevateUtilsMock,
-			relaunchAsElevatedMock = relaunchAsElevatedMock
-		};
 	}
 }

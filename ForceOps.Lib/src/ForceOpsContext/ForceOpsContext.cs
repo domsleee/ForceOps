@@ -2,7 +2,7 @@
 
 public class ForceOpsContext
 {
-	public int maxRetries = 3;
+	public int maxAttempts = 5;
 	public IProcessKiller processKiller;
 	public IElevateUtils elevateUtils;
 	public IRelaunchAsElevated relaunchAsElevated;

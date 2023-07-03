@@ -2,5 +2,5 @@
 
 public interface IProcessKiller
 {
-	void KillProcesses(IEnumerable<LockCheck.ProcessInfo> processes);
+	void KillProcesses(IEnumerable<LockCheck.ProcessInfo?> processes);
 }
