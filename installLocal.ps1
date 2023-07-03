@@ -5,5 +5,5 @@ pwsh -NoProfile -Command {
     {
         dotnet tool uninstall -g ForceOps
     }
-    dotnet tool install -g ForceOps --prerelease --add-source "$(pwd)/nupkg"
+    dotnet tool install -g ForceOps --prerelease --add-source "$(pwd)/nupkg" --no-cache
 }

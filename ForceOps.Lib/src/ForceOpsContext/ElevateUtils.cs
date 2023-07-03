@@ -1,6 +1,6 @@
 using System.Security.Principal;
 
-namespace ForceOpsLib;
+namespace ForceOps.Lib;
 
 public class ElevateUtils : IElevateUtils
 {
@@ -10,9 +10,4 @@ public class ElevateUtils : IElevateUtils
 		var principal = new WindowsPrincipal(identity);
 		return principal.IsInRole(WindowsBuiltInRole.Administrator);
 	}
-}
-
-public interface IElevateUtils
-{
-	public bool IsProcessElevated();
 }

@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
 
-namespace ForceOps.src;
-internal class RelaunchAsElevated : IRelaunchAsElevated
+namespace ForceOps.Lib;
+
+public class RelaunchAsElevated : IRelaunchAsElevated
 {
 	int IRelaunchAsElevated.RelaunchAsElevated()
 	{
@@ -32,9 +33,4 @@ internal class RelaunchAsElevated : IRelaunchAsElevated
 
 		return process.ExitCode;
 	}
-}
-
-internal interface IRelaunchAsElevated
-{
-	int RelaunchAsElevated();
 }

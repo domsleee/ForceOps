@@ -1,0 +1,17 @@
+<Project>
+    <PropertyGroup>
+        <Description>By hook or by crook, perform operations on files and directories. If they are
+            in use by a process, kill the process.</Description>
+        <Version>1.0.0</Version>
+        <PackageProjectUrl>https://github.com/domsleee/forceops</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/domsleee/forceops</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Authors>Dom Slee</Authors>
+        <PackageTags>lock file directory force delete</PackageTags>
+        <PackageReleaseNotes>https://github.com/domsleee/forceops/blob/main/CHANGELOG.md</PackageReleaseNotes>
+
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <PackageOutputPath>./nupkg</PackageOutputPath>
+    </PropertyGroup>
+</Project>

@@ -1,16 +1,15 @@
-﻿using ForceOps.src;
-using Serilog;
-using System.CommandLine;
+﻿using System.CommandLine;
 using System.Runtime.Versioning;
+using ForceOps.Lib;
+using Serilog;
 
 namespace ForceOps;
 
 [SupportedOSPlatform("windows")]
 public class Program
 {
-	static ILogger logger = ForceOpsLoggerFactory.CreateLogger<Program>();
-	internal static IRelaunchAsElevated relaunchAsElevated = new RelaunchAsElevated();
-	internal static ForceOpsContext forceOpsContext = new ForceOpsContext();
+	internal static ForceOpsContext forceOpsContext = new();
+	static readonly ILogger logger = forceOpsContext.loggerFactory.CreateLogger<Program>();
 	internal static bool CanRelaunchAsElevated = true;
 
 	static int Main(string[] args)
@@ -35,7 +34,8 @@ public class Program
 	{
 		RunWithRelaunchAsElevated(() =>
 		{
-			var deleter = new FileAndFolderDeleter(forceOpsContext);
+			var deleter = new FileAndDirectoryDeleter(forceOpsContext);
+			filesOrDirectoriesToDelete = filesOrDirectoriesToDelete.Select(file => DirectoryUtils.CombineWithCWDAndGetAbsolutePath(file)).ToArray();
 			foreach (var file in filesOrDirectoriesToDelete)
 			{
 				deleter.DeleteFileOrDirectory(file);
@@ -52,12 +52,12 @@ public class Program
 		catch (Exception ex) when ((ex is IOException || ex is UnauthorizedAccessException) && !forceOpsContext.elevateUtils.IsProcessElevated())
 		{
 			logger.Information("Received IOException or UnauthorizedAccessException when trying to get process using file or directory. Retrying as elevated.");
-			var childProcessExitCode = relaunchAsElevated.RelaunchAsElevated();
+			var childProcessExitCode = forceOpsContext.relaunchAsElevated.RelaunchAsElevated();
 			var childResultMessage = childProcessExitCode == 0
 				? "Successfully deleted as admin"
 				: $"Failed with exit code {childProcessExitCode}";
 			logger.Information(childResultMessage);
-			throw new AggregateException($"Child process failed with {childProcessExitCode}. See inner exception for local exception.", ex);
+			throw new AggregateException($"Child process failed with {childProcessExitCode}. See inner exception for the previous exception.", ex);
 		}
 	}
 }

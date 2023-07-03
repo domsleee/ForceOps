@@ -1,24 +1,24 @@
-﻿using ForceOps.src;
-using Moq;
+﻿using Moq;
 using static ForceOps.Test.TestUtil;
 
 namespace ForceOps.Test;
-public class ProgramTest : IDisposable
+
+public sealed class ProgramTest : IDisposable
 {
-	List<IDisposable> disposables = new List<IDisposable>();
-	string tempDirectoryPath;
+	readonly List<IDisposable> disposables = new();
+	readonly string tempDirectoryPath;
 
 	[Fact]
 	public void ExceptionsBubble()
 	{
-		using var launchedProcess = LaunchCMDInDirectory(tempDirectoryPath);
-		var launchAsElevatedMock = new Mock<IRelaunchAsElevated>();
-		Program.relaunchAsElevated = launchAsElevatedMock.Object;
-		Program.forceOpsContext = SetupTestContext();
-		Program.forceOpsContext.maxRetries = 0;
+		using var launchedProcess = LaunchProcessInDirectory(tempDirectoryPath);
+		var testContext = new TestContext();
+		Program.forceOpsContext = testContext.forceOpsContext;
+		Program.forceOpsContext.maxAttempts = 1;
 		var exceptionWithNoRetries = Record.Exception(() => Program.DeleteCommand(new[] { tempDirectoryPath }));
+
 		Assert.IsType<AggregateException>(exceptionWithNoRetries);
-		launchAsElevatedMock.Verify(t => t.RelaunchAsElevated(), Times.Once());
+		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(), Times.Once());
 	}
 
 	public ProgramTest()
