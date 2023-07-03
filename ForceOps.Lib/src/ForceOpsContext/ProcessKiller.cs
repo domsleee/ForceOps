@@ -14,7 +14,8 @@ internal class ProcessKiller : IProcessKiller
 			try
 			{
 				runningProcesses.Add(Process.GetProcessById(process.ProcessId));
-			} catch (ArgumentException) { } // If the process is no longer running
+			}
+			catch (ArgumentException) { } // If the process is no longer running
 		}
 
 		foreach (var process in runningProcesses)

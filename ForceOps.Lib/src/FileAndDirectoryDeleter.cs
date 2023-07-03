@@ -68,7 +68,8 @@ public class FileAndDirectoryDeleter
 			: "ForceOps process is not elevated";
 		var messagePrefix = $"{actionName} failed attempt {attemptNumber}/{forceOpsContext.maxAttempts} for [{fileOrDirectoryPath}]. {processElevatedMessage}.";
 
-		if (attemptNumber == forceOpsContext.maxAttempts) {
+		if (attemptNumber == forceOpsContext.maxAttempts)
+		{
 			logger.Information($"{messagePrefix} No attempts remain, so the exception will be thrown.");
 			return true;
 		}
@@ -81,8 +82,10 @@ public class FileAndDirectoryDeleter
 		return false;
 	}
 
-	static string ProcessInfoToString(LockCheck.ProcessInfo? process) {
-		if (process == null) {
+	static string ProcessInfoToString(LockCheck.ProcessInfo? process)
+	{
+		if (process == null)
+		{
 			return "<null>";
 		}
 		return $"{process?.ProcessId} - {process?.ExecutableName}";
