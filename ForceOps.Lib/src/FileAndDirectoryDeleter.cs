@@ -108,6 +108,7 @@ public class FileAndDirectoryDeleter
 		{
 			try
 			{
+				directory.Attributes &= ~FileAttributes.ReadOnly;
 				directory.Delete();
 				break;
 			}

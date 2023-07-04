@@ -30,10 +30,49 @@ Could not delete directory .*. Beginning retry 1/5 in 500ms. ForceOps process is
 	}
 
 	[Fact]
+	public void DeletingReadonlyDirectoryOpenInPowershellWorkingDirectory()
+	{
+		using var launchedProcess = LaunchProcessInDirectory(tempFolderPath);
+		new DirectoryInfo(tempFolderPath).Attributes |= FileAttributes.ReadOnly;
+
+		forceOpsContext.maxRetries = 0;
+		var exceptionWithNoRetries = Record.Exception(() => fileAndDirectoryDeleter.DeleteDirectory(new DirectoryInfo(tempFolderPath)));
+		Assert.IsType<IOException>(exceptionWithNoRetries);
+		Assert.StartsWith("The process cannot access the file", exceptionWithNoRetries.Message);
+
+		forceOpsContext.maxRetries = 5;
+		var exceptionWithDirectoryStrategy = Record.Exception(() => fileAndDirectoryDeleter.DeleteDirectory(new DirectoryInfo(tempFolderPath)));
+		Assert.True(null == exceptionWithDirectoryStrategy, testContext.fakeLoggerFactory.GetAllLogsString());
+
+		Assert.Matches(@"Exceeded retry count of 0. Failed. ForceOps process is not elevated.
+Could not delete directory .*. Beginning retry 1/5 in 500ms. ForceOps process is not elevated. Found 1 process to try to kill: \[\d+ \- powershell.exe\]", testContext.fakeLoggerFactory.GetAllLogsString());
+	}
+
+	[Fact]
 	public void DeletingFileOpenByPowershell()
 	{
 		var tempFilePath = GetTemporaryFileName();
 		using var launchedProcess = HoldLockOnFileUsingPowershell(tempFilePath);
+
+		forceOpsContext.maxRetries = 0;
+		var exceptionWithNoRetries = Record.Exception(() => fileAndDirectoryDeleter.DeleteFile(new FileInfo(tempFilePath)));
+		Assert.IsType<IOException>(exceptionWithNoRetries);
+		Assert.StartsWith("The process cannot access the file", exceptionWithNoRetries.Message);
+
+		forceOpsContext.maxRetries = 5;
+		var exceptionWithDirectoryStrategy = Record.Exception(() => fileAndDirectoryDeleter.DeleteFile(new FileInfo(tempFilePath)));
+		Assert.True(null == exceptionWithDirectoryStrategy, testContext.fakeLoggerFactory.GetAllLogsString());
+
+		Assert.Matches($@"Exceeded retry count of 0. Failed. ForceOps process is not elevated.
+Could not delete file .*. Beginning retry 1/5 in 500ms. ForceOps process is not elevated. Found 1 process to try to kill: \[\d+ \- powershell.exe\]", testContext.fakeLoggerFactory.GetAllLogsString());
+	}
+
+	[Fact]
+	public void DeletingReadonlyFileOpenByPowershell()
+	{
+		var tempFilePath = GetTemporaryFileName();
+		using var launchedProcess = HoldLockOnFileUsingPowershell(tempFilePath);
+		new FileInfo(tempFilePath).IsReadOnly = true;
 
 		forceOpsContext.maxRetries = 0;
 		var exceptionWithNoRetries = Record.Exception(() => fileAndDirectoryDeleter.DeleteFile(new FileInfo(tempFilePath)));
