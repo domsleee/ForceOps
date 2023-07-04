@@ -55,7 +55,6 @@ public class Program
 			var childProcessExitCode = forceOpsContext.relaunchAsElevated.RelaunchAsElevated();
 			if (childProcessExitCode != 0)
 			{
-				logger.Information($"Failed with exit code {childProcessExitCode}");
 				throw new AggregateException($"Child process failed with {childProcessExitCode}. See inner exception for the previous exception.", ex);
 			}
 			else
