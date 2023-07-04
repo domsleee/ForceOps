@@ -83,8 +83,9 @@ public class FileAndDirectoryDeleter
 		var foundProcessesToKillMessage = $"Found {processes.Count} {processPlural} to try to kill: [{processLogString}]";
 
 		logger.Information($"Could not delete {fileOrDirectory} \"{fileOrDirectoryPath}\". {beginningRetryMessage}. {processElevatedMessage}. {foundProcessesToKillMessage}.");
-		forceOpsContext.processKiller.KillProcesses(processes);
 		Thread.Sleep(forceOpsContext.retryDelay);
+
+		forceOpsContext.processKiller.KillProcesses(processes);
 		return false;
 	}
 
