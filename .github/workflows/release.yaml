@@ -46,7 +46,7 @@ jobs:
       - name: Build Deps
         run: |
           cd subrepos/LockCheck;
-          dotnet pack -c release
+          dotnet build -c release
 
       - name: Pack
         run: dotnet pack -c release
