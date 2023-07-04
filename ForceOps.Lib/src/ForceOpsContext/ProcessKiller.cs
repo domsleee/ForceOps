@@ -8,9 +8,11 @@ internal class ProcessKiller : IProcessKiller
 	public void KillProcesses(IEnumerable<ProcessInfo?> processes)
 	{
 		var runningProcesses = new List<Process>();
+		var currentProcess = Process.GetCurrentProcess();
 		foreach (var process in processes)
 		{
 			if (process == null) continue;
+			if (currentProcess?.Id == process.ProcessId) continue;
 			try
 			{
 				runningProcesses.Add(Process.GetProcessById(process.ProcessId));
