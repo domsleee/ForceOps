@@ -38,7 +38,7 @@ jobs:
         with:
           dotnet-version: "7.0.x"
         env:
-          NUGET_AUTH_TOKEN: ${{secrets.NUGET_AUTH_TOKEN }}
+          NUGET_AUTH_TOKEN: ${{ secrets.NUGET_AUTH_TOKEN }}
 
       - name: Dotnet Installation Info
         run: dotnet --info
