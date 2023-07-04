@@ -42,7 +42,7 @@ public class FileAndDirectoryDeleter
 
 	internal void DeleteFile(FileInfo file)
 	{
-		for (var attempt = 1; attempt <= forceOpsContext.maxAttempts; attempt++)
+		for (var attempt = 1; attempt <= forceOpsContext.maxRetries + 1; attempt++)
 		{
 			try
 			{
@@ -54,31 +54,37 @@ public class FileAndDirectoryDeleter
 			catch (Exception ex) when (ex is IOException || ex is System.UnauthorizedAccessException)
 			{
 				var getProcessesLockingFileFunc = () => GetLockingProcessInfos(new[] { file.FullName });
-				var shouldThrow = KillProcessesAndLogInfo("DeleteFile", attempt, file.FullName, getProcessesLockingFileFunc);
+				var shouldThrow = KillProcessesAndLogInfo(false, attempt, file.FullName, getProcessesLockingFileFunc);
 				if (shouldThrow) throw;
 			}
 		}
 	}
 
-	bool KillProcessesAndLogInfo(string actionName, int attemptNumber, string fileOrDirectoryPath, Func<IEnumerable<LockCheck.ProcessInfo>> getProcessesLockingFileFunc)
+	bool KillProcessesAndLogInfo(bool isDirectory, int attemptNumber, string fileOrDirectoryPath, Func<IEnumerable<LockCheck.ProcessInfo>> getProcessesLockingFileFunc)
 	{
 		var isProcessElevated = forceOpsContext.elevateUtils.IsProcessElevated();
 		var processElevatedMessage = isProcessElevated
 			? "ForceOps process is elevated"
 			: "ForceOps process is not elevated";
-		var messagePrefix = $"{actionName} failed attempt {attemptNumber}/{forceOpsContext.maxAttempts} for [{fileOrDirectoryPath}]. {processElevatedMessage}.";
 
-		if (attemptNumber == forceOpsContext.maxAttempts)
+		if (attemptNumber > forceOpsContext.maxRetries)
 		{
-			logger.Information($"{messagePrefix} No attempts remain, so the exception will be thrown.");
+			logger.Information($"Exceeded retry count of {forceOpsContext.maxRetries}. Failed. {processElevatedMessage}.");
 			return true;
 		}
 
 		var processes = getProcessesLockingFileFunc().ToList();
+		var fileOrDirectory = isDirectory
+			? "directory"
+			: "file";
 		var processPlural = processes.Count == 1 ? "process" : "processes";
 		var processLogString = string.Join(", ", processes.Select(process => ProcessInfoToString(process)));
-		logger.Information($"{messagePrefix} Found {processes.Count} {processPlural} to try to kill: [{processLogString}]");
+		var beginningRetryMessage = $"Beginning retry {attemptNumber}/{forceOpsContext.maxRetries} in {forceOpsContext.retryDelay.TotalMilliseconds}ms";
+		var foundProcessesToKillMessage = $"Found {processes.Count} {processPlural} to try to kill: [{processLogString}]";
+
+		logger.Information($"Could not delete {fileOrDirectory} \"{fileOrDirectoryPath}\". {beginningRetryMessage}. {processElevatedMessage}. {foundProcessesToKillMessage}.");
 		forceOpsContext.processKiller.KillProcesses(processes);
+		Thread.Sleep(forceOpsContext.retryDelay);
 		return false;
 	}
 
@@ -98,7 +104,7 @@ public class FileAndDirectoryDeleter
 			DeleteFilesInFolder(directory);
 		}
 
-		for (var attempt = 1; attempt <= forceOpsContext.maxAttempts; attempt++)
+		for (var attempt = 1; attempt <= forceOpsContext.maxRetries + 1; attempt++)
 		{
 			try
 			{
@@ -109,7 +115,7 @@ public class FileAndDirectoryDeleter
 			catch (Exception ex) when (ex is IOException)
 			{
 				var getProcessesLockingFileFunc = () => GetLockingProcessInfos(new[] { directory.FullName }, LockCheck.LockManagerFeatures.UseLowLevelApi);
-				var shouldThrow = KillProcessesAndLogInfo("DeleteDirectory", attempt, directory.FullName, getProcessesLockingFileFunc);
+				var shouldThrow = KillProcessesAndLogInfo(true, attempt, directory.FullName, getProcessesLockingFileFunc);
 				if (shouldThrow) throw;
 			}
 		}

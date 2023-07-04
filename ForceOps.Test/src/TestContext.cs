@@ -16,6 +16,7 @@ public class TestContext
 		elevateUtilsMock = new Mock<IElevateUtils>();
 		elevateUtilsMock.Setup(t => t.IsProcessElevated()).Returns(false);
 		relaunchAsElevatedMock = new Mock<IRelaunchAsElevated>();
+		relaunchAsElevatedMock.Setup(t => t.RelaunchAsElevated()).Returns(1);
 		fakeLoggerFactory = new FakeLoggerFactory();
 
 		forceOpsContext = new ForceOpsContext(elevateUtils: elevateUtilsMock.Object, loggerFactory: fakeLoggerFactory, relaunchAsElevated: relaunchAsElevatedMock.Object);

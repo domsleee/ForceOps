@@ -51,13 +51,16 @@ public class Program
 		}
 		catch (Exception ex) when ((ex is IOException || ex is UnauthorizedAccessException) && !forceOpsContext.elevateUtils.IsProcessElevated())
 		{
-			logger.Information("Received IOException or UnauthorizedAccessException when trying to get process using file or directory. Retrying as elevated.");
+			logger.Information("Unable to perform operation as an unelevated process. Retrying as elevated.");
 			var childProcessExitCode = forceOpsContext.relaunchAsElevated.RelaunchAsElevated();
-			var childResultMessage = childProcessExitCode == 0
-				? "Successfully deleted as admin"
-				: $"Failed with exit code {childProcessExitCode}";
-			logger.Information(childResultMessage);
-			throw new AggregateException($"Child process failed with {childProcessExitCode}. See inner exception for the previous exception.", ex);
+			if (childProcessExitCode != 0)
+			{
+				logger.Information($"Failed with exit code {childProcessExitCode}");
+				throw new AggregateException($"Child process failed with {childProcessExitCode}. See inner exception for the previous exception.", ex);
+			} else
+			{
+				logger.Information("Successfully deleted as admin");
+			}
 		}
 	}
 }

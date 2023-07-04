@@ -9,16 +9,44 @@ public sealed class ProgramTest : IDisposable
 	readonly string tempDirectoryPath;
 
 	[Fact]
-	public void ExceptionsBubble()
+	public void ExceptionThrownIfChildFails()
 	{
 		using var launchedProcess = LaunchProcessInDirectory(tempDirectoryPath);
 		var testContext = new TestContext();
 		Program.forceOpsContext = testContext.forceOpsContext;
-		Program.forceOpsContext.maxAttempts = 1;
+		Program.forceOpsContext.maxRetries = 0;
 		var exceptionWithNoRetries = Record.Exception(() => Program.DeleteCommand(new[] { tempDirectoryPath }));
 
 		Assert.IsType<AggregateException>(exceptionWithNoRetries);
 		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(), Times.Once());
+	}
+
+	[Fact]
+	public void SuccessfulChildDoesntThrowException()
+	{
+		using var launchedProcess = LaunchProcessInDirectory(tempDirectoryPath);
+		var testContext = new TestContext();
+		testContext.relaunchAsElevatedMock.Setup(t => t.RelaunchAsElevated()).Returns(0);
+		Program.forceOpsContext = testContext.forceOpsContext;
+		Program.forceOpsContext.maxRetries = 0;
+		var exceptionWithNoRetries = Record.Exception(() => Program.DeleteCommand(new[] { tempDirectoryPath }));
+
+		Assert.Null(exceptionWithNoRetries);
+		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(), Times.Once());
+	}
+
+	[Fact]
+	public void ExceptionThrownIfAlreadyElevated()
+	{
+		using var launchedProcess = LaunchProcessInDirectory(tempDirectoryPath);
+		var testContext = new TestContext();
+		testContext.elevateUtilsMock.Setup(t => t.IsProcessElevated()).Returns(true);
+		Program.forceOpsContext = testContext.forceOpsContext;
+		Program.forceOpsContext.maxRetries = 0;
+		var exceptionWithNoRetries = Record.Exception(() => Program.DeleteCommand(new[] { tempDirectoryPath }));
+
+		Assert.IsType<IOException>(exceptionWithNoRetries);
+		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(), Times.Never());
 	}
 
 	public ProgramTest()
