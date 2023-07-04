@@ -46,7 +46,7 @@ jobs:
       - name: Build Deps
         run: |
           cd subrepos/LockCheck;
-          dotnet build -c release
+          dotnet pack -c release
 
       - name: Pack
         run: dotnet pack -c release
@@ -56,13 +56,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           draft: true
-          files: |
-            *.deb
-            *.tar.gz
-            *.zip
           name: "${{ steps.get_version.outputs.version }}"
           tag_name: "${{ steps.get_version.outputs.version }}"
 
       - name: Publish NuGet
         # if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
-        run: dotnet nuget push ./ForceOps/nupkg/*.nupkg ./ForceOps.Lib/nupkg/*.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json ./ForceOps/nupkg/*.nupkg ./ForceOps.Lib/nupkg/*.nupkg
