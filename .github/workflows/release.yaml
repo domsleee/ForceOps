@@ -23,13 +23,13 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      - name: 🔎 Get version
+      - name: Get version
         id: get_version
         uses: KageKirin/get-csproj-version@v1.0.0
         with:
           file: Directory.Build.props
 
-      - name: 🖨 Print Current Version
+      - name: Print Current Version
         run: |
           echo "Current Version: ${{ steps.get_version.outputs.version }}"
 
@@ -60,8 +60,8 @@ jobs:
             *.deb
             *.tar.gz
             *.zip
-          name: ${{ steps.get_version.outputs.version }}
-          tag_name: ""
+          name: "${{ steps.get_version.outputs.version }}"
+          tag_name: "${{ steps.get_version.outputs.version }}"
 
       - name: Publish NuGet
         # if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
