@@ -57,7 +57,8 @@ public class Program
 			{
 				logger.Information($"Failed with exit code {childProcessExitCode}");
 				throw new AggregateException($"Child process failed with {childProcessExitCode}. See inner exception for the previous exception.", ex);
-			} else
+			}
+			else
 			{
 				logger.Information("Successfully deleted as admin");
 			}
