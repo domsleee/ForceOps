@@ -15,13 +15,13 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
-      - uses: actions/checkout@230611dbd0eb52da1e1f4f7bc8bb0c3a339fc8b7
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
           fetch-depth: 0 # Required by LockCheck CI
 
       - name: Install Dotnet
-        uses: actions/setup-dotnet@607fce577a46308457984d59e4954e075820f10a
+        uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "7.0.x"
 
