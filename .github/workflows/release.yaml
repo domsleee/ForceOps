@@ -56,7 +56,7 @@ jobs:
             *.deb
             *.tar.gz
             *.zip
-          name: ${{ steps.get_version.outputs.value }}
+          name: ${{ steps.get_version.version  }}
           tag_name: ""
 
       - name: Publish NuGet
