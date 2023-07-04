@@ -64,7 +64,5 @@ jobs:
       - name: Publish NuGet
         # if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
         run: |
-          dotnet nuget push -k ${{ secrets.NUGET_AUTH_TOKEN }} -s https://api.nuget.org/v3/index.json \
-            ForceOps/nupkg/ForceOps.${{ steps.get_version.outputs.version }}.nupkg \
-            ForceOps.Lib/nupkg/ForceOps.Lib.${{ steps.get_version.outputs.version }}.nupkg
+          dotnet nuget push -k ${{ secrets.NUGET_AUTH_TOKEN }} -s https://api.nuget.org/v3/index.json ForceOps/nupkg/ForceOps.${{ steps.get_version.outputs.version }}.nupkg ForceOps.Lib/nupkg/ForceOps.Lib.${{ steps.get_version.outputs.version }}.nupkg
 
