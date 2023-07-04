@@ -45,7 +45,7 @@ jobs:
           dotnet build -c release
 
       - name: Pack
-        run: dotnet pack
+        run: dotnet pack -c release
 
       - name: Create release
         # if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
@@ -56,10 +56,10 @@ jobs:
             *.deb
             *.tar.gz
             *.zip
-          name: ${{ steps.get_version.version  }}
+          name: ${{ steps.get_version.outputs.version  }}
           tag_name: ""
 
       - name: Publish NuGet
         # if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
         if: false
-        run: dotnet nuget push */bin/Release/*.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push ./ForceOps/nupkg/*.nupkg ./ForceOps.Lib/nupkg/*.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
