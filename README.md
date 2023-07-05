@@ -7,7 +7,7 @@ Forcefully perform file operations by terminating processes that are using the f
 
 Currently only supports windows.
 
-Uses [FileCheck](https://github.com/cklutz/LockCheck) to find processes locking files, and will elevate itself if it the process is owned by another user.
+Uses [LockCheck](https://github.com/cklutz/LockCheck) to find processes locking files, and will elevate itself if it the process is owned by another user.
 
 ## Supported operations
 
