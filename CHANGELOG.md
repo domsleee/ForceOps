@@ -1,3 +1,7 @@
+## Release 1.0.2
+
+* Update LockCheck dep.
+
 ## Release 1.0.1
 
 * Update log messages to closer match MSBuild
