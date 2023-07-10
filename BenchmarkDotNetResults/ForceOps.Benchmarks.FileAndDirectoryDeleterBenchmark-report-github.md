@@ -11,7 +11,7 @@ UnrollFactor=1
 
 ```
 
-|                               Method | NUM_FILES | FILE_SIZE | IsInsideDirectory |     Mean |   Error |   StdDev |
+|                               Method | NUM_FILES | FILE_SIZE | IsInsideDirectory(hmm) |     Mean |   Error |   StdDev |
 |------------------------------------- |---------- |---------- |------------------ |---------:|--------:|---------:|
 | **ForceOps.Lib.FileAndDirectoryDeleter** |      **1000** |        **10** |             **False** | **150.8 ms** | **3.00 ms** |  **6.89 ms** |
 |           System.IO.Directory.Delete |      1000 |        10 |             False | 126.2 ms | 2.52 ms |  6.94 ms |
