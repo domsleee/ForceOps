@@ -24,13 +24,13 @@ For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us
 <script>
     const iframe = document.getElementById("myiframe");
     iframe.onload = () => {
-        iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 25 + "px";
         const otherhead = iframe.contentDocument.getElementsByTagName("head")[0];
         const link = document.createElement("link");
         link.setAttribute("rel", "stylesheet");
         link.setAttribute("type", "text/css");
         link.setAttribute("href", "../../iframe.css");
         otherhead.appendChild(link);
+        iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 25 + "px";
     }
 
 </script>
