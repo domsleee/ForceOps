@@ -2,12 +2,14 @@
 layout: default
 ---
 
-# ForceOps
+# ForceOps Benchmarks
 
-Benchmarks.
+The goal is to be competitive with the existing C# implementations.
+
+For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us/dotnet/api/system.io.directory.delete?view=net-7.0).
 
 {% include_relative BenchmarkDotNetResults/ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-report-github.md %}
 
 ## Historical data
 
-{% include_relative dev/bench/index.html %}
+<iframe src="dev/bench/index.html" width="100%" frameBorder="0"></iframe>
