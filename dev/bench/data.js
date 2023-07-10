@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688993022228,
+  "lastUpdate": 1688994310871,
   "repoUrl": "https://github.com/domsleee/ForceOps",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -90,6 +90,50 @@ window.BENCHMARK_DATA = {
             "value": 216989072.2222222,
             "unit": "ns",
             "range": "± 3997921.4515068075"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "domsleee",
+            "username": "domsleee"
+          },
+          "committer": {
+            "name": "domsleee",
+            "username": "domsleee"
+          },
+          "id": "65f1e84a8ef26dd31a1756fcc1ce49bc038f5a9f",
+          "message": "Add benchmark",
+          "timestamp": "2023-07-04T14:19:23Z",
+          "url": "https://github.com/domsleee/ForceOps/pull/14/commits/65f1e84a8ef26dd31a1756fcc1ce49bc038f5a9f"
+        },
+        "date": 1688994302077,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NUM_FILES: 1000, FILE_SIZE: 10, IsInsideDirectory: False)",
+            "value": 150836546.82539684,
+            "unit": "ns",
+            "range": "± 6886156.468900724"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NUM_FILES: 1000, FILE_SIZE: 10, IsInsideDirectory: False)",
+            "value": 126216914.77272727,
+            "unit": "ns",
+            "range": "± 6939423.7054860685"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NUM_FILES: 1000, FILE_SIZE: 10, IsInsideDirectory: True)",
+            "value": 329459360.25641024,
+            "unit": "ns",
+            "range": "± 11454687.813977363"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NUM_FILES: 1000, FILE_SIZE: 10, IsInsideDirectory: True)",
+            "value": 234753066.15384614,
+            "unit": "ns",
+            "range": "± 10924002.015405644"
           }
         ]
       }
