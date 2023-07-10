@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688989989500,
+  "lastUpdate": 1688990512911,
   "repoUrl": "https://github.com/domsleee/ForceOps",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -132,6 +132,50 @@ window.BENCHMARK_DATA = {
             "value": 507092315.1515151,
             "unit": "ns",
             "range": "± 30579260.73954728"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "domsleee",
+            "username": "domsleee"
+          },
+          "committer": {
+            "name": "domsleee",
+            "username": "domsleee"
+          },
+          "id": "a0778d615bd53646d7b0a5aaca2d603306e75941",
+          "message": "Add benchmark",
+          "timestamp": "2023-07-04T14:19:23Z",
+          "url": "https://github.com/domsleee/ForceOps/pull/14/commits/a0778d615bd53646d7b0a5aaca2d603306e75941"
+        },
+        "date": 1688990504863,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeletionBenchmark.Deleter(NUM_FILES: 1000, FILE_SIZE: 10, IsInsideDirectory: False)",
+            "value": 226478570.83333334,
+            "unit": "ns",
+            "range": "± 11171238.799141623"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeletionBenchmark.BuiltIn(NUM_FILES: 1000, FILE_SIZE: 10, IsInsideDirectory: False)",
+            "value": 178933625,
+            "unit": "ns",
+            "range": "± 6708820.486602209"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeletionBenchmark.Deleter(NUM_FILES: 1000, FILE_SIZE: 10, IsInsideDirectory: True)",
+            "value": 506897594.4444444,
+            "unit": "ns",
+            "range": "± 9811813.63324318"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeletionBenchmark.BuiltIn(NUM_FILES: 1000, FILE_SIZE: 10, IsInsideDirectory: True)",
+            "value": 349789818.75,
+            "unit": "ns",
+            "range": "± 6696243.795663233"
           }
         ]
       }
