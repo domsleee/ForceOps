@@ -26,7 +26,7 @@ For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us
     iframe.onload = () => {
         iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 25 + "px";
         const otherhead = iframe.getElementsByTagName("head")[0];
-        const link = iframe.createElement("link");
+        const link = document.createElement("link");
         link.setAttribute("rel", "stylesheet");
         link.setAttribute("type", "text/css");
         link.setAttribute("href", "../../iframe.css");
