@@ -18,5 +18,11 @@ For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us
 ## Historical benchmarks
 
 <div class="iframe-container">
-<iframe src="dev/bench/index.html" onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+25+"px";}(this));' style="height:400px;width:100%;border:none;overflow:hidden;"></iframe>
+<iframe src="dev/bench/index.html" id="myiframe" onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+25+"px";}(this));' style="height:400px;width:100%;border:none;overflow:hidden;"></iframe>
 </div>
+
+<script>
+    const iframe = document.getElementById("myiframe");
+    let doc = iframe.contentDocument;
+    doc.body.innerHTML = doc.body.innerHTML + `<link rel="stylesheet" href="../../iframe.css">`;
+</script>
