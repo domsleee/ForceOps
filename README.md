@@ -12,4 +12,6 @@ For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us
 
 ## Historical data
 
-<iframe src="dev/bench/index.html" width="100%" frameBorder="0"></iframe>
+<div class="iframe-container">
+<iframe src="dev/bench/index.html" onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));' style="height:400px;width:100%;border:none;overflow:hidden;"></iframe>
+</div>
