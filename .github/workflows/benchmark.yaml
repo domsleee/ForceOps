@@ -38,4 +38,10 @@ jobs:
           alert-threshold: '200%'
           comment-on-alert: true
           fail-on-alert: true
-          alert-comment-cc-users: '@domsleee'
+          alert-comment-cc-users: '@domsleee'''
+      - name: Deploy Markdown Result
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ForceOps.Benchmarks/BenchmarkDotNet.Artifacts/results
+          destination_dir: BenchmarkDotNetResults
