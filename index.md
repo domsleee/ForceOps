@@ -23,6 +23,9 @@ For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us
 
 <script>
     const iframe = document.getElementById("myiframe");
-    let doc = iframe.contentDocument;
-    doc.body.innerHTML = doc.body.innerHTML + `<link rel="stylesheet" href="../../iframe.css">`;
+    iframe.onload = () => {
+        let doc = iframe.contentDocument;
+        doc.body.innerHTML = doc.body.innerHTML + `<link rel="stylesheet" href="../../iframe.css">`;
+    }
+
 </script>
