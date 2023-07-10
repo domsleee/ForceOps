@@ -13,6 +13,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\ForceOps.Lib\ForceOps.Lib.csproj" />
+		<ProjectReference Include="..\ForceOps.Lib\ForceOps.Lib.csproj" />
 	</ItemGroup>
 </Project>
