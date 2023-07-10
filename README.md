@@ -1,8 +1,7 @@
 ---
 layout: default
+title: ForceOps Benchmarks
 ---
-
-# ForceOps Benchmarks
 
 The goal is to be competitive with the existing C# implementations.
 
