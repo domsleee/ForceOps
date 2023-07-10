@@ -12,7 +12,7 @@ public class FileAndDirectoryDeletionBenchmark
 	readonly string tempDirectory = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
 	readonly FileAndDirectoryDeleter fileAndDirectoryDeleter = new FileAndDirectoryDeleter(new ForceOpsContext());
 
-	[Params(/*100, */2000)]
+	[Params(/*100, */2)]
 	public int NUM_FILES { get; set; }
 
 	[Params(10/*, 5_000*/)]
