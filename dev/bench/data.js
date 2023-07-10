@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688989806582,
+  "lastUpdate": 1688989989500,
   "repoUrl": "https://github.com/domsleee/ForceOps",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -88,6 +88,50 @@ window.BENCHMARK_DATA = {
             "value": 460573520.5882353,
             "unit": "ns",
             "range": "± 22042763.59786835"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "domsleee",
+            "username": "domsleee"
+          },
+          "committer": {
+            "name": "domsleee",
+            "username": "domsleee"
+          },
+          "id": "047513318a3eda362894b328abce20954409c697",
+          "message": "Add benchmark",
+          "timestamp": "2023-07-04T14:19:23Z",
+          "url": "https://github.com/domsleee/ForceOps/pull/14/commits/047513318a3eda362894b328abce20954409c697"
+        },
+        "date": 1688989982236,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeletionBenchmark.Deleter(NUM_FILES: 2000, FILE_SIZE: 10, IsInsideDirectory: False)",
+            "value": 300878573.4375,
+            "unit": "ns",
+            "range": "± 13915480.333150532"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeletionBenchmark.BuiltIn(NUM_FILES: 2000, FILE_SIZE: 10, IsInsideDirectory: False)",
+            "value": 253749964.11764705,
+            "unit": "ns",
+            "range": "± 15737095.696959924"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeletionBenchmark.Deleter(NUM_FILES: 2000, FILE_SIZE: 10, IsInsideDirectory: True)",
+            "value": 702515206.5934066,
+            "unit": "ns",
+            "range": "± 49599902.20678711"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeletionBenchmark.BuiltIn(NUM_FILES: 2000, FILE_SIZE: 10, IsInsideDirectory: True)",
+            "value": 507092315.1515151,
+            "unit": "ns",
+            "range": "± 30579260.73954728"
           }
         ]
       }
