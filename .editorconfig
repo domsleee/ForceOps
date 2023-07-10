@@ -1,0 +1,12 @@
+
+[*.cs]
+csharp_style_namespace_declarations = file_scoped:warning
+indent_style = tab
+indent_size = tab
+tab_size = 4
+csharp_hide_private_members = true:suggestion
+dotnet_diagnostic.CS0127.severity = none
+dotnet_diagnostic.CA1416.severity = none
+dotnet_diagnostic.IDE0005.severity = error
+dotnet_diagnostic.IDE0044.severity = error
+dotnet_sort_system_directives_first = true

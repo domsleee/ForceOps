@@ -1,0 +1,3 @@
+[submodule "subrepos/LockCheck"]
+	path = subrepos/LockCheck
+	url = https://github.com/domsleee/LockCheck.git
