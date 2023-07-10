@@ -18,15 +18,15 @@ For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us
 ## Historical benchmarks
 
 <div class="iframe-container">
-<iframe src="dev/bench/index.html" id="myiframe" onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+25+"px";}(this));' style="height:400px;width:100%;border:none;overflow:hidden;"></iframe>
+<iframe src="dev/bench/index.html" id="myiframe" style="height:400px;width:100%;border:none;overflow:hidden;"></iframe>
 </div>
 
 <script>
     const iframe = document.getElementById("myiframe");
     iframe.onload = () => {
-        const frm = iframe.document;
-        const otherhead = frm.getElementsByTagName("head")[0];
-        const link = frm.createElement("link");
+        iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 25 + "px";
+        const otherhead = iframe.getElementsByTagName("head")[0];
+        const link = iframe.createElement("link");
         link.setAttribute("rel", "stylesheet");
         link.setAttribute("type", "text/css");
         link.setAttribute("href", "../../iframe.css");
