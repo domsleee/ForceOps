@@ -6,11 +6,11 @@ namespace ForceOps.Benchmarks;
 
 // [SimpleJob(RuntimeMoniker.NativeAot70)]
 [SimpleJob(RuntimeMoniker.Net70)]
-public class FileAndDirectoryDeletionBenchmark
+public class FileAndDirectoryDeleterBenchmark
 {
 	readonly List<byte[]> fileDatas = new();
 	readonly string tempDirectory = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
-	readonly FileAndDirectoryDeleter fileAndDirectoryDeleter = new FileAndDirectoryDeleter(new ForceOpsContext());
+	readonly FileAndDirectoryDeleter fileAndDirectoryDeleter = new(new ForceOpsContext());
 
 	[Params(/*100, */1000)]
 	public int NUM_FILES { get; set; }
@@ -34,14 +34,14 @@ public class FileAndDirectoryDeletionBenchmark
 		Console.WriteLine(tempDirectory);
 	}
 
-	[Benchmark]
+	[Benchmark(Description="ForceOps.Lib.FileAndDirectoryDeleter")]
 	public void Deleter()
 	{
 		fileAndDirectoryDeleter.DeleteFileOrDirectory(tempDirectory);
 	}
 
-	[Benchmark]
-	public void BuiltIn()
+	[Benchmark(Description = "System.IO.Directory.Delete")]
+	public void DirectoryDelete()
 	{
 		Directory.Delete(tempDirectory, true);
 	}
