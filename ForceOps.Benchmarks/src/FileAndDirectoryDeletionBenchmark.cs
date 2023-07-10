@@ -58,7 +58,8 @@ public class FileAndDirectoryDeletionBenchmark
 				Directory.CreateDirectory(dirName);
 				var fileName = Path.Combine(dirName, "a.txt");
 				File.WriteAllBytes(fileName, fileDatas[fileNumber]);
-			} else
+			}
+			else
 			{
 				var fileName = Path.Combine(tempDirectory, fileNumber.ToString().PadLeft(8, '0'));
 				File.WriteAllBytes(fileName, fileDatas[fileNumber]);
