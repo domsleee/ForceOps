@@ -38,7 +38,14 @@ jobs:
           alert-threshold: '200%'
           comment-on-alert: true
           fail-on-alert: true
-          alert-comment-cc-users: '@domsleee'''
+          alert-comment-cc-users: '@domsleee'
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          find: \`\`\`[\w\W].*\`\`\`
+          replace: ""
+          include: "ForceOps.Benchmarks/BenchmarkDotNet.Artifacts/results/**"
+          regex: true
       - name: Deploy Markdown Result
         uses: peaceiris/actions-gh-pages@v3
         with:
