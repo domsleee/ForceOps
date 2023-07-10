@@ -1,4 +1,4 @@
-name: Benchmark.Net Example
+name: Run Benchmarks
 on:
   push:
     branches:
@@ -11,7 +11,6 @@ permissions:
 
 jobs:
   benchmark:
-    name: Run Benchmark.Net benchmark example
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -32,7 +31,7 @@ jobs:
         with:
           name: Benchmark.Net Benchmark
           tool: 'benchmarkdotnet'
-          output-file-path: ForceOps.Benchmarks/BenchmarkDotNet.Artifacts/results/Sample.Benchmarks-report-full-compressed.json
+          output-file-path: ForceOps.Benchmarks/BenchmarkDotNet.Artifacts/results/ForceOps.Benchmarks.FileAndDirectoryDeletionBenchmark-report-full-compressed.json
           github-token: ${{ secrets.GITHUB_TOKEN }}
           auto-push: true
           # Show alert with commit comment on detecting possible performance regression
