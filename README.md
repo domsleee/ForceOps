@@ -9,6 +9,8 @@ Currently only supports windows.
 
 Uses [LockCheck](https://github.com/cklutz/LockCheck) to find processes locking files, and will elevate itself if it the process is owned by another user.
 
+See [Benchmarks](https://domsleee.github.io/ForceOps/) on github pages.
+
 ## Supported operations
 
 Currently, only `delete` is supported.
