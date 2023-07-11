@@ -13,7 +13,7 @@ For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us
 {% endcapture %}
 
 {% assign modifiedContent = markdownContent | replace: '```\n', '```abcd\n\n' %}
-{% assign modifiedContent = markdownContent | replace: 'M', 'A' %}
+{% assign modifiedContent = modifiedContent | replace: 'M', 'A' %}
 
 {{ modifiedContent }}
 <!-- 
