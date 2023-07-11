@@ -1,3 +1,10 @@
+## Release 1.0.4
+* Improve performance by ~30% by reducing calls to win32 api
+* Add benchmarks (BenchmarkDotNet)
+
+## Release 1.0.3
+* Update LockCheck dep.
+
 ## Release 1.0.2
 
 * Update LockCheck dep.
