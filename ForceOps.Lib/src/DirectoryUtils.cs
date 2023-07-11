@@ -12,6 +12,6 @@ public static class DirectoryUtils
 
 	public static bool IsSymLink(DirectoryInfo folder)
 	{
-		return (folder.Attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint;
+		return (folder.Attributes & FileAttributes.ReparsePoint) != 0;
 	}
 }
