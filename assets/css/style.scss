@@ -4,10 +4,14 @@
 @import "{{ site.theme }}";
 
 .inner {
-  max-width: 1200px !important;
+  max-width: 1000px !important;
 }
 
 td,
 tr {
   padding: 2px 10px!important;
+}
+
+table {
+  margin-top: 20px;
 }
