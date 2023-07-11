@@ -10,6 +10,7 @@ Job=.NET 7.0  Runtime=.NET 7.0  InvocationCount=1
 UnrollFactor=1  
 
 ```
+
 |                               Method | NUM_FILES | FILE_SIZE | IsInsideDirectory |     Mean |   Error |  StdDev |   Median |
 |------------------------------------- |---------- |---------- |------------------ |---------:|--------:|--------:|---------:|
 | **ForceOps.Lib.FileAndDirectoryDeleter** |      **1000** |        **10** |             **False** | **137.6 ms** | **3.12 ms** | **9.01 ms** | **135.1 ms** |
