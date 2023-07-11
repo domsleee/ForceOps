@@ -10,6 +10,8 @@ For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us
 
 {% include_relative BenchmarkDotNetResults/ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-report-github.md %}
 
+{% include_relative BenchmarkDotNetResults/ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-report.html %}
+
 ## Historical benchmarks
 
 {% include_relative assets/html/benchmarks.html %}
