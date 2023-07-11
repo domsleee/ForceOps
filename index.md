@@ -8,9 +8,15 @@ For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us
 
 ## Latest benchmark (from [Benchmark Github Action](https://github.com/domsleee/ForceOps/actions/workflows/benchmark.yaml))
 
+{% capture markdownContent %}
 {% include_relative BenchmarkDotNetResults/ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-report-github.md %}
+{% endcapture %}
 
-{% include_relative BenchmarkDotNetResults/ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-report.html %}
+{% assign modifiedContent = markdownContent | replace: '```$, ```\n' %}
+
+{{ modifiedContent }}
+<!-- 
+{% include_relative BenchmarkDotNetResults/ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-report.html %} -->
 
 ## Historical benchmarks
 
