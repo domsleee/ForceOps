@@ -3,10 +3,6 @@ layout: default
 title: ForceOps Benchmarks
 ---
 
-<style>
-    div.container-lg { max-width: 1250px!important; }
-</style>
-
 The goal is to be competitive with the existing C# implementations.
 
 For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us/dotnet/api/system.io.directory.delete?view=net-7.0).
