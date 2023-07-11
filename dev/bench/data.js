@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1689082904940,
+  "lastUpdate": 1689084009793,
   "repoUrl": "https://github.com/domsleee/ForceOps",
   "entries": {
     "Benchmark.Net Benchmark": [
@@ -398,6 +398,50 @@ window.BENCHMARK_DATA = {
             "value": 383272.7272727273,
             "unit": "ns",
             "range": "± 9401.364228166534"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "domsleee",
+            "username": "domsleee"
+          },
+          "committer": {
+            "name": "domsleee",
+            "username": "domsleee"
+          },
+          "id": "59d22477c18cb0589cc051ff159da281341850e8",
+          "message": "Add benchmark",
+          "timestamp": "2023-07-04T14:19:23Z",
+          "url": "https://github.com/domsleee/ForceOps/pull/14/commits/59d22477c18cb0589cc051ff159da281341850e8"
+        },
+        "date": 1689083996098,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1, FileSize: 10, IsInsideDirectory: False)",
+            "value": 302359.649122807,
+            "unit": "ns",
+            "range": "± 12955.981239361485"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1, FileSize: 10, IsInsideDirectory: False)",
+            "value": 215326.66666666666,
+            "unit": "ns",
+            "range": "± 5967.378754143421"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1, FileSize: 10, IsInsideDirectory: True)",
+            "value": 410953.7037037037,
+            "unit": "ns",
+            "range": "± 11205.887239835534"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1, FileSize: 10, IsInsideDirectory: True)",
+            "value": 284769.23076923075,
+            "unit": "ns",
+            "range": "± 4006.9490919702266"
           }
         ]
       }
