@@ -4,7 +4,7 @@
 @import "{{ site.theme }}";
 
 .inner {
-  max-width: 1000px !important;
+  max-width: 1100px !important;
 }
 
 td,
@@ -76,6 +76,6 @@ table {
     width: 100%;
   }
   .benchmark-chart {
-    max-width: 580px;
+    max-width: 540px;
   }
 }
