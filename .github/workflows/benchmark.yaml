@@ -45,3 +45,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ForceOps.Benchmarks/BenchmarkDotNet.Artifacts/results
           destination_dir: BenchmarkDotNetResults
+          enable_jekyll: true
