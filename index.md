@@ -18,5 +18,3 @@ For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us
 ## Historical benchmarks
 
 See [Historical Benchmarks](./dev/bench/index.html).
-
-</script>
