@@ -12,10 +12,9 @@ For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us
 
 ## Historical benchmarks
 
-See [Historical Benchmarks](./dev/bench/index.html).
-
 {% include_relative assets/html/benchmarks.html %}
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.9.2/dist/Chart.min.js"></script>
 <script type="text/javascript" src="./dev/bench/data.js"></script>
 <script type="text/javascript" id="main-script" src="./assets/js/mainScript.js"></script>
 
+See also: [Historical Benchmarks](./dev/bench/index.html).
