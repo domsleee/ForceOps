@@ -12,7 +12,8 @@ For example, with [System.IO.Directory.Delete](https://learn.microsoft.com/en-us
 {% include_relative BenchmarkDotNetResults/ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-report-github.md %}
 {% endcapture %}
 
-{% assign modifiedContent = markdownContent | replace: '```$, ```\n' %}
+{% assign modifiedContent = markdownContent | replace: '```$', '```abcd\n\n' %}
+{% assign modifiedContent = markdownContent | replace: 'M', 'A' %}
 
 {{ modifiedContent }}
 <!-- 
