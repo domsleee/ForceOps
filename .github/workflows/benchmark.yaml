@@ -41,7 +41,7 @@ jobs:
           alert-comment-cc-users: '@domsleee'
       - name: Find and replace on markdown report
         run: |
-          $fileName = ForceOps.Benchmarks/BenchmarkDotNet.Artifacts/results/ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-report-github.md
+          $fileName = "ForceOps.Benchmarks/BenchmarkDotNet.Artifacts/results/ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-report-github.md"
           $fileContent = Get-Content $fileName -Raw
           $modifiedContent = $fileContent -replace "```$", "```\n"
           $modifiedContent | Set-Content $fileName
