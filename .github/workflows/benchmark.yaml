@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-  pull_request: # for testing
+  # pull_request: # for testing
 
 permissions:
   contents: write
