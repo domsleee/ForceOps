@@ -13,10 +13,10 @@ public class FileAndDirectoryDeleterBenchmark
 	readonly FileAndDirectoryDeleter fileAndDirectoryDeleter = new(new ForceOpsContext());
 
 	[Params(/*100, */1000)]
-	public int NUM_FILES { get; set; }
+	public int NumFiles { get; set; }
 
 	[Params(10/*, 5_000*/)]
-	public int FILE_SIZE { get; set; }
+	public int FileSize { get; set; }
 
 	[Params(false, true)]
 	public bool IsInsideDirectory { get; set; }
@@ -25,9 +25,9 @@ public class FileAndDirectoryDeleterBenchmark
 	public void GlobalSetup()
 	{
 		var rand = new Random(42);
-		for (var fileNumber = 0; fileNumber < NUM_FILES; fileNumber++)
+		for (var fileNumber = 0; fileNumber < NumFiles; fileNumber++)
 		{
-			var entry = new byte[FILE_SIZE];
+			var entry = new byte[FileSize];
 			rand.NextBytes(entry);
 			fileDatas.Add(entry);
 		}
@@ -50,7 +50,7 @@ public class FileAndDirectoryDeleterBenchmark
 	public void IterationSetup()
 	{
 		Directory.CreateDirectory(tempDirectory);
-		for (var fileNumber = 0; fileNumber < NUM_FILES; fileNumber++)
+		for (var fileNumber = 0; fileNumber < NumFiles; fileNumber++)
 		{
 			if (IsInsideDirectory)
 			{
