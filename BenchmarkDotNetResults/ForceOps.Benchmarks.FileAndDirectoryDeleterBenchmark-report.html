@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-20230711-103812</title>
+<title>ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-20230711-104509</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -24,12 +24,12 @@ UnrollFactor=1
 </code></pre>
 
 <table>
-<thead><tr><th>                        Method</th><th>NumFiles</th><th>FileSize</th><th>IsInsideDirectory</th><th>Mean</th><th>Error</th><th>StdDev</th>
+<thead><tr><th>                        Method</th><th>NumFiles</th><th>FileSize</th><th>IsInsideDirectory</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Median</th>
 </tr>
-</thead><tbody><tr><td>ForceOps.Lib.FileAndDirectoryDeleter</td><td>1000</td><td>10</td><td>False</td><td>130.3 ms</td><td>2.59 ms</td><td>3.72 ms</td>
-</tr><tr><td>System.IO.Directory.Delete</td><td>1000</td><td>10</td><td>False</td><td>109.8 ms</td><td>1.61 ms</td><td>1.85 ms</td>
-</tr><tr><td>ForceOps.Lib.FileAndDirectoryDeleter</td><td>1000</td><td>10</td><td>True</td><td>283.3 ms</td><td>3.48 ms</td><td>3.08 ms</td>
-</tr><tr><td>System.IO.Directory.Delete</td><td>1000</td><td>10</td><td>True</td><td>204.8 ms</td><td>3.91 ms</td><td>3.26 ms</td>
+</thead><tbody><tr><td>ForceOps.Lib.FileAndDirectoryDeleter</td><td>1000</td><td>10</td><td>False</td><td>192.8 ms</td><td>33.52 ms</td><td>93.45 ms</td><td>142.1 ms</td>
+</tr><tr><td>System.IO.Directory.Delete</td><td>1000</td><td>10</td><td>False</td><td>132.0 ms</td><td>11.89 ms</td><td>34.50 ms</td><td>116.5 ms</td>
+</tr><tr><td>ForceOps.Lib.FileAndDirectoryDeleter</td><td>1000</td><td>10</td><td>True</td><td>282.9 ms</td><td>3.63 ms</td><td>3.03 ms</td><td>283.5 ms</td>
+</tr><tr><td>System.IO.Directory.Delete</td><td>1000</td><td>10</td><td>True</td><td>202.7 ms</td><td>2.38 ms</td><td>1.86 ms</td><td>203.1 ms</td>
 </tr></tbody></table>
 </body>
 </html>
