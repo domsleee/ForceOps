@@ -46,7 +46,7 @@ public class FileAndDirectoryDeleter
 		{
 			try
 			{
-				file.IsReadOnly = false;
+				if ((file.Attributes & FileAttributes.ReadOnly) != 0) file.Attributes &= ~FileAttributes.ReadOnly;
 				file.Delete();
 				break;
 			}
@@ -109,7 +109,7 @@ public class FileAndDirectoryDeleter
 		{
 			try
 			{
-				directory.Attributes &= ~FileAttributes.ReadOnly;
+				if ((directory.Attributes & FileAttributes.ReadOnly) != 0) directory.Attributes &= ~FileAttributes.ReadOnly;
 				directory.Delete();
 				break;
 			}
@@ -125,13 +125,16 @@ public class FileAndDirectoryDeleter
 
 	void DeleteFilesInFolder(DirectoryInfo directory)
 	{
-		foreach (var file in directory.GetFiles())
+		foreach (var fileOrDirectory in directory.GetFileSystemInfos())
 		{
-			DeleteFile(file);
-		}
-		foreach (var subDirectory in directory.GetDirectories())
-		{
-			DeleteDirectory(subDirectory);
+			if (fileOrDirectory is FileInfo file)
+			{
+				DeleteFile(file);
+			}
+			else if (fileOrDirectory is DirectoryInfo subDirectory)
+			{
+				DeleteDirectory(subDirectory);
+			}
 		}
 	}
 }
