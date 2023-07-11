@@ -8,6 +8,11 @@
         <RollForward>LatestMajor</RollForward>
         <LangVersion>latest</LangVersion>
         <IsPackable>true</IsPackable>
+
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <PackageOutputPath>./nupkg</PackageOutputPath>
+
         <!-- <PublishAot>true</PublishAot>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
         <!--<IlcDisableReflection>true</IlcDisableReflection>-->
@@ -19,7 +24,7 @@
     <ItemGroup>
         <!-- Include README here so it shows up in the nuget.org page -->
         <None Include="..\README.md" Link="README.md" Pack="true" PackagePath="\" />
-        <None Include="..\LICENSE.txt" Pack="true" PackagePath=""/>
+        <None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
     </ItemGroup>
 
     <ItemGroup>

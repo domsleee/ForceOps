@@ -1,0 +1,55 @@
+name: Run Benchmarks
+on:
+  push:
+    branches:
+      - main
+  # pull_request: # for testing
+
+permissions:
+  contents: write
+  deployments: write
+
+jobs:
+  benchmark:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.0.x'
+      - name: Build Deps
+        run: |
+          cd subrepos/LockCheck;
+          dotnet build -c release
+      - name: Run benchmark
+        run: cd ForceOps.Benchmarks && dotnet run -c release --exporters json --filter '*'
+      - name: Store benchmark result
+        uses: rhysd/github-action-benchmark@v1
+        with:
+          name: ForceOps Benchmarks
+          tool: 'benchmarkdotnet'
+          output-file-path: ForceOps.Benchmarks/BenchmarkDotNet.Artifacts/results/ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-report-full-compressed.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          # Show alert with commit comment on detecting possible performance regression
+          alert-threshold: '200%'
+          comment-on-alert: true
+          fail-on-alert: true
+          alert-comment-cc-users: '@domsleee'
+      - name: Find and replace on markdown report
+        # in powershell, ` is a backspace character.
+        run: |
+          $fileName = "ForceOps.Benchmarks/BenchmarkDotNet.Artifacts/results/ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-report-github.md"
+          $fileContent = Get-Content $fileName -Raw
+          $modifiedContent = $fileContent -replace "``````", "```````n"
+          $modifiedContent | Set-Content $fileName
+      - name: Deploy Markdown Result
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ForceOps.Benchmarks/BenchmarkDotNet.Artifacts/results
+          destination_dir: BenchmarkDotNetResults
+          enable_jekyll: true

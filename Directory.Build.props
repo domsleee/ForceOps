@@ -9,9 +9,5 @@
         <Authors>Dom Slee</Authors>
         <PackageTags>lock file directory force delete</PackageTags>
         <PackageReleaseNotes>https://github.com/domsleee/forceops/blob/main/CHANGELOG.md</PackageReleaseNotes>
-
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-        <PackageOutputPath>./nupkg</PackageOutputPath>
     </PropertyGroup>
 </Project>
