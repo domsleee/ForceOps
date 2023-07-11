@@ -40,10 +40,11 @@ jobs:
           fail-on-alert: true
           alert-comment-cc-users: '@domsleee'
       - name: Find and replace on markdown report
+        # in powershell, ` is a backspace character. What a disaster.
         run: |
           $fileName = "ForceOps.Benchmarks/BenchmarkDotNet.Artifacts/results/ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-report-github.md"
           $fileContent = Get-Content $fileName -Raw
-          $modifiedContent = $fileContent -replace "```$", "```\n"
+          $modifiedContent = $fileContent -replace "``````", "```````n"
           $modifiedContent | Set-Content $fileName
       - name: Deploy Markdown Result
         uses: peaceiris/actions-gh-pages@v3
