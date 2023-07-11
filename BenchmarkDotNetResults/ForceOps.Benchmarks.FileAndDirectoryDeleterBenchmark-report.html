@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-20230711-140027</title>
+<title>ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-20230711-141809</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -14,7 +14,7 @@
 <body>
 <pre><code>
 BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.20348.1787), VM=Hyper-V
-Intel Xeon Platinum 8171M CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
+Intel Xeon Platinum 8272CL CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
 .NET SDK=7.0.305
   [Host]   : .NET 7.0.8 (7.0.823.31807), X64 RyuJIT AVX2
   .NET 7.0 : .NET 7.0.8 (7.0.823.31807), X64 RyuJIT AVX2
@@ -26,10 +26,10 @@ UnrollFactor=1
 <table>
 <thead><tr><th>                        Method</th><th>NumFiles</th><th>FileSize</th><th>IsInsideDirectory</th><th>Mean</th><th>Error</th><th>StdDev</th>
 </tr>
-</thead><tbody><tr><td>ForceOps.Lib.FileAndDirectoryDeleter</td><td>1</td><td>10</td><td>False</td><td>459.5 &mu;s</td><td>9.05 &mu;s</td><td>8.47 &mu;s</td>
-</tr><tr><td>System.IO.Directory.Delete</td><td>1</td><td>10</td><td>False</td><td>325.0 &mu;s</td><td>6.40 &mu;s</td><td>13.07 &mu;s</td>
-</tr><tr><td>ForceOps.Lib.FileAndDirectoryDeleter</td><td>1</td><td>10</td><td>True</td><td>622.1 &mu;s</td><td>12.39 &mu;s</td><td>24.17 &mu;s</td>
-</tr><tr><td>System.IO.Directory.Delete</td><td>1</td><td>10</td><td>True</td><td>445.3 &mu;s</td><td>7.68 &mu;s</td><td>6.42 &mu;s</td>
+</thead><tbody><tr><td>ForceOps.Lib.FileAndDirectoryDeleter</td><td>1000</td><td>10</td><td>False</td><td>123.9 ms</td><td>2.29 ms</td><td>4.97 ms</td>
+</tr><tr><td>System.IO.Directory.Delete</td><td>1000</td><td>10</td><td>False</td><td>101.8 ms</td><td>2.00 ms</td><td>2.74 ms</td>
+</tr><tr><td>ForceOps.Lib.FileAndDirectoryDeleter</td><td>1000</td><td>10</td><td>True</td><td>265.0 ms</td><td>3.84 ms</td><td>3.21 ms</td>
+</tr><tr><td>System.IO.Directory.Delete</td><td>1000</td><td>10</td><td>True</td><td>190.6 ms</td><td>2.87 ms</td><td>2.55 ms</td>
 </tr></tbody></table>
 </body>
 </html>

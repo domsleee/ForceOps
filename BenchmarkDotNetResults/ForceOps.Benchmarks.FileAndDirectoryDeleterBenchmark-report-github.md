@@ -2,7 +2,7 @@
  ini
 
 BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.20348.1787), VM=Hyper-V
-Intel Xeon Platinum 8171M CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
+Intel Xeon Platinum 8272CL CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
 .NET SDK=7.0.305
   [Host]   : .NET 7.0.8 (7.0.823.31807), X64 RyuJIT AVX2
   .NET 7.0 : .NET 7.0.8 (7.0.823.31807), X64 RyuJIT AVX2
@@ -12,10 +12,10 @@ UnrollFactor=1
 
 ```
 
-|                               Method | NumFiles | FileSize | IsInsideDirectory |     Mean |    Error |   StdDev |
-|------------------------------------- |--------- |--------- |------------------ |---------:|---------:|---------:|
-| **ForceOps.Lib.FileAndDirectoryDeleter** |        **1** |       **10** |             **False** | **459.5 μs** |  **9.05 μs** |  **8.47 μs** |
-|           System.IO.Directory.Delete |        1 |       10 |             False | 325.0 μs |  6.40 μs | 13.07 μs |
-| **ForceOps.Lib.FileAndDirectoryDeleter** |        **1** |       **10** |              **True** | **622.1 μs** | **12.39 μs** | **24.17 μs** |
-|           System.IO.Directory.Delete |        1 |       10 |              True | 445.3 μs |  7.68 μs |  6.42 μs |
+|                               Method | NumFiles | FileSize | IsInsideDirectory |     Mean |   Error |  StdDev |
+|------------------------------------- |--------- |--------- |------------------ |---------:|--------:|--------:|
+| **ForceOps.Lib.FileAndDirectoryDeleter** |     **1000** |       **10** |             **False** | **123.9 ms** | **2.29 ms** | **4.97 ms** |
+|           System.IO.Directory.Delete |     1000 |       10 |             False | 101.8 ms | 2.00 ms | 2.74 ms |
+| **ForceOps.Lib.FileAndDirectoryDeleter** |     **1000** |       **10** |              **True** | **265.0 ms** | **3.84 ms** | **3.21 ms** |
+|           System.IO.Directory.Delete |     1000 |       10 |              True | 190.6 ms | 2.87 ms | 2.55 ms |
 
