@@ -46,7 +46,7 @@ public class FileAndDirectoryDeleter
 		{
 			try
 			{
-				if ((file.Attributes & FileAttributes.ReadOnly) != 0) file.Attributes &= ~FileAttributes.ReadOnly;
+				MarkAsNotReadOnly(file);
 				file.Delete();
 				break;
 			}
@@ -109,7 +109,7 @@ public class FileAndDirectoryDeleter
 		{
 			try
 			{
-				if ((directory.Attributes & FileAttributes.ReadOnly) != 0) directory.Attributes &= ~FileAttributes.ReadOnly;
+				MarkAsNotReadOnly(directory);
 				directory.Delete();
 				break;
 			}

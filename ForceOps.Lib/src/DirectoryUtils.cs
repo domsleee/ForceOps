@@ -14,4 +14,12 @@ public static class DirectoryUtils
 	{
 		return (folder.Attributes & FileAttributes.ReparsePoint) != 0;
 	}
+
+	public static void MarkAsNotReadOnly(FileSystemInfo fileSystemInfo)
+	{
+		if ((fileSystemInfo.Attributes & FileAttributes.ReadOnly) != 0)
+		{
+			fileSystemInfo.Attributes &= ~FileAttributes.ReadOnly;
+		}
+	}
 }
