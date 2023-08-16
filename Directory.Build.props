@@ -12,8 +12,8 @@
 
         <TargetFramework>net7.0</TargetFramework>
         <RollForward>LatestMajor</RollForward>
-		<LangVersion>latest</LangVersion>
+        <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 </Project>

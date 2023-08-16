@@ -8,7 +8,7 @@ public class RelaunchAsElevated : IRelaunchAsElevated
 	internal string verb = "runas";
 	internal string? exeNameOverride = null;
 
-	int IRelaunchAsElevated.RelaunchAsElevated(List<string>? argListOverride)
+	int IRelaunchAsElevated.RelaunchAsElevated(List<string> argumentList)
 	{
 		var exeName = exeNameOverride ?? Environment.ProcessPath;
 		var startInfo = new ProcessStartInfo(exeName!)
@@ -18,14 +18,7 @@ public class RelaunchAsElevated : IRelaunchAsElevated
 			Verb = verb,
 		};
 
-		if (argListOverride != null)
-		{
-			AddRange(startInfo.ArgumentList, argListOverride);
-		}
-		else
-		{
-			AddRange(startInfo.ArgumentList, Environment.GetCommandLineArgs().Skip(1));
-		}
+		AddRange(startInfo.ArgumentList, argumentList);
 
 		var process = new Process() { StartInfo = startInfo };
 
