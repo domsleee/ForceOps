@@ -2,5 +2,5 @@ namespace ForceOps.Lib;
 
 public interface IRelaunchAsElevated
 {
-	int RelaunchAsElevated();
+	int RelaunchAsElevated(List<string>? argListOverride = null);
 }

@@ -23,7 +23,7 @@ public static class TestUtil
 			{
 				FileName = "powershell",
 				WorkingDirectory = workingDirectory,
-				Arguments = $"-NoProfile -Command \"{command}; echo 'process has been loaded'; sleep 10\"",
+				Arguments = $"-NoProfile -Command \"{command}; echo 'process has been loaded'; sleep 10000\"",
 				RedirectStandardOutput = true,
 				RedirectStandardError = true,
 				CreateNoWindow = true
