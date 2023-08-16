@@ -53,7 +53,7 @@ public sealed class ProgramTest : IDisposable
 		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(It.IsAny<List<string>?>()), Times.Never());
 	}
 
-	
+
 	[Fact]
 	public void RelaunchedProgramWorks()
 	{
