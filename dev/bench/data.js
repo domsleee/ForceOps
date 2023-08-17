@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1689087268343,
+  "lastUpdate": 1692263431252,
   "repoUrl": "https://github.com/domsleee/ForceOps",
   "entries": {
     "ForceOps Benchmarks": [
@@ -144,6 +144,54 @@ window.BENCHMARK_DATA = {
             "value": 225033952.94117647,
             "unit": "ns",
             "range": "± 4566484.087500695"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "domslee1@gmail.com",
+            "name": "Dom Slee",
+            "username": "domsleee"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "835be679eee99a6c3c88ddfb92b43c9b1d54bac6",
+          "message": "Bugfix/delete nonexisting file (#17)\n\n* Deleting non-existing file now throws an error\r\n* Add --force and --disable-elevate flags\r\n* When re-launching as admin, --force is implied to avoid edge cases with partial deletions",
+          "timestamp": "2023-08-17T19:04:53+10:00",
+          "tree_id": "c36554be3220f91f5886401d14626fffd0a985d6",
+          "url": "https://github.com/domsleee/ForceOps/commit/835be679eee99a6c3c88ddfb92b43c9b1d54bac6"
+        },
+        "date": 1692263421734,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1000, FileSize: 10, IsInsideDirectory: False)",
+            "value": 110919374.54545455,
+            "unit": "ns",
+            "range": "± 4673331.996521372"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1000, FileSize: 10, IsInsideDirectory: False)",
+            "value": 112062286.36363636,
+            "unit": "ns",
+            "range": "± 4140709.6309348587"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1000, FileSize: 10, IsInsideDirectory: True)",
+            "value": 206419325,
+            "unit": "ns",
+            "range": "± 3982390.5471462742"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1000, FileSize: 10, IsInsideDirectory: True)",
+            "value": 207491888.46153846,
+            "unit": "ns",
+            "range": "± 2517909.086437416"
           }
         ]
       }
