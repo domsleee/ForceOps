@@ -37,7 +37,7 @@ public class FileAndDirectoryDeleterBenchmark
 	[Benchmark(Description = "ForceOps.Lib.FileAndDirectoryDeleter")]
 	public void Deleter()
 	{
-		fileAndDirectoryDeleter.DeleteFileOrDirectory(tempDirectory);
+		fileAndDirectoryDeleter.DeleteFileOrDirectory(tempDirectory, true);
 	}
 
 	[Benchmark(Description = "System.IO.Directory.Delete")]

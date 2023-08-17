@@ -22,7 +22,7 @@ public class FileAndDirectoryDeleter
 	/// If the delete fails, it will attempt to find processes using the file or directory
 	/// </summary>
 	/// <param name="fileOrDirectory">File or directory to delete.</param>
-	public void DeleteFileOrDirectory(string fileOrDirectory)
+	public void DeleteFileOrDirectory(string fileOrDirectory, bool force)
 	{
 		fileOrDirectory = CombineWithCWDAndGetAbsolutePath(fileOrDirectory);
 		if (File.Exists(fileOrDirectory))
@@ -35,9 +35,11 @@ public class FileAndDirectoryDeleter
 			DeleteDirectory(new DirectoryInfo(fileOrDirectory));
 			return;
 		}
-		// if the file/folder doesn't exist, it has already been deleted
-		logger.Debug($"{fileOrDirectory} already deleted.");
-		return;
+
+		if (!force)
+		{
+			throw new FileNotFoundException(fileOrDirectory);
+		}
 	}
 
 	internal void DeleteFile(FileInfo file)
@@ -46,7 +48,7 @@ public class FileAndDirectoryDeleter
 		{
 			try
 			{
-				if ((file.Attributes & FileAttributes.ReadOnly) != 0) file.Attributes &= ~FileAttributes.ReadOnly;
+				MarkAsNotReadOnly(file);
 				file.Delete();
 				break;
 			}
@@ -109,7 +111,7 @@ public class FileAndDirectoryDeleter
 		{
 			try
 			{
-				if ((directory.Attributes & FileAttributes.ReadOnly) != 0) directory.Attributes &= ~FileAttributes.ReadOnly;
+				MarkAsNotReadOnly(directory);
 				directory.Delete();
 				break;
 			}

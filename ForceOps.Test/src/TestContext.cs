@@ -7,19 +7,32 @@ namespace ForceOps.Test;
 public class TestContext
 {
 	public ForceOpsContext forceOpsContext;
-	public Mock<IElevateUtils> elevateUtilsMock;
-	public Mock<IRelaunchAsElevated> relaunchAsElevatedMock;
-	public FakeLoggerFactory fakeLoggerFactory;
+	public Mock<IElevateUtils> elevateUtilsMock = new();
+	public Mock<IRelaunchAsElevated> relaunchAsElevatedMock = new();
+	public Mock<IEnvironmentExit> environmentExitMock = new();
+	public FakeLoggerFactory fakeLoggerFactory = new();
+
+	public ExitCode? friendlyExitCode;
+	public string? friendlyExitMessage;
 
 	public TestContext()
 	{
-		elevateUtilsMock = new Mock<IElevateUtils>();
 		elevateUtilsMock.Setup(t => t.IsProcessElevated()).Returns(false);
-		relaunchAsElevatedMock = new Mock<IRelaunchAsElevated>();
-		relaunchAsElevatedMock.Setup(t => t.RelaunchAsElevated()).Returns(1);
-		fakeLoggerFactory = new FakeLoggerFactory();
+		relaunchAsElevatedMock.Setup(t => t.RelaunchAsElevated(It.IsAny<List<string>>())).Returns(1);
+		environmentExitMock
+			.Setup(t => t.Exit(It.IsAny<int>(), It.IsAny<string>()))
+			.Callback((int exitCode, string exitMessage) =>
+		{
+			friendlyExitCode = (ExitCode)exitCode;
+			friendlyExitMessage = exitMessage;
+		});
 
-		forceOpsContext = new ForceOpsContext(elevateUtils: elevateUtilsMock.Object, loggerFactory: fakeLoggerFactory, relaunchAsElevated: relaunchAsElevatedMock.Object);
+		forceOpsContext = new ForceOpsContext(
+			elevateUtils: elevateUtilsMock.Object,
+			loggerFactory: fakeLoggerFactory,
+			relaunchAsElevated: relaunchAsElevatedMock.Object,
+			environmentExit: environmentExitMock.Object
+		);
 	}
 }
 

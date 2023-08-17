@@ -2,7 +2,7 @@
   "profiles": {
     "ForceOps": {
       "commandName": "Project",
-      "commandLineArgs": "delete C:\\testfile"
+      "commandLineArgs": "delete -f C:\\testfile"
     }
   }
 }
