@@ -225,11 +225,15 @@
 
         function convertBench(bench, newUnit) {
           if (bench.unit === 'ns' && newUnit === 'ms') {
-            bench.value /= 1e6;
+            bench.value = round(bench.value / 1e6);
             const benchRange = bench.range.split(' ').at(-1);
-            bench.range = `± ${benchRange/1e6}`;
+            bench.range = `± ${round(benchRange/1e6)}`;
             bench.unit = newUnit;
           }
+        }
+
+        function round(val) {
+          return Math.round(val * 100) / 100;
         }
 
         renderAllCharts(init()); // Start
