@@ -1,3 +1,8 @@
+## Release 1.1.0
+* Add `--force` and `--disable-elevate` flags.
+* Deleting non-existing file now throws an error (unless `--force` is specified).
+* When re-launching as admin, `--force` is implied to avoid edge cases with partial deletions.
+
 ## Release 1.0.4
 * Improve performance by ~30% by reducing calls to win32 api
 * Add benchmarks (BenchmarkDotNet)
