@@ -18,7 +18,7 @@ public class TestContext
 	public TestContext()
 	{
 		elevateUtilsMock.Setup(t => t.IsProcessElevated()).Returns(false);
-		relaunchAsElevatedMock.Setup(t => t.RelaunchAsElevated(It.IsAny<List<string>?>())).Returns(1);
+		relaunchAsElevatedMock.Setup(t => t.RelaunchAsElevated(It.IsAny<List<string>>())).Returns(1);
 		environmentExitMock
 			.Setup(t => t.Exit(It.IsAny<int>(), It.IsAny<string>()))
 			.Callback((int exitCode, string exitMessage) =>
