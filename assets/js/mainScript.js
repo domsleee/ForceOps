@@ -35,6 +35,7 @@
             return map;
           }
 
+          processData(window.BENCHMARK_DATA);
           const data = window.BENCHMARK_DATA;
 
           // Render header
@@ -210,6 +211,25 @@
             data,
             options,
           });
+        }
+
+        function processData(data) {
+          for (const entryGroup of Object.values(data.entries)) {
+            for (const entry of entryGroup) {
+              for (const bench of entry.benches) {
+                convertBench(bench, 'ms');
+              }
+            }
+          }
+        }
+
+        function convertBench(bench, newUnit) {
+          if (bench.unit === 'ns' && newUnit === 'ms') {
+            bench.value /= 1e6;
+            const benchRange = bench.range.split(' ').at(-1);
+            bench.range = `± ${benchRange/1e6}`;
+            bench.unit = newUnit;
+          }
         }
 
         renderAllCharts(init()); // Start
