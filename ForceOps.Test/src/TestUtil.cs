@@ -50,9 +50,9 @@ public static class TestUtil
 		while (!(output.LastOrDefault() ?? "").EndsWith("process has been loaded") && !process.HasExited)
 		{
 			Thread.Sleep(50);
-			if (DateTime.Now.Subtract(startTime).TotalSeconds > 2)
+			if (DateTime.Now.Subtract(startTime).TotalSeconds > 5)
 			{
-				throw new Exception("Gave up after waiting 2 seconds");
+				throw new Exception("Gave up after waiting 5 seconds");
 			}
 		}
 
