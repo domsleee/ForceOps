@@ -11,7 +11,7 @@
 		<None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="LockCheck" Version="0.9.27-g9f13ff2e90" />
+		<PackageReference Include="LockCheck" Version="0.9.28-gbc7b931d3f" />
 		<PackageReference Include="Serilog" Version="3.0.1" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
 	</ItemGroup>
