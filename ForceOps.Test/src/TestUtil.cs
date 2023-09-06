@@ -1,21 +1,22 @@
 ﻿using System.Diagnostics;
 using System.Reactive.Disposables;
+using System.Text;
 
 namespace ForceOps.Test;
 
 public static class TestUtil
 {
-	public static IDisposable LaunchProcessInDirectory(string workingDirectory)
+	public static WrappedProcess LaunchProcessInDirectory(string workingDirectory)
 	{
 		return LaunchPowershellWithCommand(workingDirectory: workingDirectory);
 	}
 
-	public static IDisposable HoldLockOnFileUsingPowershell(string filePath)
+	public static WrappedProcess HoldLockOnFileUsingPowershell(string filePath)
 	{
 		return LaunchPowershellWithCommand(command: $"[System.IO.File]::Open('{filePath}', 'OpenOrCreate')");
 	}
 
-	public static IDisposable LaunchPowershellWithCommand(string command = "", string workingDirectory = "")
+	public static WrappedProcess LaunchPowershellWithCommand(string command = "", string workingDirectory = "")
 	{
 		var process = new Process
 		{
@@ -61,11 +62,7 @@ public static class TestUtil
 			throw new Exception($"Process has exited unexpectedly.\nOutput: {string.Join("\n", output)}\nError: {string.Join("\n", error)}");
 		}
 
-		return Disposable.Create(() =>
-		{
-			process.Kill();
-			process.WaitForExit(1);
-		});
+		return new WrappedProcess(process);
 	}
 
 	public static string GetTemporaryFileName()
@@ -83,6 +80,17 @@ public static class TestUtil
 				Directory.Delete(directory);
 			}
 			catch { }
+		});
+	}
+
+	public static IDisposable RedirectStdout(StringBuilder stringBuilder)
+	{
+		var originalConsoleOut = Console.Out;
+		Console.SetOut(new StringWriter(stringBuilder));
+
+		return Disposable.Create(() =>
+		{
+			Console.SetOut(originalConsoleOut);
 		});
 	}
 }

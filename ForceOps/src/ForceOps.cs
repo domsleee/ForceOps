@@ -28,6 +28,7 @@ internal class ForceOps
 			Name = "forceops"
 		};
 		rootCommand.AddCommand(CreateDeleteCommand());
+		rootCommand.AddCommand(CreateListCommand());
 
 		var parser = new CommandLineBuilder(rootCommand)
 			.UseDefaults()
@@ -40,9 +41,10 @@ internal class ForceOps
 				catch (Exception ex)
 				{
 					caughtException = ex;
+
 					if (ex is FileNotFoundException fileNotFoundEx)
 					{
-						forceOpsContext.environmentExit.Exit((int)ExitCode.FileNotFound, $"Cannot remove '{fileNotFoundEx.Message}'. No such file or directory");
+						forceOpsContext.environmentExit.Exit((int)ExitCode.FileNotFound, ex.Message);
 					}
 					throw;
 				}
@@ -52,7 +54,7 @@ internal class ForceOps
 		return parser.Invoke(args);
 	}
 
-	public Command CreateDeleteCommand()
+	Command CreateDeleteCommand()
 	{
 		var filesToDeleteArgument = new Argument<string[]>("files", "Files or directories to delete.")
 		{
@@ -70,6 +72,7 @@ internal class ForceOps
 		};
 
 		deleteCommand.AddAlias("rm");
+		deleteCommand.AddAlias("remove");
 		deleteCommand.SetHandler(DeleteCommand, filesToDeleteArgument, forceOption, disableElevate);
 		return deleteCommand;
 	}
@@ -85,6 +88,22 @@ internal class ForceOps
 				deleter.DeleteFileOrDirectory(file, force);
 			}
 		}, BuildArgsForRelaunch, disableElevate);
+	}
+
+	Command CreateListCommand()
+	{
+		var fileOrDirectoryArgument = new Argument<string>("fileOrDirectory", "File or directory to get the locks of.");
+		var listCommand = new Command("list", "Uses LockCheck to output processes using a file or directory.")
+		{
+			fileOrDirectoryArgument
+		};
+		listCommand.SetHandler(ListCommand, fileOrDirectoryArgument);
+		return listCommand;
+	}
+
+	void ListCommand(string fileOrDirectory)
+	{
+		new ListFileOrDirectoryLocks(forceOpsContext).PrintLocks(fileOrDirectory);
 	}
 
 	List<string> BuildArgsForRelaunch()
@@ -107,7 +126,7 @@ internal class ForceOps
 		{
 			action();
 		}
-		catch (Exception ex) when (ExceptionCausedByPermissions(ex) && !forceOpsContext.elevateUtils.IsProcessElevated() && !disableElevate)
+		catch (Exception ex) when (IsExceptionCausedByPermissions(ex) && !forceOpsContext.elevateUtils.IsProcessElevated() && !disableElevate)
 		{
 			logger.Information("Unable to perform operation as an unelevated process. Retrying as elevated.");
 			var args = buildArgsForRelaunch();
@@ -123,7 +142,7 @@ internal class ForceOps
 		}
 	}
 
-	static bool ExceptionCausedByPermissions(Exception ex)
+	static bool IsExceptionCausedByPermissions(Exception ex)
 	{
 		if (ex is FileNotFoundException)
 		{

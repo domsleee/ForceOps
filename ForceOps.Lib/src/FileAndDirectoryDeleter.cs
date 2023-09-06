@@ -38,7 +38,7 @@ public class FileAndDirectoryDeleter
 
 		if (!force)
 		{
-			throw new FileNotFoundException(fileOrDirectory);
+			throw new FileNotFoundException($"Cannot remove '{fileOrDirectory}'. No such file or directory");
 		}
 	}
 
