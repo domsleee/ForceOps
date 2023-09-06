@@ -1,3 +1,8 @@
+## Release 1.2.0
+* Add aot
+* Add "list" subcommand
+* Improve kill processes to not crash on a Win32 exception
+
 ## Release 1.1.0
 * Add `--force` and `--disable-elevate` flags.
 * Deleting non-existing file now throws an error (unless `--force` is specified).
