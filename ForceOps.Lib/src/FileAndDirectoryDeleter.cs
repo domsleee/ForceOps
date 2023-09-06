@@ -38,7 +38,7 @@ public class FileAndDirectoryDeleter
 
 		if (!force)
 		{
-			throw new FileNotFoundException(fileOrDirectory);
+			throw new FileNotFoundException($"Cannot remove '{fileOrDirectory}'. No such file or directory");
 		}
 	}
 
@@ -87,7 +87,7 @@ public class FileAndDirectoryDeleter
 		logger.Information($"Could not delete {fileOrDirectory} \"{fileOrDirectoryPath}\". {beginningRetryMessage}. {processElevatedMessage}. {foundProcessesToKillMessage}.");
 		Thread.Sleep(forceOpsContext.retryDelay);
 
-		forceOpsContext.processKiller.KillProcesses(processes);
+		forceOpsContext.processKiller.KillProcesses(processes, logger);
 		return false;
 	}
 

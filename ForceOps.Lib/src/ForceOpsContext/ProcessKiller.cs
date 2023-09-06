@@ -1,11 +1,13 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using LockCheck;
+using Serilog;
 
 namespace ForceOps.Lib;
 
 internal class ProcessKiller : IProcessKiller
 {
-	public void KillProcesses(IEnumerable<ProcessInfo?> processes)
+	public void KillProcesses(IEnumerable<ProcessInfo?> processes, ILogger logger)
 	{
 		var runningProcesses = new List<Process>();
 		var currentProcess = Process.GetCurrentProcess();
@@ -20,12 +22,21 @@ internal class ProcessKiller : IProcessKiller
 			catch (ArgumentException) { } // If the process is no longer running
 		}
 
+		var killedProcesses = new List<Process>();
 		foreach (var process in runningProcesses)
 		{
-			process.Kill();
+			try
+			{
+				process.Kill();
+				killedProcesses.Add(process);
+			}
+			catch (Win32Exception ex) // e.g. if the process is owned by another user
+			{
+				logger.Warning($"Failed to kill process {process.Id}: {ex.Message}");
+			}
 		}
 
-		foreach (var process in runningProcesses)
+		foreach (var process in killedProcesses)
 		{
 			process.WaitForExit();
 		}

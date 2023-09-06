@@ -97,6 +97,16 @@ public sealed class ProgramTest : IDisposable
 		Assert.Equal(@"Cannot remove 'C:\C:\C:\'. No such file or directory", testContext.friendlyExitMessage);
 	}
 
+	[Fact]
+	public void ListNonExistingFileThrowsMessage()
+	{
+		var testContext = new TestContext();
+		var forceOps = new ForceOps(new[] { "list", @"C:\C:\C:\" }, testContext.forceOpsContext);
+		forceOps.Run();
+		Assert.Equal(ExitCode.FileNotFound, testContext.friendlyExitCode);
+		Assert.Equal(@"Cannot list locks of 'C:\C:\C:\'. No such file or directory", testContext.friendlyExitMessage);
+	}
+
 	public ProgramTest()
 	{
 		tempDirectoryPath = GetTemporaryFileName();
