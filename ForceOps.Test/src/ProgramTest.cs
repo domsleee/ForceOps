@@ -21,7 +21,7 @@ public sealed class ProgramTest : IDisposable
 		Assert.Equal(1, forceOps.Run());
 
 		Assert.IsType<AggregateException>(forceOps.caughtException);
-		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(It.IsAny<List<string>>()), Times.Once());
+		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(It.IsAny<List<string>>(), It.IsAny<string>()), Times.Once());
 	}
 
 	[Fact]
@@ -29,13 +29,13 @@ public sealed class ProgramTest : IDisposable
 	{
 		using var launchedProcess = LaunchProcessInDirectory(tempDirectoryPath);
 		var testContext = new TestContext();
-		testContext.relaunchAsElevatedMock.Setup(t => t.RelaunchAsElevated(It.IsAny<List<string>>())).Returns(0);
+		testContext.relaunchAsElevatedMock.Setup(t => t.RelaunchAsElevated(It.IsAny<List<string>>(), It.IsAny<string>())).Returns(0);
 		testContext.forceOpsContext.processKiller = new Mock<IProcessKiller>().Object;
 
 		var forceOps = new ForceOps(new[] { "delete", tempDirectoryPath }, testContext.forceOpsContext);
 		Assert.Equal(0, forceOps.Run());
 
-		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(It.IsAny<List<string>>()), Times.Once());
+		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(It.IsAny<List<string>>(), It.IsAny<string>()), Times.Once());
 	}
 
 	[Fact]
@@ -50,7 +50,7 @@ public sealed class ProgramTest : IDisposable
 		Assert.Equal(1, forceOps.Run());
 
 		Assert.IsType<IOException>(forceOps.caughtException);
-		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(It.IsAny<List<string>>()), Times.Never());
+		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(It.IsAny<List<string>>(), It.IsAny<string>()), Times.Never());
 	}
 
 

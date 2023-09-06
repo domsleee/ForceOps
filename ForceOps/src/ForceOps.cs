@@ -129,15 +129,14 @@ internal class ForceOps
 		}
 		catch (Exception ex) when (IsExceptionCausedByPermissions(ex) && !forceOpsContext.elevateUtils.IsProcessElevated() && !disableElevate)
 		{
-			logger.Information("Unable to perform operation as an unelevated process. Retrying as elevated.");
 			var args = buildArgsForRelaunch();
 			var childOutputFile = GetChildOutputFile();
-			args.AddRange(new[] { ">", childOutputFile });
-			var childProcessExitCode = forceOpsContext.relaunchAsElevated.RelaunchAsElevated(args);
+			args.AddRange(new[] { "2>&1", ">", childOutputFile });
+			logger.Information($"Unable to perform operation as an unelevated process. Retrying as elevated and logging to \"{childOutputFile}\".");
+			var childProcessExitCode = forceOpsContext.relaunchAsElevated.RelaunchAsElevated(args, childOutputFile);
 			if (childProcessExitCode != 0)
 			{
-				var childOutput = SafeReadOutput(childOutputFile);
-				throw new AggregateException($"Child process failed with {childProcessExitCode}. Child output: {childOutput}.");
+				throw new AggregateException($"Child process failed with {childProcessExitCode}.");
 			}
 			else
 			{
