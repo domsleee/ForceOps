@@ -53,12 +53,16 @@ jobs:
       - name: Pack
         run: dotnet pack -c release
 
+      - name: Build (AOT)
+        run: dotnet publish -c release /p:UseAot=1
+
       - name: Create release
         if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
         uses: softprops/action-gh-release@v1
         with:
           draft: true
           name: "${{ steps.get_version.outputs.version }}"
+          files: ForceOps/bin/Release/net7.0/win-x64/publish/ForceOps.exe
           tag_name: "${{ steps.get_version.outputs.version }}"
 
       - name: Publish NuGet
