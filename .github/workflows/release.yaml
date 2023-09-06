@@ -57,7 +57,7 @@ jobs:
         run: dotnet publish -c release /p:UseAot=1
 
       - name: Create release
-        if: 1 == 1
+        if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
         uses: softprops/action-gh-release@v1
         with:
           draft: true
