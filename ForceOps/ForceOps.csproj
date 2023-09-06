@@ -7,13 +7,16 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
         <PackageOutputPath>./nupkg</PackageOutputPath>
+    </PropertyGroup>
 
-        <!-- <PublishAot>true</PublishAot>
-        <RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
-        <!--<IlcDisableReflection>true</IlcDisableReflection>-->
-
+    <PropertyGroup Condition="$(UseAot) != '1'">
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>forceops</ToolCommandName>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(UseAot)' == '1'">
+        <PublishAot>true</PublishAot>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     </PropertyGroup>
 
     <ItemGroup>
