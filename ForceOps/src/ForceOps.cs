@@ -1,6 +1,7 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
+using System.Diagnostics;
 using ForceOps.Lib;
 using Serilog;
 
@@ -130,16 +131,34 @@ internal class ForceOps
 		{
 			logger.Information("Unable to perform operation as an unelevated process. Retrying as elevated.");
 			var args = buildArgsForRelaunch();
+			var childOutputFile = GetChildOutputFile();
+			args.AddRange(new[] { ">", childOutputFile });
 			var childProcessExitCode = forceOpsContext.relaunchAsElevated.RelaunchAsElevated(args);
 			if (childProcessExitCode != 0)
 			{
-				throw new AggregateException($"Child process failed with {childProcessExitCode}. See inner exception for the previous exception.", ex);
+				var childOutput = SafeReadOutput(childOutputFile);
+				throw new AggregateException($"Child process failed with {childProcessExitCode}. Child output: {childOutput}.");
 			}
 			else
 			{
 				logger.Information("Successfully deleted as admin");
 			}
 		}
+	}
+
+	static string GetChildOutputFile()
+	{
+		var processId = Process.GetCurrentProcess().Id;
+		return Path.Combine(Path.GetTempPath(), $"ForceOps.{processId}.txt");
+	}
+
+	static string SafeReadOutput(string filePath)
+	{
+		if (File.Exists(filePath))
+		{
+			return File.ReadAllText(filePath);
+		}
+		return "";
 	}
 
 	static bool IsExceptionCausedByPermissions(Exception ex)

@@ -22,9 +22,6 @@ public class RelaunchAsElevated : IRelaunchAsElevated
 
 		var process = new Process() { StartInfo = startInfo };
 
-		process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
-		process.ErrorDataReceived += (sender, e) => Console.Error.WriteLine(e.Data);
-
 		process.Start();
 		process.WaitForExit();
 
