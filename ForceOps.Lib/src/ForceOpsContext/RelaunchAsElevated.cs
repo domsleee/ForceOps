@@ -8,22 +8,25 @@ public class RelaunchAsElevated : IRelaunchAsElevated
 	internal string verb = "runas";
 	internal string? exeNameOverride = null;
 
-	int IRelaunchAsElevated.RelaunchAsElevated(List<string> argumentList)
+	int IRelaunchAsElevated.RelaunchAsElevated(List<string> argumentList, string outputFile)
 	{
 		var exeName = exeNameOverride ?? Environment.ProcessPath;
-		var startInfo = new ProcessStartInfo(exeName!)
+		var startInfo = new ProcessStartInfo("cmd.exe")
 		{
 			UseShellExecute = true,
 			WorkingDirectory = Environment.CurrentDirectory,
 			Verb = verb,
+			CreateNoWindow = true,
+			WindowStyle = ProcessWindowStyle.Hidden
 		};
 
+		AddRange(startInfo.ArgumentList, new[] {"/c", exeName!});
 		AddRange(startInfo.ArgumentList, argumentList);
 
 		var process = new Process() { StartInfo = startInfo };
 
 		process.Start();
-		process.WaitForExit();
+		TeeCommand.TeeFile(process, outputFile);
 
 		return process.ExitCode;
 	}
