@@ -147,17 +147,7 @@ internal class ForceOps
 
 	static string GetChildOutputFile()
 	{
-		var processId = Process.GetCurrentProcess().Id;
-		return Path.Combine(Path.GetTempPath(), $"ForceOps.{processId}.txt");
-	}
-
-	static string SafeReadOutput(string filePath)
-	{
-		if (File.Exists(filePath))
-		{
-			return File.ReadAllText(filePath);
-		}
-		return "";
+		return Path.GetTempFileName();
 	}
 
 	static bool IsExceptionCausedByPermissions(Exception ex)

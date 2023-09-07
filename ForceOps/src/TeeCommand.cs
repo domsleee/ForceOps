@@ -8,10 +8,9 @@ public static class TeeCommand
 	public static void TeeFile(string file)
 	{
 		WaitForFileToExist(file);
-		Console.WriteLine("INBOUND");
 		using var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 		using var reader = new StreamReader(fileStream);
-		string line;
+		string? line;
 		while ((line = reader.ReadLine()) != null)
 		{
 			Console.WriteLine(line);

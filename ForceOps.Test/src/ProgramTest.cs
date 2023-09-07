@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text;
 using ForceOps.Lib;
 using Moq;
 using static ForceOps.Test.TestUtil;
@@ -9,6 +10,7 @@ public sealed class ProgramTest : IDisposable
 {
 	readonly List<IDisposable> disposables = new();
 	readonly string tempDirectoryPath;
+	readonly StringBuilder stdoutStringBuilder = new();
 
 	[Fact]
 	public void ExceptionThrownIfChildFails()
@@ -53,7 +55,6 @@ public sealed class ProgramTest : IDisposable
 		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(It.IsAny<List<string>>(), It.IsAny<string>()), Times.Never());
 	}
 
-
 	[Fact]
 	public void RelaunchedProgramWorks()
 	{
@@ -64,9 +65,9 @@ public sealed class ProgramTest : IDisposable
 		string exeNameOverride = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "forceops.exe");
 		testContext.forceOpsContext.relaunchAsElevated = new RelaunchAsElevated() { verb = "", exeNameOverride = exeNameOverride };
 		var forceOps = new ForceOps(new[] { "delete", tempDirectoryPath }, testContext.forceOpsContext);
-		Assert.True(0 == forceOps.Run(), forceOps.caughtException?.ToString());
+		Assert.True(0 == forceOps.Run(), forceOps.caughtException?.ToString() + testContext.fakeLoggerFactory.GetAllLogsString() + stdoutStringBuilder.ToString());
 		Assert.True(!Directory.Exists(tempDirectoryPath), "Deleted by relaunch");
-		Assert.Contains("Unable to perform operation as an unelevated process. Retrying as elevated.", testContext.fakeLoggerFactory.GetAllLogsString());
+		Assert.Contains("Unable to perform operation as an unelevated process. Retrying as elevated and logging to", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
 
 	[Fact]
@@ -84,7 +85,7 @@ public sealed class ProgramTest : IDisposable
 		forceOps.extraRelaunchArgs = new List<string>() { "--disable-elevate" };
 		Assert.True(0 == forceOps.Run(), forceOps.caughtException?.ToString());
 		Assert.True(!Directory.Exists(tempDirectoryPath), "Deleted by relaunch");
-		Assert.Contains("Unable to perform operation as an unelevated process. Retrying as elevated.", testContext.fakeLoggerFactory.GetAllLogsString());
+		Assert.Contains("Unable to perform operation as an unelevated process. Retrying as elevated and logging to", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
 
 	[Fact]
@@ -107,10 +108,12 @@ public sealed class ProgramTest : IDisposable
 		Assert.Equal(@"Cannot list locks of 'C:\C:\C:\'. No such file or directory", testContext.friendlyExitMessage);
 	}
 
+
 	public ProgramTest()
 	{
 		tempDirectoryPath = GetTemporaryFileName();
 		disposables.Add(CreateTemporaryDirectory(tempDirectoryPath));
+		disposables.Add(RedirectStdout(stdoutStringBuilder));
 	}
 
 	void IDisposable.Dispose()
