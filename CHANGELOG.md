@@ -1,7 +1,8 @@
 ## Release 1.2.0
-* Add aot
+* Add aot, and exe in release
 * Add "list" subcommand
 * Improve kill processes to not crash on a Win32 exception
+* Improve relaunch logging - it now shows on the main thread
 
 ## Release 1.1.0
 * Add `--force` and `--disable-elevate` flags.
