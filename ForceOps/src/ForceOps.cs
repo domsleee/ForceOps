@@ -128,18 +128,25 @@ internal class ForceOps
 		}
 		catch (Exception ex) when (IsExceptionCausedByPermissions(ex) && !forceOpsContext.elevateUtils.IsProcessElevated() && !disableElevate)
 		{
-			logger.Information("Unable to perform operation as an unelevated process. Retrying as elevated.");
 			var args = buildArgsForRelaunch();
-			var childProcessExitCode = forceOpsContext.relaunchAsElevated.RelaunchAsElevated(args);
+			var childOutputFile = GetChildOutputFile();
+			args.AddRange(new[] { "2>&1", ">", childOutputFile });
+			logger.Information($"Unable to perform operation as an unelevated process. Retrying as elevated and logging to \"{childOutputFile}\".");
+			var childProcessExitCode = forceOpsContext.relaunchAsElevated.RelaunchAsElevated(args, childOutputFile);
 			if (childProcessExitCode != 0)
 			{
-				throw new AggregateException($"Child process failed with {childProcessExitCode}. See inner exception for the previous exception.", ex);
+				throw new AggregateException($"Child process failed with {childProcessExitCode}.");
 			}
 			else
 			{
 				logger.Information("Successfully deleted as admin");
 			}
 		}
+	}
+
+	static string GetChildOutputFile()
+	{
+		return Path.GetTempFileName();
 	}
 
 	static bool IsExceptionCausedByPermissions(Exception ex)
