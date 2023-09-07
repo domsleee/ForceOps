@@ -1,7 +1,6 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
-using System.Diagnostics;
 using ForceOps.Lib;
 using Serilog;
 
