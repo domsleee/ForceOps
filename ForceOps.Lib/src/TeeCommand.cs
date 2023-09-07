@@ -17,7 +17,8 @@ public static class TeeCommand
 			if (line != null)
 			{
 				Console.WriteLine(line);
-			} else
+			}
+			else
 			{
 				var exited = process.WaitForExit(100);
 				if (exited) return;

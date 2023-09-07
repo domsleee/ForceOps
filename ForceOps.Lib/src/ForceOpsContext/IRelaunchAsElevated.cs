@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace ForceOps.Lib;
 
 public interface IRelaunchAsElevated

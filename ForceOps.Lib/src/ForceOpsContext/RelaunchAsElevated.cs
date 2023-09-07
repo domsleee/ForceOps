@@ -20,7 +20,7 @@ public class RelaunchAsElevated : IRelaunchAsElevated
 			WindowStyle = ProcessWindowStyle.Hidden
 		};
 
-		AddRange(startInfo.ArgumentList, new[] {"/c", exeName!});
+		AddRange(startInfo.ArgumentList, new[] { "/c", exeName! });
 		AddRange(startInfo.ArgumentList, argumentList);
 
 		var process = new Process() { StartInfo = startInfo };

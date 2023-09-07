@@ -3,11 +3,11 @@ namespace ForceOps;
 
 public static class TeeCommand
 {
-    const int MAX_COUNT = 100;
+	const int MAX_COUNT = 100;
 
-    public static void TeeFile(string file)
+	public static void TeeFile(string file)
 	{
-        WaitForFileToExist(file);
+		WaitForFileToExist(file);
 		Console.WriteLine("INBOUND");
 		using var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 		using var reader = new StreamReader(fileStream);
@@ -18,15 +18,16 @@ public static class TeeCommand
 		}
 	}
 
-    static bool WaitForFileToExist(string file)
+	static bool WaitForFileToExist(string file)
 	{
-        for (int count = 0; count < MAX_COUNT; ++count) {
-            if (File.Exists(file))
+		for (int count = 0; count < MAX_COUNT; ++count)
+		{
+			if (File.Exists(file))
 			{
-                return true;
-            }
-            Thread.Sleep(100);
-        }
-        return false;
-    }
+				return true;
+			}
+			Thread.Sleep(100);
+		}
+		return false;
+	}
 }
