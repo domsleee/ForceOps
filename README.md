@@ -19,7 +19,9 @@ Operations like `move` and `copy` can have similar issues if they are overriding
 
 ## Usage: As a CLI
 
-To install:
+To install the CLI, use the latest exe from [releases](https://github.com/domsleee/ForceOps/releases).
+
+Alternatively, it can be installed as a tool, using the [.NET 7 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0).
 ```bash
 dotnet tool install -g forceops
 ```
