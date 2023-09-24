@@ -2,7 +2,7 @@
     <PropertyGroup>
         <Description>By hook or by crook, perform operations on files and directories. If they are
             in use by a process, kill the process.</Description>
-        <Version>1.2.0</Version>
+        <Version>1.2.1</Version>
         <PackageProjectUrl>https://github.com/domsleee/forceops</PackageProjectUrl>
         <RepositoryUrl>https://github.com/domsleee/forceops</RepositoryUrl>
         <RepositoryType>git</RepositoryType>

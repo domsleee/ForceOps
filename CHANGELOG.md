@@ -1,4 +1,7 @@
 ## Release 1.2.0
+* Prevent hanging on process kill by @domsleee in https://github.com/domsleee/ForceOps/pull/23
+
+## Release 1.2.0
 * Add aot, and exe in release
 * Add "list" subcommand
 * Improve kill processes to not crash on a Win32 exception
