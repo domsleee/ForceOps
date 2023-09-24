@@ -15,6 +15,7 @@ public class ListFileOrDirectoryLocksTest : IDisposable
 	{
 		var testContext = new TestContext();
 		using var launchedProcess = LaunchCmdWithCommand(workingDirectory: tempDirectoryPath);
+		Thread.Sleep(1000);
 		new ListFileOrDirectoryLocks(testContext.forceOpsContext).PrintLocks(tempDirectoryPath);
 
 		var stdoutString = stdoutStringBuilder.ToString();
