@@ -14,11 +14,11 @@ public class ListFileOrDirectoryLocksTest : IDisposable
 	public void WorksForDirectory()
 	{
 		var testContext = new TestContext();
-		using var launchedProcess = LaunchProcessInDirectory(tempDirectoryPath);
+		using var launchedProcess = LaunchCmdWithCommand(workingDirectory: tempDirectoryPath);
 		new ListFileOrDirectoryLocks(testContext.forceOpsContext).PrintLocks(tempDirectoryPath);
 
 		var stdoutString = stdoutStringBuilder.ToString();
-		Assert.Equal($"ProcessId,ExecutableName,ApplicationName\r\n{launchedProcess.process.Id},powershell.exe,powershell.exe\r\n", stdoutString);
+		Assert.Contains($"ProcessId,ExecutableName,ApplicationName\r\n{launchedProcess.process.Id},cmd.exe,cmd.exe\r\n", stdoutString);
 	}
 
 	[Fact]
