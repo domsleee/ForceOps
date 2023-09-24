@@ -28,6 +28,7 @@ public class ListFileOrDirectoryLocksTest : IDisposable
 		var testContext = new TestContext();
 		var tempFilePath = GetTemporaryFileName();
 		using var launchedProcess = HoldLockOnFileUsingPowershell(tempFilePath);
+		Thread.Sleep(1000); // for reliability
 		new ListFileOrDirectoryLocks(testContext.forceOpsContext).PrintLocks(tempFilePath);
 
 		var stdoutString = stdoutStringBuilder.ToString();
