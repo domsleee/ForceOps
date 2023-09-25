@@ -1,4 +1,4 @@
-## Release 1.2.0
+## Release 1.2.1
 * Prevent hanging on process kill by @domsleee in https://github.com/domsleee/ForceOps/pull/23
 * Disable parallelization on tests
 
