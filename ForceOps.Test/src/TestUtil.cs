@@ -95,6 +95,12 @@ public static class TestUtil
 		return Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
 	}
 
+	public static string GetStdoutString(StringBuilder stdoutStringBuilder)
+	{
+		Console.Out.Flush();
+		return stdoutStringBuilder.ToString();
+	}
+
 	public static IDisposable CreateTemporaryDirectory(string directory)
 	{
 		Directory.CreateDirectory(directory);

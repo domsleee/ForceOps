@@ -65,7 +65,8 @@ public sealed class ProgramTest : IDisposable
 		string exeNameOverride = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "forceops.exe");
 		testContext.forceOpsContext.relaunchAsElevated = new RelaunchAsElevated() { verb = "", exeNameOverride = exeNameOverride };
 		var forceOps = new ForceOps(new[] { "delete", tempDirectoryPath }, testContext.forceOpsContext);
-		Assert.True(0 == forceOps.Run(), forceOps.caughtException?.ToString() + testContext.fakeLoggerFactory.GetAllLogsString() + stdoutStringBuilder.ToString());
+		var stdoutString = GetStdoutString(stdoutStringBuilder);
+		Assert.True(0 == forceOps.Run(), forceOps.caughtException?.ToString() + testContext.fakeLoggerFactory.GetAllLogsString() + stdoutString);
 		Assert.True(!Directory.Exists(tempDirectoryPath), "Deleted by relaunch");
 		Assert.Contains("Unable to perform operation as an unelevated process. Retrying as elevated and logging to", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
@@ -107,7 +108,6 @@ public sealed class ProgramTest : IDisposable
 		Assert.Equal(ExitCode.FileNotFound, testContext.friendlyExitCode);
 		Assert.Equal(@"Cannot list locks of 'C:\C:\C:\'. No such file or directory", testContext.friendlyExitMessage);
 	}
-
 
 	public ProgramTest()
 	{
