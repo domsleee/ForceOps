@@ -117,6 +117,7 @@ public static class TestUtil
 		return Disposable.Create(() =>
 		{
 			Console.SetOut(originalConsoleOut);
+			Console.Out.Flush();
 		});
 	}
 }
