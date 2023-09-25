@@ -2,7 +2,7 @@
  ini
 
 BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.20348.1970), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 2 logical and 2 physical cores
+Intel Xeon Platinum 8272CL CPU 2.60GHz, 1 CPU, 2 logical and 2 physical cores
 .NET SDK=7.0.401
   [Host]   : .NET 7.0.11 (7.0.1123.42427), X64 RyuJIT AVX2
   .NET 7.0 : .NET 7.0.11 (7.0.1123.42427), X64 RyuJIT AVX2
@@ -12,10 +12,10 @@ UnrollFactor=1
 
 ```
 
-|                               Method | NumFiles | FileSize | IsInsideDirectory |     Mean |   Error |   StdDev |   Median |
-|------------------------------------- |--------- |--------- |------------------ |---------:|--------:|---------:|---------:|
-| **ForceOps.Lib.FileAndDirectoryDeleter** |     **1000** |       **10** |             **False** | **133.9 ms** | **7.56 ms** | **21.93 ms** | **140.7 ms** |
-|           System.IO.Directory.Delete |     1000 |       10 |             False | 135.4 ms | 8.15 ms | 23.91 ms | 136.7 ms |
-| **ForceOps.Lib.FileAndDirectoryDeleter** |     **1000** |       **10** |              **True** | **203.0 ms** | **3.98 ms** |  **7.76 ms** | **204.3 ms** |
-|           System.IO.Directory.Delete |     1000 |       10 |              True | 204.4 ms | 4.02 ms |  8.12 ms | 206.7 ms |
+|                               Method | NumFiles | FileSize | IsInsideDirectory |     Mean |    Error |    StdDev |   Median |
+|------------------------------------- |--------- |--------- |------------------ |---------:|---------:|----------:|---------:|
+| **ForceOps.Lib.FileAndDirectoryDeleter** |     **1000** |       **10** |             **False** | **109.8 ms** |  **2.18 ms** |   **5.35 ms** | **109.7 ms** |
+|           System.IO.Directory.Delete |     1000 |       10 |             False | 110.0 ms |  2.20 ms |   4.59 ms | 110.3 ms |
+| **ForceOps.Lib.FileAndDirectoryDeleter** |     **1000** |       **10** |              **True** | **199.8 ms** |  **3.36 ms** |   **2.98 ms** | **198.7 ms** |
+|           System.IO.Directory.Delete |     1000 |       10 |              True | 387.7 ms | 99.26 ms | 286.38 ms | 203.7 ms |
 
