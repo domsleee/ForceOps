@@ -31,15 +31,42 @@ public static class TestUtil
 			}
 		};
 
-		List<string> output = new();
-		List<string> error = new();
+		StartProcessUntilProcessHasBeenLoadedMessage(process);
+
+		return new WrappedProcess(process);
+	}
+
+	public static WrappedProcess LaunchCmdWithCommand(string command = "", string workingDirectory = "")
+	{
+		var process = new Process
+		{
+			StartInfo = new ProcessStartInfo
+			{
+				FileName = "cmd",
+				WorkingDirectory = workingDirectory,
+				Arguments = $"/c \"{command}; echo process has been loaded && timeout /t 10 /nobreak\"",
+				RedirectStandardOutput = true,
+				RedirectStandardError = true,
+				CreateNoWindow = true
+			}
+		};
+
+		StartProcessUntilProcessHasBeenLoadedMessage(process);
+
+		return new WrappedProcess(process);
+	}
+
+	static void StartProcessUntilProcessHasBeenLoadedMessage(Process process)
+	{
+		string output = "";
+		string error = "";
 		process.OutputDataReceived += (sender, e) =>
 		{
-			if (e.Data != null) output.Add(e.Data);
+			if (e.Data != null) output += $"{e.Data}{System.Environment.NewLine}";
 		};
 		process.ErrorDataReceived += (sender, e) =>
 		{
-			if (e.Data != null) error.Add(e.Data);
+			if (e.Data != null) error += $"{e.Data}{System.Environment.NewLine}";
 		};
 
 		process.Start();
@@ -48,26 +75,30 @@ public static class TestUtil
 
 		var startTime = DateTime.Now;
 
-		while (!(output.LastOrDefault() ?? "").EndsWith("process has been loaded") && !process.HasExited)
+		while (!output.Contains("process has been loaded") && !process.HasExited)
 		{
 			Thread.Sleep(50);
 			if (DateTime.Now.Subtract(startTime).TotalSeconds > 5)
 			{
-				throw new Exception("Gave up after waiting 5 seconds");
+				throw new Exception($"Gave up after waiting 5 seconds.\nOutput: {output}\nError: {error}");
 			}
 		}
 
 		if (process.HasExited)
 		{
-			throw new Exception($"Process has exited unexpectedly.\nOutput: {string.Join("\n", output)}\nError: {string.Join("\n", error)}");
+			throw new Exception($"Process has exited unexpectedly.\nOutput: {output}\nError: {error}");
 		}
-
-		return new WrappedProcess(process);
 	}
 
 	public static string GetTemporaryFileName()
 	{
 		return Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
+	}
+
+	public static string GetStdoutString(StringBuilder stdoutStringBuilder)
+	{
+		Console.Out.Flush();
+		return stdoutStringBuilder.ToString();
 	}
 
 	public static IDisposable CreateTemporaryDirectory(string directory)
@@ -86,11 +117,13 @@ public static class TestUtil
 	public static IDisposable RedirectStdout(StringBuilder stringBuilder)
 	{
 		var originalConsoleOut = Console.Out;
+		Console.Out.Flush();
 		Console.SetOut(new StringWriter(stringBuilder));
 
 		return Disposable.Create(() =>
 		{
 			Console.SetOut(originalConsoleOut);
+			Console.Out.Flush();
 		});
 	}
 }
