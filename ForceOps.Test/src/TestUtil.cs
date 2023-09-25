@@ -111,6 +111,7 @@ public static class TestUtil
 	public static IDisposable RedirectStdout(StringBuilder stringBuilder)
 	{
 		var originalConsoleOut = Console.Out;
+		Console.Out.Flush();
 		Console.SetOut(new StringWriter(stringBuilder));
 
 		return Disposable.Create(() =>
