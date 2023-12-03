@@ -41,6 +41,21 @@ public sealed class ProgramTest : IDisposable
 	}
 
 	[Fact]
+	public void RetryDelayAndMaxRetriesWork()
+	{
+		using var launchedProcess = LaunchProcessInDirectory(tempDirectoryPath);
+		var testContext = new TestContext();
+		testContext.relaunchAsElevatedMock.Setup(t => t.RelaunchAsElevated(It.IsAny<List<string>>(), It.IsAny<string>())).Returns(0);
+		testContext.forceOpsContext.processKiller = new Mock<IProcessKiller>().Object;
+
+		var forceOps = new ForceOps(new[] { "delete", tempDirectoryPath, "--retry-delay", "33", "--max-retries", "8" }, testContext.forceOpsContext);
+		Assert.Equal(0, forceOps.Run());
+
+		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(It.IsAny<List<string>>(), It.IsAny<string>()), Times.Once());
+		Assert.Contains("Beginning retry 1/8 in 33ms.", testContext.fakeLoggerFactory.GetAllLogsString());
+	}
+
+	[Fact]
 	public void ExceptionThrownIfAlreadyElevated()
 	{
 		using var launchedProcess = LaunchProcessInDirectory(tempDirectoryPath);
