@@ -1,3 +1,6 @@
+## Release 1.3.1
+* Fix `forceops delete -h` help command
+
 ## Release 1.3.0
 * Add `--retry-delay` and `--max-retries` options to `delete` command.
 
