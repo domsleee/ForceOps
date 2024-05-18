@@ -10,7 +10,7 @@
         <PackageTags>lock file directory force delete</PackageTags>
         <PackageReleaseNotes>https://github.com/domsleee/forceops/blob/main/CHANGELOG.md</PackageReleaseNotes>
 
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <RollForward>LatestMajor</RollForward>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
