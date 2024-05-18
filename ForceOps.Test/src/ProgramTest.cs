@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using ForceOps.Lib;
 using Moq;
 using static ForceOps.Test.TestUtil;
@@ -81,9 +82,55 @@ public sealed class ProgramTest : IDisposable
 		testContext.forceOpsContext.relaunchAsElevated = new RelaunchAsElevated() { verb = "", exeNameOverride = exeNameOverride };
 		var forceOps = new ForceOps(new[] { "delete", tempDirectoryPath }, testContext.forceOpsContext);
 		var stdoutString = GetStdoutString(stdoutStringBuilder);
-		Assert.True(0 == forceOps.Run(), forceOps.caughtException?.ToString() + testContext.fakeLoggerFactory.GetAllLogsString() + stdoutString);
+		Assert.True(0 == forceOps.Run(), BuildFailMessage(testContext, forceOps, stdoutString));
 		Assert.True(!Directory.Exists(tempDirectoryPath), "Deleted by relaunch");
 		Assert.Contains("Unable to perform operation as an unelevated process. Retrying as elevated and logging to", testContext.fakeLoggerFactory.GetAllLogsString());
+	}
+
+	string BuildFailMessage(TestContext testContext, ForceOps forceOps, string stdoutString)
+	{
+		var sb = new StringBuilder();
+		sb.AppendLine("Caught Exception");
+		sb.AppendLine("======");
+		sb.Append(forceOps.caughtException?.ToString());
+		sb.AppendLine();
+
+		sb.AppendLine("LogFactory Logs");
+		sb.AppendLine("======");
+		var logFactoryLogsString = testContext.fakeLoggerFactory.GetAllLogsString();
+		sb.AppendLine(logFactoryLogsString);
+		sb.AppendLine();
+
+		sb.AppendLine("stdoutString");
+		sb.AppendLine("======");
+		sb.AppendLine(stdoutString);
+		sb.AppendLine();
+
+		sb.AppendLine("elevatedLogs");
+		sb.AppendLine("======");
+		// logFactoryLogsString has a line like this:
+		// Retrying as elevated and logging to "C:\Users\user\AppData\Local\Temp\tmpneo0gl.tmp"
+		// Extract that line using regex, and output the logs hhere.
+		var match = Regex.Match(logFactoryLogsString, @"Retrying as elevated and logging to ""(.+)""");
+		if (match.Success)
+		{
+			var elevatedLogFilePath = match.Groups[1].Value;
+			sb.AppendLine($"Log file: {elevatedLogFilePath}");
+			try
+			{
+				sb.AppendLine(File.ReadAllText(elevatedLogFilePath));
+			}
+			catch (Exception ex)
+			{
+				sb.AppendLine($"Error reading elevated logs: {ex.Message}");
+			}
+		}
+		else
+		{
+			sb.AppendLine("No elevated log file path found.");
+		}
+
+		return sb.ToString();
 	}
 
 	[Fact]
