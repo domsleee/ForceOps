@@ -21,23 +21,33 @@ Refer also to `10.4 Example: file deletion in Windows` from "A Philosophy of Sof
 ### Deleting when a process owned by the current user is using it
 ```shell
 ❯ forceops rm .\bin\
-[14:55:33 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.dll". Beginning retry 1/5 in 500ms. ForceOps process is not elevated. Found 1 process to try to kill: [100724 - myprogram.exe].
-[14:55:34 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.dll". Beginning retry 2/5 in 500ms. ForceOps process is not elevated. Found 0 processes to try to kill: [].
+[14:55:33 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.dll". Beginning retry 1/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: [100724 - myprogram.exe].
+[14:55:34 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.dll". Beginning retry 2/10 in 50ms. ForceOps process is not elevated. Found 0 processes to try to kill: [].
 ```
 ### Deleting when a process owned by another user is using it (e.g. a windows service)
 ```shell
 ❯ forceops rm .\bin\Debug\net6\myprogram.exe
-[15:07:34 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 1/5 in 500ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
-[15:07:34 WRN] Failed to kill process 115744: Access is denied.
-[15:07:35 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 2/5 in 500ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
-[15:07:35 WRN] Failed to kill process 115744: Access is denied.
-[15:07:36 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 3/5 in 500ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
-[15:07:37 WRN] Failed to kill process 115744: Access is denied.
-[15:07:37 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 4/5 in 500ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
-[15:07:38 WRN] Failed to kill process 115744: Access is denied.
-[15:07:38 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 5/5 in 500ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
+[15:07:39 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 1/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
 [15:07:39 WRN] Failed to kill process 115744: Access is denied.
-[15:07:39 INF] Exceeded retry count of 5. Failed. ForceOps process is not elevated.
+[15:07:39 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 2/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
+[15:07:39 WRN] Failed to kill process 115744: Access is denied.
+[15:07:39 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 3/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
+[15:07:39 WRN] Failed to kill process 115744: Access is denied.
+[15:07:39 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 4/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
+[15:07:39 WRN] Failed to kill process 115744: Access is denied.
+[15:07:39 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 5/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
+[15:07:39 WRN] Failed to kill process 115744: Access is denied.
+[15:07:39 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 6/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
+[15:07:39 WRN] Failed to kill process 115744: Access is denied.
+[15:07:39 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 7/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
+[15:07:39 WRN] Failed to kill process 115744: Access is denied.
+[15:07:39 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 8/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
+[15:07:39 WRN] Failed to kill process 115744: Access is denied.
+[15:07:39 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 9/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
+[15:07:39 WRN] Failed to kill process 115744: Access is denied.
+[15:07:39 INF] Could not delete file "C:\Users\user\myprogram\bin\Debug\net6\myprogram.exe". Beginning retry 10/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: [115744 - ].
+[15:07:39 WRN] Failed to kill process 115744: Access is denied.
+[15:07:39 INF] Exceeded retry count of 10. Failed. ForceOps process is not elevated.
 [15:07:39 INF] Unable to perform operation as an unelevated process. Retrying as elevated and logging to "C:\Users\user\AppData\Local\Temp\tmp9C14.tmp".
 [15:07:42 INF] Successfully deleted as admin
 ```

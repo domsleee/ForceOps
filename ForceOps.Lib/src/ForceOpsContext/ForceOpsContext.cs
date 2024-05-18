@@ -6,12 +6,12 @@ public class ForceOpsContext
 	/// The number of retries when performing an operation.
 	/// For example, five retries equals six total attempts.
 	/// </summary>
-	public int maxRetries = 5;
+	public int maxRetries = 10;
 
 	/// <summary>
 	/// The time to wait between before retrying the operation.
 	/// </summary>
-	public TimeSpan retryDelay = TimeSpan.FromMilliseconds(500);
+	public TimeSpan retryDelay = TimeSpan.FromMilliseconds(50);
 
 	public IProcessKiller processKiller;
 	public IElevateUtils elevateUtils;

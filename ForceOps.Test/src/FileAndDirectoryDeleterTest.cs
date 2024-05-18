@@ -21,12 +21,12 @@ public class ForceOpsMethodsTest : IDisposable
 		Assert.IsType<IOException>(exceptionWithNoRetries);
 		Assert.StartsWith("The process cannot access the file", exceptionWithNoRetries.Message);
 
-		forceOpsContext.maxRetries = 5;
+		forceOpsContext.maxRetries = 10;
 		var exceptionWithDirectoryStrategy = Record.Exception(() => fileAndDirectoryDeleter.DeleteDirectory(new DirectoryInfo(tempFolderPath)));
 		Assert.True(null == exceptionWithDirectoryStrategy, testContext.fakeLoggerFactory.GetAllLogsString());
 
 		Assert.Matches(@"Exceeded retry count of 0. Failed. ForceOps process is not elevated.
-Could not delete directory .*. Beginning retry 1/5 in 500ms. ForceOps process is not elevated. Found 1 process to try to kill: \[\d+ \- powershell.exe\]", testContext.fakeLoggerFactory.GetAllLogsString());
+Could not delete directory .*. Beginning retry 1/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: \[\d+ \- powershell.exe\]", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
 
 	[Fact]
@@ -40,12 +40,12 @@ Could not delete directory .*. Beginning retry 1/5 in 500ms. ForceOps process is
 		Assert.IsType<IOException>(exceptionWithNoRetries);
 		Assert.StartsWith("The process cannot access the file", exceptionWithNoRetries.Message);
 
-		forceOpsContext.maxRetries = 5;
+		forceOpsContext.maxRetries = 10;
 		var exceptionWithDirectoryStrategy = Record.Exception(() => fileAndDirectoryDeleter.DeleteDirectory(new DirectoryInfo(tempFolderPath)));
 		Assert.True(null == exceptionWithDirectoryStrategy, testContext.fakeLoggerFactory.GetAllLogsString());
 
 		Assert.Matches(@"Exceeded retry count of 0. Failed. ForceOps process is not elevated.
-Could not delete directory .*. Beginning retry 1/5 in 500ms. ForceOps process is not elevated. Found 1 process to try to kill: \[\d+ \- powershell.exe\]", testContext.fakeLoggerFactory.GetAllLogsString());
+Could not delete directory .*. Beginning retry 1/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: \[\d+ \- powershell.exe\]", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
 
 	[Fact]
@@ -59,12 +59,12 @@ Could not delete directory .*. Beginning retry 1/5 in 500ms. ForceOps process is
 		Assert.IsType<IOException>(exceptionWithNoRetries);
 		Assert.StartsWith("The process cannot access the file", exceptionWithNoRetries.Message);
 
-		forceOpsContext.maxRetries = 5;
+		forceOpsContext.maxRetries = 10;
 		var exceptionWithDirectoryStrategy = Record.Exception(() => fileAndDirectoryDeleter.DeleteFile(new FileInfo(tempFilePath)));
 		Assert.True(null == exceptionWithDirectoryStrategy, testContext.fakeLoggerFactory.GetAllLogsString());
 
 		Assert.Matches($@"Exceeded retry count of 0. Failed. ForceOps process is not elevated.
-Could not delete file .*. Beginning retry 1/5 in 500ms. ForceOps process is not elevated. Found 1 process to try to kill: \[\d+ \- powershell.exe\]", testContext.fakeLoggerFactory.GetAllLogsString());
+Could not delete file .*. Beginning retry 1/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: \[\d+ \- powershell.exe\]", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
 
 	[Fact]
@@ -79,12 +79,12 @@ Could not delete file .*. Beginning retry 1/5 in 500ms. ForceOps process is not 
 		Assert.IsType<IOException>(exceptionWithNoRetries);
 		Assert.StartsWith("The process cannot access the file", exceptionWithNoRetries.Message);
 
-		forceOpsContext.maxRetries = 5;
+		forceOpsContext.maxRetries = 10;
 		var exceptionWithDirectoryStrategy = Record.Exception(() => fileAndDirectoryDeleter.DeleteFile(new FileInfo(tempFilePath)));
 		Assert.True(null == exceptionWithDirectoryStrategy, testContext.fakeLoggerFactory.GetAllLogsString());
 
 		Assert.Matches($@"Exceeded retry count of 0. Failed. ForceOps process is not elevated.
-Could not delete file .*. Beginning retry 1/5 in 500ms. ForceOps process is not elevated. Found 1 process to try to kill: \[\d+ \- powershell.exe\]", testContext.fakeLoggerFactory.GetAllLogsString());
+Could not delete file .*. Beginning retry 1/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: \[\d+ \- powershell.exe\]", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
 
 	public ForceOpsMethodsTest()
