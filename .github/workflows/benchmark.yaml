@@ -14,16 +14,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          fetch-depth: 0
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - name: Build Deps
-        run: |
-          cd subrepos/LockCheck;
-          dotnet build -c release
       - name: Run benchmark
         run: cd ForceOps.Benchmarks && dotnet run -c release --exporters json --filter '*'
       - name: Store benchmark result

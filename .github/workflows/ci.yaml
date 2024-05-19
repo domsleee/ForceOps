@@ -16,9 +16,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          fetch-depth: 0 # Required by LockCheck CI
 
       - name: Install Dotnet
         uses: actions/setup-dotnet@v4
@@ -27,11 +24,6 @@ jobs:
 
       - name: Dotnet Installation Info
         run: dotnet --info
-
-      - name: Build Deps
-        run: |
-          cd subrepos/LockCheck;
-          dotnet build -c release
 
       - name: Build
         run: dotnet build
