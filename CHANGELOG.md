@@ -1,3 +1,6 @@
+## Release 1.4.0
+* Update to .net8
+
 ## Release 1.3.1
 * Fix `forceops delete -h` help command
 
