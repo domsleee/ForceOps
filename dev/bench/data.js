@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1716095534141,
+  "lastUpdate": 1716097069338,
   "repoUrl": "https://github.com/domsleee/ForceOps",
   "entries": {
     "ForceOps Benchmarks": [
@@ -864,6 +864,54 @@ window.BENCHMARK_DATA = {
             "value": 206026558.33333334,
             "unit": "ns",
             "range": "± 2299341.8071891526"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "domslee1@gmail.com",
+            "name": "Dom Slee",
+            "username": "domsleee"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "faaf5c2b8f44353956e8050ea9e2e48da5086aee",
+          "message": "chore(release): 1.4.0 (#32)\n\n* Update to use .NET8 ([.NET7 end of life was 14th May 2024](https://learn.microsoft.com/en-us/lifecycle/products/microsoft-net-and-net-core))\r\n* Change defaults:\r\n   *  retry delay from 500ms to 50ms \r\n   * number of retries from 5 to 10\r\n* Use [LockChecker](https://www.nuget.org/packages/lockchecker), a fork of [LockCheck](https://github.com/cklutz/LockCheck), instead of git submodules\r\n   * It makes the build faster and it makes it easier to use [ForceOps.Lib](https://www.nuget.org/packages/ForceOps.Lib)\r\n* Update BenchmarkDotNet",
+          "timestamp": "2024-05-19T15:35:20+10:00",
+          "tree_id": "deab2360e8d05e09ee368835fcdb350aa32e3fc7",
+          "url": "https://github.com/domsleee/ForceOps/commit/faaf5c2b8f44353956e8050ea9e2e48da5086aee"
+        },
+        "date": 1716097063331,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1000, FileSize: 10, IsInsideDirectory: False)",
+            "value": 109359505.26315789,
+            "unit": "ns",
+            "range": "± 2318112.9026462897"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1000, FileSize: 10, IsInsideDirectory: False)",
+            "value": 108492159.375,
+            "unit": "ns",
+            "range": "± 3165634.0108858133"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1000, FileSize: 10, IsInsideDirectory: True)",
+            "value": 207855092.85714287,
+            "unit": "ns",
+            "range": "± 2993783.1537176366"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1000, FileSize: 10, IsInsideDirectory: True)",
+            "value": 208833300,
+            "unit": "ns",
+            "range": "± 4240137.907163481"
           }
         ]
       }
