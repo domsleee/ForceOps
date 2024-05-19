@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-20231206-090053</title>
+<title>ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark-20240519-040824</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -13,23 +13,23 @@
 </head>
 <body>
 <pre><code>
-BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.20348.2113), VM=Hyper-V
+BenchmarkDotNet=v0.13.5, OS=Windows 10 (10.0.20348.2461), VM=Hyper-V
 AMD EPYC 7763, 1 CPU, 4 logical and 2 physical cores
-.NET SDK=8.0.100
-  [Host]   : .NET 8.0.0 (8.0.23.53103), X64 RyuJIT AVX2
-  .NET 7.0 : .NET 8.0.0 (8.0.23.53103), X64 RyuJIT AVX2
+.NET SDK=8.0.300
+  [Host]   : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
+  .NET 8.0 : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
 </code></pre>
-<pre><code>Job=.NET 7.0  Runtime=.NET 7.0  InvocationCount=1  
+<pre><code>Job=.NET 8.0  Runtime=.NET 8.0  InvocationCount=1  
 UnrollFactor=1  
 </code></pre>
 
 <table>
 <thead><tr><th>                        Method</th><th>NumFiles</th><th>FileSize</th><th>IsInsideDirectory</th><th>Mean</th><th>Error</th><th>StdDev</th>
 </tr>
-</thead><tbody><tr><td>ForceOps.Lib.FileAndDirectoryDeleter</td><td>1000</td><td>10</td><td>False</td><td>107.0 ms</td><td>2.04 ms</td><td>2.79 ms</td>
-</tr><tr><td>System.IO.Directory.Delete</td><td>1000</td><td>10</td><td>False</td><td>107.6 ms</td><td>2.03 ms</td><td>2.91 ms</td>
-</tr><tr><td>ForceOps.Lib.FileAndDirectoryDeleter</td><td>1000</td><td>10</td><td>True</td><td>199.7 ms</td><td>2.99 ms</td><td>2.50 ms</td>
-</tr><tr><td>System.IO.Directory.Delete</td><td>1000</td><td>10</td><td>True</td><td>200.8 ms</td><td>3.97 ms</td><td>3.52 ms</td>
+</thead><tbody><tr><td>ForceOps.Lib.FileAndDirectoryDeleter</td><td>1000</td><td>10</td><td>False</td><td>108.1 ms</td><td>2.11 ms</td><td>2.89 ms</td>
+</tr><tr><td>System.IO.Directory.Delete</td><td>1000</td><td>10</td><td>False</td><td>110.3 ms</td><td>2.21 ms</td><td>2.87 ms</td>
+</tr><tr><td>ForceOps.Lib.FileAndDirectoryDeleter</td><td>1000</td><td>10</td><td>True</td><td>204.3 ms</td><td>3.20 ms</td><td>3.93 ms</td>
+</tr><tr><td>System.IO.Directory.Delete</td><td>1000</td><td>10</td><td>True</td><td>205.2 ms</td><td>2.65 ms</td><td>2.21 ms</td>
 </tr></tbody></table>
 </body>
 </html>
