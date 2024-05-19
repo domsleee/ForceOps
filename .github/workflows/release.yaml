@@ -43,10 +43,10 @@ jobs:
         run: dotnet --info
 
       - name: Pack
-        run: dotnet pack -c release
+        run: dotnet pack -c release /p:ContinuousIntegrationBuild=true
 
       - name: Build (AOT)
-        run: dotnet publish -c release /p:UseAot=1
+        run: dotnet publish -c release /p:UseAot=1 /p:ContinuousIntegrationBuild=true
 
       - name: Create release
         if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
