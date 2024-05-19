@@ -4,8 +4,8 @@ using ForceOps.Lib;
 
 namespace ForceOps.Benchmarks;
 
-// [SimpleJob(RuntimeMoniker.NativeAot70)]
-[SimpleJob(RuntimeMoniker.Net70)]
+// [SimpleJob(RuntimeMoniker.NativeAot80)]
+[SimpleJob(RuntimeMoniker.Net80)]
 public class FileAndDirectoryDeleterBenchmark
 {
 	readonly List<byte[]> fileDatas = new();

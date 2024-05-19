@@ -19,9 +19,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          fetch-depth: 0
 
       - name: Get version
         id: get_version
@@ -44,11 +41,6 @@ jobs:
 
       - name: Dotnet Installation Info
         run: dotnet --info
-
-      - name: Build Deps
-        run: |
-          cd subrepos/LockCheck;
-          dotnet build -c release
 
       - name: Pack
         run: dotnet pack -c release
