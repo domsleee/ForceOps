@@ -1,3 +1,6 @@
+## Release 1.4.1
+* Use `ContinuousIntegrationBuild` flag for deterministic builds by @domsleee in https://github.com/domsleee/ForceOps/pull/34
+
 ## Release 1.4.0
 * Update to use .NET8 ([.NET7 end of life was 14th May 2024](https://learn.microsoft.com/en-us/lifecycle/products/microsoft-net-and-net-core))
 * Change defaults:
