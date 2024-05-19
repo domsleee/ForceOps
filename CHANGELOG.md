@@ -1,5 +1,11 @@
 ## Release 1.4.0
-* Update to .net8
+* Update to use .NET8 ([.NET7 end of life was 14th May 2024](https://learn.microsoft.com/en-us/lifecycle/products/microsoft-net-and-net-core))
+* Change defaults:
+   *  retry delay from 500ms to 50ms
+   * number of retries from 5 to 10
+* Use [LockChecker](https://www.nuget.org/packages/lockchecker), a fork of [LockCheck](https://github.com/cklutz/LockCheck), instead of git submodules
+   * It makes the build faster and it makes it easier to use [ForceOps.Lib](https://www.nuget.org/packages/ForceOps.Lib)
+* Update BenchmarkDotNet
 
 ## Release 1.3.1
 * Fix `forceops delete -h` help command
