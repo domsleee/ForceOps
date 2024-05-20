@@ -9,6 +9,7 @@
         <Authors>Dom Slee</Authors>
         <PackageTags>lock file directory force delete</PackageTags>
         <PackageReleaseNotes>https://github.com/domsleee/forceops/blob/main/CHANGELOG.md</PackageReleaseNotes>
+        <IsPackable>false</IsPackable>
 
         <TargetFramework>net8.0</TargetFramework>
         <RollForward>LatestMajor</RollForward>

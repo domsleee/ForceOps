@@ -141,7 +141,7 @@ internal class ForceOps
 			var childProcessExitCode = forceOpsContext.relaunchAsElevated.RelaunchAsElevated(args, childOutputFile);
 			if (childProcessExitCode != 0)
 			{
-				throw new AggregateException($"Child process failed with {childProcessExitCode}.");
+				throw new AggregateException($"Child process failed with exit code {childProcessExitCode}.");
 			}
 			else
 			{

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Reactive.Disposables;
-using System.Text;
 
 namespace ForceOps.Test;
 
@@ -13,10 +12,10 @@ public static class TestUtil
 
 	public static WrappedProcess HoldLockOnFileUsingPowershell(string filePath)
 	{
-		return LaunchPowershellWithCommand(command: $"[System.IO.File]::Open('{filePath}', 'OpenOrCreate')");
+		return LaunchPowershellWithCommand(command: $"$file = [System.IO.File]::Open('{filePath}', 'CreateNew')");
 	}
 
-	public static WrappedProcess LaunchPowershellWithCommand(string command = "", string workingDirectory = "")
+	static WrappedProcess LaunchPowershellWithCommand(string command = "", string workingDirectory = "")
 	{
 		var process = new Process
 		{
@@ -24,27 +23,7 @@ public static class TestUtil
 			{
 				FileName = "powershell",
 				WorkingDirectory = workingDirectory,
-				Arguments = $"-NoProfile -Command \"{command}; echo 'process has been loaded'; sleep 10000\"",
-				RedirectStandardOutput = true,
-				RedirectStandardError = true,
-				CreateNoWindow = true
-			}
-		};
-
-		StartProcessUntilProcessHasBeenLoadedMessage(process);
-
-		return new WrappedProcess(process);
-	}
-
-	public static WrappedProcess LaunchCmdWithCommand(string command = "", string workingDirectory = "")
-	{
-		var process = new Process
-		{
-			StartInfo = new ProcessStartInfo
-			{
-				FileName = "cmd",
-				WorkingDirectory = workingDirectory,
-				Arguments = $"/c \"{command}; echo process has been loaded && timeout /t 10 /nobreak\"",
+				Arguments = $"-NoProfile -Command \"$ErrorActionPreference='stop'; {command}; echo 'process has been loaded'; sleep 10000\"",
 				RedirectStandardOutput = true,
 				RedirectStandardError = true,
 				CreateNoWindow = true
@@ -95,12 +74,6 @@ public static class TestUtil
 		return Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
 	}
 
-	public static string GetStdoutString(StringBuilder stdoutStringBuilder)
-	{
-		Console.Out.Flush();
-		return stdoutStringBuilder.ToString();
-	}
-
 	public static IDisposable CreateTemporaryDirectory(string directory)
 	{
 		Directory.CreateDirectory(directory);
@@ -111,19 +84,6 @@ public static class TestUtil
 				Directory.Delete(directory);
 			}
 			catch { }
-		});
-	}
-
-	public static IDisposable RedirectStdout(StringBuilder stringBuilder)
-	{
-		var originalConsoleOut = Console.Out;
-		Console.Out.Flush();
-		Console.SetOut(new StringWriter(stringBuilder));
-
-		return Disposable.Create(() =>
-		{
-			Console.SetOut(originalConsoleOut);
-			Console.Out.Flush();
 		});
 	}
 }

@@ -14,6 +14,6 @@ public class WrappedProcess : IDisposable
 	void IDisposable.Dispose()
 	{
 		process.Kill();
-		process.WaitForExit(1);
+		process.WaitForExit();
 	}
 }
