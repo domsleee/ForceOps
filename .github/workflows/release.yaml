@@ -45,19 +45,20 @@ jobs:
       - name: Pack
         run: |
           dotnet pack -c release /p:ContinuousIntegrationBuild=true
-          cp -r nupkg nupkg_pack
+          cp -r ForceOps/nupkg ForceOps/nupkg_pack
           dotnet clean
 
       - name: Build (AOT)
         run: |
           dotnet publish -c release /p:UseAot=1 /p:ContinuousIntegrationBuild=true
-          cp -r bin bin_aot
+          cp -r ForceOps/bin ForceOps/bin_aot
           dotnet clean
 
       - name: Build (release)
         run: |
           dotnet publish -c release /p:ContinuousIntegrationBuild=true
-          cp -r nupkg nupkg_release
+          cp -r ForceOps.Lib/nupkg ForceOps.Lib/nupkg_release
+
 
       - name: Create release
         if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
