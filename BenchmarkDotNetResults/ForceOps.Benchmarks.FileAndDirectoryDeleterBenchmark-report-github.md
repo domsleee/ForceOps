@@ -14,8 +14,8 @@ UnrollFactor=1
 
 | Method                               | NumFiles | FileSize | IsInsideDirectory | Mean     | Error   | StdDev  |
 |------------------------------------- |--------- |--------- |------------------ |---------:|--------:|--------:|
-| **ForceOps.Lib.FileAndDirectoryDeleter** | **1000**     | **10**       | **False**             | **105.9 ms** | **2.11 ms** | **3.10 ms** |
-| System.IO.Directory.Delete           | 1000     | 10       | False             | 107.8 ms | 2.00 ms | 4.27 ms |
-| **ForceOps.Lib.FileAndDirectoryDeleter** | **1000**     | **10**       | **True**              | **204.2 ms** | **3.80 ms** | **5.07 ms** |
-| System.IO.Directory.Delete           | 1000     | 10       | True              | 204.3 ms | 3.95 ms | 3.30 ms |
+| **ForceOps.Lib.FileAndDirectoryDeleter** | **1000**     | **10**       | **False**             | **105.1 ms** | **1.71 ms** | **1.51 ms** |
+| System.IO.Directory.Delete           | 1000     | 10       | False             | 104.6 ms | 2.02 ms | 2.41 ms |
+| **ForceOps.Lib.FileAndDirectoryDeleter** | **1000**     | **10**       | **True**              | **199.0 ms** | **3.80 ms** | **3.37 ms** |
+| System.IO.Directory.Delete           | 1000     | 10       | True              | 200.9 ms | 3.14 ms | 2.78 ms |
 
