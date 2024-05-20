@@ -43,10 +43,17 @@ jobs:
         run: dotnet --info
 
       - name: Pack
-        run: dotnet pack -c release /p:ContinuousIntegrationBuild=true
+        run: |
+          dotnet pack -c release /p:ContinuousIntegrationBuild=true
+          cp -r ForceOps/nupkg ForceOps/nupkg_pack
+          cp -r ForceOps.Lib/nupkg ForceOps.Lib/nupkg_pack
+          dotnet clean
 
       - name: Build (AOT)
-        run: dotnet publish -c release /p:UseAot=1 /p:ContinuousIntegrationBuild=true
+        run: |
+          dotnet publish -c release /p:UseAot=1 /p:ContinuousIntegrationBuild=true
+          cp -r ForceOps/bin ForceOps/bin_aot
+          dotnet clean
 
       - name: Create release
         if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
@@ -54,10 +61,10 @@ jobs:
         with:
           draft: true
           name: "${{ steps.get_version.outputs.version }}"
-          files: ForceOps/bin/Release/net8.0/win-x64/publish/ForceOps.exe
+          files: ForceOps/bin_aot/Release/net8.0/win-x64/publish/ForceOps.exe
           tag_name: "${{ steps.get_version.outputs.version }}"
 
       - name: Publish NuGet
         if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
         run: |
-          dotnet nuget push -k ${{ secrets.NUGET_AUTH_TOKEN }} -s https://api.nuget.org/v3/index.json ForceOps/nupkg/ForceOps.${{ steps.get_version.outputs.version }}.nupkg ForceOps.Lib/nupkg/ForceOps.Lib.${{ steps.get_version.outputs.version }}.nupkg --skip-duplicate
+          dotnet nuget push -k ${{ secrets.NUGET_AUTH_TOKEN }} -s https://api.nuget.org/v3/index.json ForceOps/nupkg_pack/ForceOps.${{ steps.get_version.outputs.version }}.nupkg ForceOps.Lib/nupkg_pack/ForceOps.Lib.${{ steps.get_version.outputs.version }}.nupkg --skip-duplicate

@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using ForceOps.Lib;
 using static ForceOps.Test.TestUtil;
+using static ForceOps.Test.TestUtilStdout;
 
 namespace ForceOps.Test;
 
@@ -14,7 +15,7 @@ public class ListFileOrDirectoryLocksTest : IDisposable
 	public void WorksForDirectory()
 	{
 		var testContext = new TestContext();
-		using var launchedProcess = LaunchPowershellWithCommand(workingDirectory: tempDirectoryPath);
+		using var launchedProcess = LaunchProcessInDirectory(workingDirectory: tempDirectoryPath);
 		new ListFileOrDirectoryLocks(testContext.forceOpsContext).PrintLocks(tempDirectoryPath);
 
 		var stdoutString = GetStdoutString(stdoutStringBuilder);
@@ -30,6 +31,7 @@ public class ListFileOrDirectoryLocksTest : IDisposable
 		new ListFileOrDirectoryLocks(testContext.forceOpsContext).PrintLocks(tempFilePath);
 
 		var stdoutString = GetStdoutString(stdoutStringBuilder);
+		Assert.False(launchedProcess.process.HasExited);
 		Assert.Equal($"ProcessId,ExecutableName,ApplicationName\r\n{launchedProcess.process.Id},powershell.exe,powershell.exe\r\n", stdoutString);
 	}
 

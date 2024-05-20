@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using ForceOps.Lib;
 using Moq;
 using static ForceOps.Test.TestUtil;
+using static ForceOps.Test.TestUtilStdout;
 
 namespace ForceOps.Test;
 
@@ -146,7 +147,8 @@ public sealed class ProgramTest : IDisposable
 		testContext.forceOpsContext.relaunchAsElevated = new RelaunchAsElevated() { verb = "", exeNameOverride = exeNameOverride };
 		var forceOps = new ForceOps(new[] { "delete", pathThatCanBeDeleted, tempDirectoryPath }, testContext.forceOpsContext);
 		forceOps.extraRelaunchArgs = new List<string>() { "--disable-elevate" };
-		Assert.True(0 == forceOps.Run(), forceOps.caughtException?.ToString());
+		var stdoutString = GetStdoutString(stdoutStringBuilder);
+		Assert.True(0 == forceOps.Run(), BuildFailMessage(testContext, forceOps, stdoutString));
 		Assert.True(!Directory.Exists(tempDirectoryPath), "Deleted by relaunch");
 		Assert.Contains("Unable to perform operation as an unelevated process. Retrying as elevated and logging to", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
