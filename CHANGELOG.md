@@ -1,3 +1,6 @@
+## Release 1.4.3
+* Include symbols with ForceOps.Lib by @domsleee in https://github.com/domsleee/ForceOps/pull/39
+
 ## Release 1.4.2
 * Improve test reliability and fix workstation domain trust issue by @domsleee in https://github.com/domsleee/ForceOps/pull/37
 * Remove ForceOps.Test from release build by @domsleee in https://github.com/domsleee/ForceOps/pull/36
