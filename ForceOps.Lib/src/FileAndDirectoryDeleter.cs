@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Runtime.Versioning;
 using Serilog;
 using static ForceOps.Lib.DirectoryUtils;
@@ -42,6 +43,7 @@ public class FileAndDirectoryDeleter
 		}
 	}
 
+	const int ERROR_ACCESS_DENIED = 5;
 	internal void DeleteFile(FileInfo file)
 	{
 		for (var attempt = 1; attempt <= forceOpsContext.maxRetries + 1; attempt++)
@@ -55,7 +57,26 @@ public class FileAndDirectoryDeleter
 			catch when (!file.Exists) { }
 			catch (Exception ex) when (ex is IOException || ex is System.UnauthorizedAccessException)
 			{
-				var getProcessesLockingFileFunc = () => GetLockingProcessInfos(new[] { file.FullName });
+				var getProcessesLockingFileFunc = () =>
+				{
+					try
+					{
+						return GetLockingProcessInfos(new[] { file.FullName });
+					}
+					catch (Win32Exception e)
+					{
+						if (e.NativeErrorCode == ERROR_ACCESS_DENIED)
+						{
+							logger.Warning($"Ignored exception: {e.Message}");
+						}
+						else
+						{
+							throw;
+						}
+					}
+
+					return Enumerable.Empty<LockCheck.ProcessInfo>();
+				};
 				var shouldThrow = KillProcessesAndLogInfo(false, attempt, file.FullName, getProcessesLockingFileFunc);
 				if (shouldThrow) throw;
 			}

@@ -44,6 +44,8 @@ public class FakeLoggerFactory : ILoggerFactory
 	{
 		var logger = new Mock<ILogger>();
 		logger.Setup(t => t.Information(It.IsAny<string>())).Callback<string>(line => { Logs.Add(line); });
+		logger.Setup(t => t.Warning(It.IsAny<string>())).Callback<string>(line => { Logs.Add(line); });
+		logger.Setup(t => t.Error(It.IsAny<string>())).Callback<string>(line => { Logs.Add(line); });
 		return logger.Object;
 	}
 

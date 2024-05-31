@@ -1,11 +1,14 @@
 ﻿using System.Reflection;
+using System.Runtime.Versioning;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using ForceOps.Lib;
 using Moq;
+using static System.IO.FileSystemAclExtensions;
 using static ForceOps.Test.TestUtil;
 using static ForceOps.Test.TestUtilStdout;
-
 namespace ForceOps.Test;
 
 public sealed class ProgramTest : IDisposable
@@ -171,6 +174,43 @@ public sealed class ProgramTest : IDisposable
 		forceOps.Run();
 		Assert.Equal(ExitCode.FileNotFound, testContext.friendlyExitCode);
 		Assert.Equal(@"Cannot list locks of 'C:\C:\C:\'. No such file or directory", testContext.friendlyExitMessage);
+	}
+
+	[SupportedOSPlatform("windows")]
+	[Fact]
+	public void RmGetListThrowsError5()
+	{
+		var testContext = new TestContext();
+		var temporaryFile = GetTemporaryFileName();
+		File.Create(temporaryFile);
+
+		var fileInfo = new FileInfo(temporaryFile);
+
+		var fileSecurity = fileInfo.GetAccessControl();
+		fileSecurity.SetAccessRuleProtection(true, false);
+		var currentUser = WindowsIdentity.GetCurrent().User;
+		fileSecurity.RemoveAccessRule(new FileSystemAccessRule(currentUser!, FileSystemRights.FullControl, AccessControlType.Allow));
+
+		/*
+		// set the owner
+		var otherUser = Principal.FindByIdentity(new PrincipalContext(ContextType.Machine), IdentityType.SamAccountName, "*");
+
+		if (otherUser != null)
+		{
+			// Set the owner of the file to the other user account
+			fileSecurity.SetOwner(otherUser.Sid);
+			new FileInfo(specialPath).SetAccessControl(fileSecurity);
+		}
+		*/
+
+		fileInfo.SetAccessControl(fileSecurity);
+
+		var forceOps = new ForceOps(["delete", temporaryFile], testContext.forceOpsContext);
+		forceOps.Run();
+
+		Assert.True(File.Exists(temporaryFile), "Deleting the file should fail");
+		Assert.Contains("Unable to perform operation as an unelevated process. Retrying as elevated and logging to", testContext.fakeLoggerFactory.GetAllLogsString());
+		Assert.Contains("Ignored exception: Failed to get entries (retry 0). (RmGetList() error 5: Access is denied.)", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
 
 	public ProgramTest()
