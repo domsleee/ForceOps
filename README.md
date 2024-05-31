@@ -65,7 +65,7 @@ For copying, consider using [Microsoft.Build.CopyOnWrite](https://github.com/mic
 
 To install the CLI, use the latest exe from [releases](https://github.com/domsleee/ForceOps/releases).
 
-Alternatively, it can be installed as a tool, using the [.NET 7 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0).
+Alternatively, it can be installed as a tool, using the [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
 ```bash
 dotnet tool install -g forceops
 ```
@@ -78,3 +78,21 @@ forceops delete file.txt
 ## Usage: As a library
 
 See the [ForceOps.Lib](https://www.nuget.org/packages/ForceOps.Lib) package.
+
+The easier way is to have an exe target using `RelaunchHelpers.RunWithRelaunchAsElevated`, which is shown in [ForceOps.DeleteExample](./ForceOps.DeleteExample/Program.cs):
+
+```csharp
+using ForceOps.Lib;
+
+var fileOrDirectories = args.Select(arg => Path.Combine(Environment.CurrentDirectory, arg)).ToArray();
+var forceOpsContext = new ForceOpsContext();
+var fileAndDirectoryDeleter = new FileAndDirectoryDeleter(forceOpsContext);
+
+RelaunchHelpers.RunWithRelaunchAsElevated(() =>
+{
+	foreach (var fileOrDirectory in fileOrDirectories)
+	{
+		fileAndDirectoryDeleter.DeleteFileOrDirectory(fileOrDirectory, true);
+	}
+}, () => args.ToList(), forceOpsContext);
+```

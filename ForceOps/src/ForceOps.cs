@@ -83,7 +83,7 @@ internal class ForceOps
 
 	void DeleteCommand(string[] filesOrDirectoriesToDelete, bool force, bool disableElevate, int retryDelay, int maxRetries)
 	{
-		RunWithRelaunchAsElevated(() =>
+		RelaunchHelpers.RunWithRelaunchAsElevated(() =>
 		{
 			forceOpsContext.maxRetries = maxRetries;
 			forceOpsContext.retryDelay = TimeSpan.FromMilliseconds(retryDelay);
@@ -93,7 +93,7 @@ internal class ForceOps
 			{
 				deleter.DeleteFileOrDirectory(file, force);
 			}
-		}, BuildArgsForRelaunch, disableElevate);
+		}, BuildArgsForRelaunch, forceOpsContext, logger, disableElevate);
 	}
 
 	Command CreateListCommand()
@@ -124,43 +124,5 @@ internal class ForceOps
 			newArgs.AddRange(extraRelaunchArgs);
 		}
 		return newArgs;
-	}
-
-	void RunWithRelaunchAsElevated(Action action, Func<List<string>> buildArgsForRelaunch, bool disableElevate)
-	{
-		try
-		{
-			action();
-		}
-		catch (Exception ex) when (IsExceptionCausedByPermissions(ex) && !forceOpsContext.elevateUtils.IsProcessElevated() && !disableElevate)
-		{
-			var args = buildArgsForRelaunch();
-			var childOutputFile = GetChildOutputFile();
-			args.AddRange(new[] { "2>&1", ">", childOutputFile });
-			logger.Information($"Unable to perform operation as an unelevated process. Retrying as elevated and logging to \"{childOutputFile}\".");
-			var childProcessExitCode = forceOpsContext.relaunchAsElevated.RelaunchAsElevated(args, childOutputFile);
-			if (childProcessExitCode != 0)
-			{
-				throw new AggregateException($"Child process failed with exit code {childProcessExitCode}.");
-			}
-			else
-			{
-				logger.Information("Successfully deleted as admin");
-			}
-		}
-	}
-
-	static string GetChildOutputFile()
-	{
-		return Path.GetTempFileName();
-	}
-
-	static bool IsExceptionCausedByPermissions(Exception ex)
-	{
-		if (ex is FileNotFoundException)
-		{
-			return false;
-		}
-		return ex is IOException || ex is UnauthorizedAccessException;
 	}
 }
