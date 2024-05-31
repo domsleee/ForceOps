@@ -1,3 +1,7 @@
+## Release 1.5.0
+* Add ForceOps.Lib example (ForceOps.DeleteExample) and docs to README.md by @domsleee in https://github.com/domsleee/ForceOps/pull/41
+* Ignore RmGetList() error 5: Access is denied. by @domsleee in https://github.com/domsleee/ForceOps/pull/42
+
 ## Release 1.4.3
 * Include symbols with ForceOps.Lib by @domsleee in https://github.com/domsleee/ForceOps/pull/39
 
