@@ -61,7 +61,7 @@ public class FileAndDirectoryDeleter
 				{
 					try
 					{
-						return GetLockingProcessInfos(new[] { file.FullName });
+						return GetLockingProcessInfos([file.FullName]);
 					}
 					catch (Win32Exception e)
 					{
