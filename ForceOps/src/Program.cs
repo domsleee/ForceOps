@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Versioning;
+using ConsoleAppFramework;
 
 namespace ForceOps;
 
@@ -7,6 +8,7 @@ public class Program
 {
 	public static int Main(string[] args)
 	{
-		return new ForceOps(args).Run();
+		ConsoleApp.Run(args, (string message) => Console.Write($"Hello, {message}"));
+		return 0;
 	}
 }
