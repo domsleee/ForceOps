@@ -15,7 +15,7 @@ public static class RelaunchHelpers
 		{
 			var args = buildArgsForRelaunch();
 			var childOutputFile = GetChildOutputFile();
-			args.AddRange(new[] { "2>&1", ">", childOutputFile });
+			args.AddRange(["2>&1", ">", childOutputFile]);
 			logger.Information($"Unable to perform operation as an unelevated process. Retrying as elevated and logging to \"{childOutputFile}\".");
 			var childProcessExitCode = forceOpsContext.relaunchAsElevated.RelaunchAsElevated(args, childOutputFile);
 			if (childProcessExitCode != 0)

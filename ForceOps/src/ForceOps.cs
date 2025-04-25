@@ -5,18 +5,20 @@ namespace ForceOps;
 
 internal class ForceOps
 {
-	readonly internal ForceOpsContext forceOpsContext = new();
+	internal readonly string[] args;
+	internal readonly ForceOpsContext forceOpsContext = new();
 	readonly ILogger logger;
 	internal Exception? caughtException = null;
 	internal List<string>? extraRelaunchArgs = null;
 
-	public ForceOps(ForceOpsContext? forceOpsContext = null, ILogger? logger = null)
+	public ForceOps(string[] args, ForceOpsContext? forceOpsContext = null, ILogger? logger = null)
 	{
+		this.args = args;
 		this.forceOpsContext = forceOpsContext ?? new ForceOpsContext();
 		this.logger = logger ?? this.forceOpsContext.loggerFactory.CreateLogger<ForceOps>();
 	}
 
-	public void DeleteCommand(string[] args, string[] filesOrDirectoriesToDelete, bool force, bool disableElevate, int retryDelay, int maxRetries)
+	public void DeleteCommand(string[] filesOrDirectoriesToDelete, bool force, bool disableElevate, int retryDelay, int maxRetries)
 	{
 		RelaunchHelpers.RunWithRelaunchAsElevated(() =>
 		{
@@ -28,7 +30,7 @@ internal class ForceOps
 			{
 				deleter.DeleteFileOrDirectory(file, force);
 			}
-		}, () => BuildArgsForRelaunch(args), forceOpsContext, logger, disableElevate);
+		}, BuildArgsForRelaunch, forceOpsContext, logger, disableElevate);
 	}
 
 	public void ListCommand(string fileOrDirectory)
@@ -36,7 +38,7 @@ internal class ForceOps
 		new ListFileOrDirectoryLocks(forceOpsContext).PrintLocks(fileOrDirectory);
 	}
 
-	List<string> BuildArgsForRelaunch(string[] args)
+	List<string> BuildArgsForRelaunch()
 	{
 		var newArgs = args.ToList();
 		if (!newArgs.Any(arg => arg == "-f" || arg == "--force"))
