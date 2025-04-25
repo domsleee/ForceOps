@@ -9,15 +9,21 @@ Only supports windows, and not planned to support linux.
 
 Uses [LockChecker](https://github.com/domsleee/LockCheck) to find processes locking files, and will elevate itself if it the process is owned by another user.
 
-See [Benchmarks](https://domsleee.github.io/ForceOps/) on github pages.
+## Installation
 
-Refer also to `10.4 Example: file deletion in Windows` from "A Philosophy of Software Design", which explains why this is a windows specific problem. Linux does not prevent the user from deleting a file if it is being used, see [unlink](https://man7.org/linux/man-pages/man2/unlink.2.html#:~:text=unlink()%20deletes%20a%20name,is%20made%20available%20for%20reuse.):
+```shell
+dotnet tool install -g forceops
+```
 
-> If the name was the last link to a file but any processes still
-       have the file open, the file will remain in existence until the
-       last file descriptor referring to it is closed.
+To update:
+```
+dotnet tool update -g forceops
+```
 
-## Examples
+Alternatively, the executable is available for download in [the latest release]([releases](https://github.com/domsleee/ForceOps/releases/atest)).
+
+
+## Usage: As a CLI
 ### Deleting when a process owned by the current user is using it
 ```shell
 ❯ forceops rm .\bin\
@@ -52,29 +58,6 @@ Refer also to `10.4 Example: file deletion in Windows` from "A Philosophy of Sof
 [15:07:42 INF] Successfully deleted as admin
 ```
 
-
-## Supported operations
-
-Currently, only `delete` is supported.
-
-Operations like `move` and `copy` can have similar issues if they are overriding files or the source file is in use. It would be reasonable to support these operations in a similar way.
-
-For copying, consider using [Microsoft.Build.CopyOnWrite](https://github.com/microsoft/MSBuildSdks/tree/main/src/CopyOnWrite).
-
-## Usage: As a CLI
-
-To install the CLI, use the latest exe from [releases](https://github.com/domsleee/ForceOps/releases).
-
-Alternatively, it can be installed as a tool, using the [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
-```bash
-dotnet tool install -g forceops
-```
-
-To delete a file:
-```bash
-forceops delete file.txt
-```
-
 ## Usage: As a library
 
 See the [ForceOps.Lib](https://www.nuget.org/packages/ForceOps.Lib) package.
@@ -96,3 +79,19 @@ RelaunchHelpers.RunWithRelaunchAsElevated(() =>
 	}
 }, () => args.ToList(), forceOpsContext);
 ```
+
+## Context
+
+See [Benchmarks](https://domsleee.github.io/ForceOps/) on github pages.
+
+Refer also to `10.4 Example: file deletion in Windows` from "A Philosophy of Software Design", which explains why this is a windows specific problem. Linux does not prevent the user from deleting a file if it is being used, see [unlink](https://man7.org/linux/man-pages/man2/unlink.2.html#:~:text=unlink()%20deletes%20a%20name,is%20made%20available%20for%20reuse.):
+
+> If the name was the last link to a file but any processes still
+       have the file open, the file will remain in existence until the
+       last file descriptor referring to it is closed.
+
+Currently, only `delete` is supported.
+
+Operations like `move` and `copy` can have similar issues if they are overriding files or the source file is in use. It would be reasonable to support these operations in a similar way.
+
+For copying, consider using [Microsoft.Build.CopyOnWrite](https://github.com/microsoft/MSBuildSdks/tree/main/src/CopyOnWrite).

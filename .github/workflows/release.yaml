@@ -33,7 +33,7 @@ jobs:
       - name: Install Dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.x"
+          dotnet-version: "9.0.x"
 
       - name: Directory structure
         run: |
@@ -61,7 +61,7 @@ jobs:
         with:
           draft: true
           name: "${{ steps.get_version.outputs.version }}"
-          files: ForceOps/bin_aot/Release/net8.0/win-x64/publish/ForceOps.exe
+          files: ForceOps/bin_aot/Release/net9.0/win-x64/publish/ForceOps.exe
           tag_name: "${{ steps.get_version.outputs.version }}"
 
       - name: Publish NuGet
