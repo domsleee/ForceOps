@@ -61,6 +61,23 @@ public sealed class ProgramTest : IDisposable
 	}
 
 	[Fact]
+	public void DeleteMultipleFiles()
+	{
+		Directory.CreateDirectory(tempDirectoryPath);
+		var file1 = Path.Join(tempDirectoryPath, "file1");
+		var file2 = Path.Join(tempDirectoryPath, "file2");
+		File.Create(file1);
+		File.Create(file2);
+		Assert.True(File.Exists(file1), "file1 should exist");
+		Assert.True(File.Exists(file2), "file2 should exist");
+
+		var forceOps = new ForceOps(["delete", file1, file2]);
+		Assert.Equal(0, new ForceOpsRunner(forceOps).Run());
+		Assert.False(File.Exists(file1), "file1 should be deleted");
+		Assert.False(File.Exists(file2), "file2 should be deleted");
+	}
+
+	[Fact]
 	public void ExceptionThrownIfAlreadyElevated()
 	{
 		using var launchedProcess = LaunchProcessInDirectory(tempDirectoryPath);
