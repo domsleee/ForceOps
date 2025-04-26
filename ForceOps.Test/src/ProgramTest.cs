@@ -66,8 +66,8 @@ public sealed class ProgramTest : IDisposable
 		Directory.CreateDirectory(tempDirectoryPath);
 		var file1 = Path.Join(tempDirectoryPath, "file1");
 		var file2 = Path.Join(tempDirectoryPath, "file2");
-		File.Create(file1);
-		File.Create(file2);
+		File.Create(file1).Close();
+		File.Create(file2).Close();
 		Assert.True(File.Exists(file1), "file1 should exist");
 		Assert.True(File.Exists(file2), "file2 should exist");
 

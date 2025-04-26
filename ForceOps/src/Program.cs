@@ -1,6 +1,5 @@
 ﻿using System.Runtime.Versioning;
 using Cocona;
-using Cocona.Lite;
 
 namespace ForceOps;
 
@@ -12,7 +11,8 @@ public class Program
 
 internal class ForceOpsRunner
 {
-	private readonly ForceOps _forceOps;
+	readonly ForceOps _forceOps;
+	int exitCode = 0;
 	public ForceOpsRunner(ForceOps forceOps)
 	{
 		_forceOps = forceOps;
@@ -20,44 +20,44 @@ internal class ForceOpsRunner
 
 	internal int Run()
 	{
+		var app = CoconaLiteApp.Create(_forceOps.args);
+		app.AddCommand("delete", (
+			[Argument("files", Description = "Files or directories to delete.")] string[] fileOrDirectories,
+			[Option('f', Description = "Ignore nonexistent files and arguments.")] bool force = false,
+			[Option('e', Description = "Do not attempt to elevate if the file can't be deleted.")] bool disableElevate = false,
+			[Option('d', Description = "Delay when retrying to delete a file, after deleting processes holding a lock.")] int retryDelay = 50,
+			[Option('n', Description = "Number of retries when deleting a locked file.")] int maxRetries = 10)
+			=> WithExceptionHandling(() => _forceOps.DeleteCommand(fileOrDirectories, force, disableElevate, retryDelay, maxRetries))
+		)
+		.WithDescription("Delete files or a directories recursively.")
+		.WithAliases(["rm"]);
+
+		app.AddCommand("list", (
+			[Argument("fileOrDirectory", Description = "File or directory to get the locks of.")] string fileOrDirectory)
+			=> WithExceptionHandling(() => _forceOps.ListCommand(fileOrDirectory))
+		)
+		.WithDescription("Uses LockCheck to output processes using a file or directory.");
+
+		app.Run();
+		return exitCode;
+	}
+
+	void WithExceptionHandling(Action action)
+	{
 		try
 		{
-			var builder = CoconaLiteApp.CreateBuilder(_forceOps.args);
-			builder.Services.AddSingleton(_forceOps);
-			var app = builder.Build();
-			app.AddCommand("delete", Delete);
-			app.AddCommand("list", List);
-			app.Run();
-
-			return 0;
+			action();
 		}
 		catch (FileNotFoundException ex)
 		{
 			_forceOps.caughtException = ex;
 			_forceOps.forceOpsContext.environmentExit.Exit((int)ExitCode.FileNotFound, ex.Message);
-			return (int)ExitCode.FileNotFound;
+			exitCode = (int)ExitCode.FileNotFound;
 		}
 		catch (Exception ex)
 		{
 			_forceOps.caughtException = ex;
-			return 1;
+			exitCode = 1;
 		}
-	}
-
-	[Command(Description = "Delete files or a directories recursively.", Aliases = ["rm"])]
-	public void Delete(
-		[Argument("files", Description = "Files or directories to delete.")] string[] fileOrDirectories,
-		[Option('f', Description = "Ignore nonexistent files and arguments.")] bool force = false,
-		[Option('e', Description = "Do not attempt to elevate if the file can't be deleted.")] bool disableElevate = false,
-		[Option('d', Description = "Delay when retrying to delete a file, after deleting processes holding a lock.")] int retryDelay = 50,
-		[Option('n', Description = "Number of retries when deleting a locked file.")] int maxRetries = 10)
-	{
-		_forceOps.DeleteCommand(fileOrDirectories, force, disableElevate, retryDelay, maxRetries);
-	}
-
-	[Command(Description = "Uses LockCheck to output processes using a file or directory.")]
-	public void List([Argument("fileOrDirectory", Description = "File or directory to get the locks of.")] string fileOrDirectory)
-	{
-		_forceOps.ListCommand(fileOrDirectory);
 	}
 }
