@@ -25,11 +25,13 @@ internal class ForceOpsRunner
 			var builder = CoconaLiteApp.CreateBuilder(_forceOps.args);
 			builder.Services.AddSingleton(_forceOps);
 			var app = builder.Build();
+			app.AddCommand("delete", Delete);
+			app.AddCommand("list", List);
 			app.Run();
 
 			return 0;
 		}
-		catch (System.IO.FileNotFoundException ex)
+		catch (FileNotFoundException ex)
 		{
 			_forceOps.caughtException = ex;
 			_forceOps.forceOpsContext.environmentExit.Exit((int)ExitCode.FileNotFound, ex.Message);
@@ -42,29 +44,19 @@ internal class ForceOpsRunner
 		}
 	}
 
-	/// <summary>
-	/// Delete files or a directories recursively.
-	/// </summary>
-	/// <param name="fileOrDirectories">Files or directories to delete.</param>
-	/// <param name="force">-f, Ignore nonexistent files and arguments.</param>
-	/// <param name="disableElevate">-e, Do not attempt to elevate if the file can't be deleted.</param>
-	/// <param name="retryDelay">-d, Delay when retrying to delete a file, after deleting processes holding a lock.</param>
-	/// <param name="maxRetries">-n, Number of retries when deleting a locked file.</param>
+	[Command(Description = "Delete files or a directories recursively.", Aliases = ["rm"])]
 	public void Delete(
-		[Argument] string[] fileOrDirectories,
-		[Option('f')] bool force = false,
-		[Option('e')] bool disableElevate = false,
-		[Option('d')] int retryDelay = 50,
-		[Option('n')] int maxRetries = 10)
+		[Argument("files", Description = "Files or directories to delete.")] string[] fileOrDirectories,
+		[Option('f', Description = "Ignore nonexistent files and arguments.")] bool force = false,
+		[Option('e', Description = "Do not attempt to elevate if the file can't be deleted.")] bool disableElevate = false,
+		[Option('d', Description = "Delay when retrying to delete a file, after deleting processes holding a lock.")] int retryDelay = 50,
+		[Option('n', Description = "Number of retries when deleting a locked file.")] int maxRetries = 10)
 	{
 		_forceOps.DeleteCommand(fileOrDirectories, force, disableElevate, retryDelay, maxRetries);
 	}
 
-	/// <summary>
-	/// List files.
-	/// </summary>
-	/// <param name="fileOrDirectory">Files or directories to list.</param>
-	public void List([Argument] string fileOrDirectory)
+	[Command(Description = "Uses LockCheck to output processes using a file or directory.")]
+	public void List([Argument("fileOrDirectory", Description = "File or directory to get the locks of.")] string fileOrDirectory)
 	{
 		_forceOps.ListCommand(fileOrDirectory);
 	}
