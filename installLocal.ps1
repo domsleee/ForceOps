@@ -5,5 +5,5 @@ pwsh -NoProfile -Command {
     {
         dotnet tool uninstall -g ForceOps
     }
-    dotnet tool install -g ForceOps --prerelease --configfile "../scripts/LocalNuGet.config" --no-cache
+    dotnet tool install -g ForceOps --configfile "../scripts/LocalNuGet.config" --no-cache
 }
