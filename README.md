@@ -11,16 +11,12 @@ Uses [LockChecker](https://github.com/domsleee/LockCheck) to find processes lock
 
 ## Installation
 
-```shell
-dotnet tool install -g forceops
-```
+| Method   | Install                                                                                             | Update                           |
+| -------- | --------------------------------------------------------------------------------------------------- | -------------------------------- |
+| scoop    | `scoop install https://gist.github.com/domsleee/f765105f512ec607ee0a6e3ee5debd6d/raw/forceops.json` | `scoop update forceops --force`  |
+| dotnet   | `dotnet tool install -g forceops`                                                                   | `dotnet tool update -g forceops` |
+| releases | Download from [latest release](https://github.com/domsleee/ForceOps/releases)                       |                                  |
 
-To update:
-```
-dotnet tool update -g forceops
-```
-
-Alternatively, the executable is available for download in [the latest release]([releases](https://github.com/domsleee/ForceOps/releases/atest)).
 
 
 ## Usage: As a CLI
