@@ -11,13 +11,31 @@ Uses [LockChecker](https://github.com/domsleee/LockCheck) to find processes lock
 
 ## Installation
 
-| Method   | Install                                                                                             | Update                           |
-| -------- | --------------------------------------------------------------------------------------------------- | -------------------------------- |
-| scoop    | `scoop install https://gist.github.com/domsleee/f765105f512ec607ee0a6e3ee5debd6d/raw/forceops.json` | `scoop update forceops --force`  |
-| dotnet   | `dotnet tool install -g forceops`                                                                   | `dotnet tool update -g forceops` |
-| releases | Download from [latest release](https://github.com/domsleee/ForceOps/releases)                       |                                  |
+### Install with [`scoop`](http://scoop.sh/) (recommended)
+It has a faster startup because it uses [Native AOT](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/):
 
+```shell
+scoop install https://gist.github.com/domsleee/f765105f512ec607ee0a6e3ee5debd6d/raw/forceops.json
+```
 
+To update:
+```shell
+scoop update forceops --force
+```
+
+### Alternative - install with [`dotnet`](https://dotnet.microsoft.com/en-us/download)
+
+```shell
+dotnet tool install -g forceops
+```
+
+To update:
+```shell
+dotnet tool update -g forceops
+```
+
+### Alternative - install from releases
+Download the latest exe from [releases](https://github.com/domsleee/ForceOps/releases).
 
 ## Usage: As a CLI
 ### Deleting when a process owned by the current user is using it
