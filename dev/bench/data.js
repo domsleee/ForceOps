@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1745760275908,
+  "lastUpdate": 1745760877746,
   "repoUrl": "https://github.com/domsleee/ForceOps",
   "entries": {
     "ForceOps Benchmarks": [
@@ -1536,6 +1536,54 @@ window.BENCHMARK_DATA = {
             "value": 207443750,
             "unit": "ns",
             "range": "± 3550111.6876796987"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "domslee1@gmail.com",
+            "name": "Dom Slee",
+            "username": "domsleee"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "011755061660e71faee4641ce021bc748d8525b1",
+          "message": "chore(release): 1.5.1 (#46)",
+          "timestamp": "2025-04-27T23:30:18+10:00",
+          "tree_id": "f00c92b4aa5a7d472babaf6cc38ec0a594998414",
+          "url": "https://github.com/domsleee/ForceOps/commit/011755061660e71faee4641ce021bc748d8525b1"
+        },
+        "date": 1745760867570,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1000, FileSize: 10, IsInsideDirectory: False)",
+            "value": 108179756.06060606,
+            "unit": "ns",
+            "range": "± 5095206.148260381"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1000, FileSize: 10, IsInsideDirectory: False)",
+            "value": 106783150,
+            "unit": "ns",
+            "range": "± 2970816.403130815"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1000, FileSize: 10, IsInsideDirectory: True)",
+            "value": 207292747.1698113,
+            "unit": "ns",
+            "range": "± 8576371.96476019"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1000, FileSize: 10, IsInsideDirectory: True)",
+            "value": 205601617.5,
+            "unit": "ns",
+            "range": "± 7208967.419102815"
           }
         ]
       }
