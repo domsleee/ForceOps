@@ -24,8 +24,8 @@ public sealed class ProgramTest : IDisposable
 		var testContext = new TestContext();
 		testContext.forceOpsContext.processKiller = new Mock<IProcessKiller>().Object;
 
-		var forceOps = new ForceOps(new[] { "delete", tempDirectoryPath }, testContext.forceOpsContext);
-		Assert.Equal(1, forceOps.Run());
+		var forceOps = new ForceOps(["delete", tempDirectoryPath], testContext.forceOpsContext);
+		Assert.Equal(1, new ForceOpsRunner(forceOps).Run());
 
 		Assert.IsType<AggregateException>(forceOps.caughtException);
 		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(It.IsAny<List<string>>(), It.IsAny<string>()), Times.Once());
@@ -39,8 +39,8 @@ public sealed class ProgramTest : IDisposable
 		testContext.relaunchAsElevatedMock.Setup(t => t.RelaunchAsElevated(It.IsAny<List<string>>(), It.IsAny<string>())).Returns(0);
 		testContext.forceOpsContext.processKiller = new Mock<IProcessKiller>().Object;
 
-		var forceOps = new ForceOps(new[] { "delete", tempDirectoryPath }, testContext.forceOpsContext);
-		Assert.Equal(0, forceOps.Run());
+		var forceOps = new ForceOps(["delete", tempDirectoryPath], testContext.forceOpsContext);
+		Assert.Equal(0, new ForceOpsRunner(forceOps).Run());
 
 		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(It.IsAny<List<string>>(), It.IsAny<string>()), Times.Once());
 	}
@@ -53,11 +53,28 @@ public sealed class ProgramTest : IDisposable
 		testContext.relaunchAsElevatedMock.Setup(t => t.RelaunchAsElevated(It.IsAny<List<string>>(), It.IsAny<string>())).Returns(0);
 		testContext.forceOpsContext.processKiller = new Mock<IProcessKiller>().Object;
 
-		var forceOps = new ForceOps(new[] { "delete", tempDirectoryPath, "--retry-delay", "33", "--max-retries", "8" }, testContext.forceOpsContext);
-		Assert.Equal(0, forceOps.Run());
+		var forceOps = new ForceOps(["delete", tempDirectoryPath, "--retry-delay", "33", "--max-retries", "8"], testContext.forceOpsContext);
+		Assert.Equal(0, new ForceOpsRunner(forceOps).Run());
 
 		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(It.IsAny<List<string>>(), It.IsAny<string>()), Times.Once());
 		Assert.Contains("Beginning retry 1/8 in 33ms.", testContext.fakeLoggerFactory.GetAllLogsString());
+	}
+
+	[Fact]
+	public void DeleteMultipleFiles()
+	{
+		Directory.CreateDirectory(tempDirectoryPath);
+		var file1 = Path.Join(tempDirectoryPath, "file1");
+		var file2 = Path.Join(tempDirectoryPath, "file2");
+		File.Create(file1).Close();
+		File.Create(file2).Close();
+		Assert.True(File.Exists(file1), "file1 should exist");
+		Assert.True(File.Exists(file2), "file2 should exist");
+
+		var forceOps = new ForceOps(["delete", file1, file2]);
+		Assert.Equal(0, new ForceOpsRunner(forceOps).Run());
+		Assert.False(File.Exists(file1), "file1 should be deleted");
+		Assert.False(File.Exists(file2), "file2 should be deleted");
 	}
 
 	[Fact]
@@ -68,8 +85,8 @@ public sealed class ProgramTest : IDisposable
 		testContext.forceOpsContext.processKiller = new Mock<IProcessKiller>().Object;
 		testContext.elevateUtilsMock.Setup(t => t.IsProcessElevated()).Returns(true);
 
-		var forceOps = new ForceOps(new[] { "delete", tempDirectoryPath }, testContext.forceOpsContext);
-		Assert.Equal(1, forceOps.Run());
+		var forceOps = new ForceOps(["delete", tempDirectoryPath], testContext.forceOpsContext);
+		Assert.Equal(1, new ForceOpsRunner(forceOps).Run());
 
 		Assert.IsType<IOException>(forceOps.caughtException);
 		testContext.relaunchAsElevatedMock.Verify(t => t.RelaunchAsElevated(It.IsAny<List<string>>(), It.IsAny<string>()), Times.Never());
@@ -84,9 +101,9 @@ public sealed class ProgramTest : IDisposable
 
 		string exeNameOverride = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "forceops.exe");
 		testContext.forceOpsContext.relaunchAsElevated = new RelaunchAsElevated() { verb = "", exeNameOverride = exeNameOverride };
-		var forceOps = new ForceOps(new[] { "delete", tempDirectoryPath }, testContext.forceOpsContext);
+		var forceOps = new ForceOps(["delete", tempDirectoryPath], testContext.forceOpsContext);
 		var stdoutString = GetStdoutString(stdoutStringBuilder);
-		Assert.True(0 == forceOps.Run(), BuildFailMessage(testContext, forceOps, stdoutString));
+		Assert.True(0 == new ForceOpsRunner(forceOps).Run(), BuildFailMessage(testContext, forceOps, stdoutString));
 		Assert.True(!Directory.Exists(tempDirectoryPath), "Deleted by relaunch");
 		Assert.Contains("Unable to perform operation as an unelevated process. Retrying as elevated and logging to", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
@@ -148,10 +165,10 @@ public sealed class ProgramTest : IDisposable
 
 		string exeNameOverride = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "forceops.exe");
 		testContext.forceOpsContext.relaunchAsElevated = new RelaunchAsElevated() { verb = "", exeNameOverride = exeNameOverride };
-		var forceOps = new ForceOps(new[] { "delete", pathThatCanBeDeleted, tempDirectoryPath }, testContext.forceOpsContext);
+		var forceOps = new ForceOps(["delete", pathThatCanBeDeleted, tempDirectoryPath], testContext.forceOpsContext);
 		forceOps.extraRelaunchArgs = new List<string>() { "--disable-elevate" };
 		var stdoutString = GetStdoutString(stdoutStringBuilder);
-		Assert.True(0 == forceOps.Run(), BuildFailMessage(testContext, forceOps, stdoutString));
+		Assert.True(0 == new ForceOpsRunner(forceOps).Run(), BuildFailMessage(testContext, forceOps, stdoutString));
 		Assert.True(!Directory.Exists(tempDirectoryPath), "Deleted by relaunch");
 		Assert.Contains("Unable to perform operation as an unelevated process. Retrying as elevated and logging to", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
@@ -160,8 +177,8 @@ public sealed class ProgramTest : IDisposable
 	public void DeleteNonExistingFileThrowsMessage()
 	{
 		var testContext = new TestContext();
-		var forceOps = new ForceOps(new[] { "delete", @"C:\C:\C:\" }, testContext.forceOpsContext);
-		forceOps.Run();
+		var forceOps = new ForceOps(["delete", @"C:\C:\C:\"], testContext.forceOpsContext);
+		new ForceOpsRunner(forceOps).Run();
 		Assert.Equal(ExitCode.FileNotFound, testContext.friendlyExitCode);
 		Assert.Equal(@"Cannot remove 'C:\C:\C:\'. No such file or directory", testContext.friendlyExitMessage);
 	}
@@ -170,8 +187,8 @@ public sealed class ProgramTest : IDisposable
 	public void ListNonExistingFileThrowsMessage()
 	{
 		var testContext = new TestContext();
-		var forceOps = new ForceOps(new[] { "list", @"C:\C:\C:\" }, testContext.forceOpsContext);
-		forceOps.Run();
+		var forceOps = new ForceOps(["list", @"C:\C:\C:\"], testContext.forceOpsContext);
+		new ForceOpsRunner(forceOps).Run();
 		Assert.Equal(ExitCode.FileNotFound, testContext.friendlyExitCode);
 		Assert.Equal(@"Cannot list locks of 'C:\C:\C:\'. No such file or directory", testContext.friendlyExitMessage);
 	}
@@ -206,7 +223,7 @@ public sealed class ProgramTest : IDisposable
 		fileInfo.SetAccessControl(fileSecurity);
 
 		var forceOps = new ForceOps(["delete", temporaryFile], testContext.forceOpsContext);
-		forceOps.Run();
+		new ForceOpsRunner(forceOps).Run();
 
 		Assert.True(File.Exists(temporaryFile), "Deleting the file should fail");
 		Assert.Contains("Unable to perform operation as an unelevated process. Retrying as elevated and logging to", testContext.fakeLoggerFactory.GetAllLogsString());
