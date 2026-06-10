@@ -1,20 +1,20 @@
 ```
 
 
-BenchmarkDotNet v0.14.0, Windows 11 (10.0.26100.32860) (Hyper-V)
-Unknown processor
+BenchmarkDotNet v0.15.8, Windows 11 (10.0.26100.32860/24H2/2024Update/HudsonValley) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 4 logical and 2 physical cores
 .NET SDK 10.0.301
-  [Host]     : .NET 10.0.9 (10.0.926.27113), X64 RyuJIT AVX2
-  Job-LVHLZU : .NET 10.0.9 (10.0.926.27113), X64 RyuJIT AVX2
+  [Host]     : .NET 10.0.9 (10.0.9, 10.0.926.27113), X64 RyuJIT x86-64-v3
+  Job-CNUJVU : .NET 10.0.9 (10.0.9, 10.0.926.27113), X64 RyuJIT x86-64-v3
 
 InvocationCount=1  UnrollFactor=1  
 
 ```
 
-| Method                               | NumFiles | FileSize | IsInsideDirectory | Mean     | Error   | StdDev  |
-|------------------------------------- |--------- |--------- |------------------ |---------:|--------:|--------:|
-| **ForceOps.Lib.FileAndDirectoryDeleter** | **1000**     | **10**       | **False**             | **178.5 ms** | **3.55 ms** | **8.98 ms** |
-| System.IO.Directory.Delete           | 1000     | 10       | False             | 177.1 ms | 3.46 ms | 8.42 ms |
-| **ForceOps.Lib.FileAndDirectoryDeleter** | **1000**     | **10**       | **True**              | **342.4 ms** | **6.78 ms** | **9.51 ms** |
-| System.IO.Directory.Delete           | 1000     | 10       | True              | 341.8 ms | 6.53 ms | 8.26 ms |
+| Method                               | NumFiles | FileSize | IsInsideDirectory | Mean     | Error   | StdDev   |
+|------------------------------------- |--------- |--------- |------------------ |---------:|--------:|---------:|
+| **ForceOps.Lib.FileAndDirectoryDeleter** | **1000**     | **10**       | **False**             | **190.1 ms** | **4.84 ms** | **13.98 ms** |
+| System.IO.Directory.Delete           | 1000     | 10       | False             | 190.0 ms | 4.69 ms | 13.31 ms |
+| **ForceOps.Lib.FileAndDirectoryDeleter** | **1000**     | **10**       | **True**              | **357.6 ms** | **7.01 ms** | **13.51 ms** |
+| System.IO.Directory.Delete           | 1000     | 10       | True              | 359.3 ms | 7.06 ms |  8.67 ms |
 
