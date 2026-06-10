@@ -3,7 +3,7 @@ using ForceOps.Lib;
 
 namespace ForceOps.Benchmarks;
 
-// [SimpleJob(RuntimeMoniker.NativeAot80)]
+// [SimpleJob(RuntimeMoniker.NativeAot10_0)]
 [SimpleJob]
 public class FileAndDirectoryDeleterBenchmark
 {
