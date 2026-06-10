@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1781082139555,
+  "lastUpdate": 1781086129685,
   "repoUrl": "https://github.com/domsleee/ForceOps",
   "entries": {
     "ForceOps Benchmarks": [
@@ -1680,6 +1680,54 @@ window.BENCHMARK_DATA = {
             "value": 341820908.6956522,
             "unit": "ns",
             "range": "± 8256152.833598657"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "domslee1@gmail.com",
+            "name": "Dominic Slee",
+            "username": "domsleee"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "68eb748ad1679ea2552e2d38d54232bb88dc1517",
+          "message": "Update packages, migrate to System.CommandLine 2.0.9 stable (#53)\n\n* Update packages, migrate to System.CommandLine 2.0.9 stable\n\n* System.CommandLine 2.0.0-beta4 -> 2.0.9: migrate Program.cs to the GA API\n  (SetAction/ParseResult, mutable collections, DefaultValueFactory; middleware\n  replaced with try/catch around Invoke)\n* Serilog 4.3.1, Serilog.Sinks.Console 6.1.1, BenchmarkDotNet 0.15.8,\n  Microsoft.NET.Test.Sdk 18.6.0, Moq 4.20.72, System.Reactive 6.1.0,\n  xunit.runner.visualstudio 3.1.5\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n* Keep \"forceops\" as the root command name in usage text\n\nThe GA API derives the root command name from the executable, which\nshows \"ForceOps\" in usage lines. Use a named Command with explicit\nHelpOption/VersionOption to preserve the previous lowercase name.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+          "timestamp": "2026-06-10T20:04:18+10:00",
+          "tree_id": "89688cb07e7efc25b8089e0fbbf166764d51513f",
+          "url": "https://github.com/domsleee/ForceOps/commit/68eb748ad1679ea2552e2d38d54232bb88dc1517"
+        },
+        "date": 1781086127805,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1000, FileSize: 10, IsInsideDirectory: False)",
+            "value": 190136255.20833334,
+            "unit": "ns",
+            "range": "± 13976746.905092945"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1000, FileSize: 10, IsInsideDirectory: False)",
+            "value": 189997051.61290324,
+            "unit": "ns",
+            "range": "± 13305142.730175825"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1000, FileSize: 10, IsInsideDirectory: True)",
+            "value": 357572154.34782606,
+            "unit": "ns",
+            "range": "± 13511319.913707035"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1000, FileSize: 10, IsInsideDirectory: True)",
+            "value": 359316468.1818182,
+            "unit": "ns",
+            "range": "± 8666283.51825056"
           }
         ]
       }
