@@ -20,21 +20,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Get version
-        id: get_version
-        shell: pwsh
-        run: |
-          $version = ([xml](Get-Content Directory.Build.props)).Project.PropertyGroup.Version
-          "version=$version" >> $env:GITHUB_OUTPUT
-
-      - name: Print Current Version
-        run: |
-          echo Current Version: ${{ steps.get_version.outputs.version }}
-
       - name: Install Dotnet
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: "10.0.x"
+
+      - name: Get version
+        id: get_version
+        shell: bash
+        run: echo "version=$(dotnet msbuild Directory.Build.props -getProperty:Version)" >> "$GITHUB_OUTPUT"
+
+      - name: Print Current Version
+        run: |
+          echo Current Version: ${{ steps.get_version.outputs.version }}
 
       - name: Directory structure
         run: |
