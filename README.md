@@ -15,12 +15,13 @@ Uses [LockChecker](https://github.com/domsleee/LockCheck) to find processes lock
 It has a faster startup because it uses [Native AOT](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/):
 
 ```shell
-scoop install https://gist.github.com/domsleee/f765105f512ec607ee0a6e3ee5debd6d/raw/forceops.json
+scoop bucket add domsleee https://github.com/domsleee/scoop-bucket
+scoop install forceops
 ```
 
 To update:
 ```shell
-scoop update forceops --force
+scoop update forceops
 ```
 
 ### Alternative - install with [`dotnet`](https://dotnet.microsoft.com/en-us/download)

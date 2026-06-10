@@ -47,13 +47,22 @@ jobs:
           dotnet pack ForceOps -c release -r win-x64 /p:ContinuousIntegrationBuild=true
           dotnet pack ForceOps -c release -r any -p:PublishAot=false /p:ContinuousIntegrationBuild=true
 
+      # The .sha256 sidecar is used by the scoop bucket's autoupdate
+      # (https://github.com/domsleee/scoop-bucket).
+      - name: Create sha256 for release exe
+        run: |
+          $exe = "ForceOps/bin/release/net10.0/win-x64/publish/ForceOps.exe"
+          (Get-FileHash $exe -Algorithm SHA256).Hash.ToLower() | Set-Content -NoNewline "$exe.sha256"
+
       - name: Create release
         if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
         uses: softprops/action-gh-release@v2
         with:
           draft: true
           name: "${{ steps.get_version.outputs.version }}"
-          files: ForceOps/bin/release/net10.0/win-x64/publish/ForceOps.exe
+          files: |
+            ForceOps/bin/release/net10.0/win-x64/publish/ForceOps.exe
+            ForceOps/bin/release/net10.0/win-x64/publish/ForceOps.exe.sha256
           tag_name: "${{ steps.get_version.outputs.version }}"
 
       # RID-specific packages must be on the feed before the top-level pointer
