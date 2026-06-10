@@ -13,8 +13,8 @@ jobs:
   benchmark:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
       - name: Run benchmark
@@ -40,7 +40,7 @@ jobs:
           $modifiedContent = $fileContent -replace "``````", "```````n"
           $modifiedContent | Set-Content $fileName
       - name: Deploy Markdown Result
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ForceOps.Benchmarks/BenchmarkDotNet.Artifacts/results
