@@ -9,14 +9,13 @@
         <PackageOutputPath>./nupkg</PackageOutputPath>
     </PropertyGroup>
 
-    <PropertyGroup Condition="$(UseAot) != '1'">
+    <PropertyGroup>
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>forceops</ToolCommandName>
-    </PropertyGroup>
 
-    <PropertyGroup Condition="'$(UseAot)' == '1'">
+        <!-- RID-specific tool packaging, see https://learn.microsoft.com/en-us/dotnet/core/tools/rid-specific-tools -->
         <PublishAot>true</PublishAot>
-        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <ToolPackageRuntimeIdentifiers>win-x64;any</ToolPackageRuntimeIdentifiers>
     </PropertyGroup>
 
     <ItemGroup>
