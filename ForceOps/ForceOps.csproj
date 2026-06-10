@@ -9,14 +9,19 @@
         <PackageOutputPath>./nupkg</PackageOutputPath>
     </PropertyGroup>
 
-    <PropertyGroup Condition="$(UseAot) != '1'">
+    <PropertyGroup>
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>forceops</ToolCommandName>
-    </PropertyGroup>
 
-    <PropertyGroup Condition="'$(UseAot)' == '1'">
+        <!--
+            RID-specific tool packaging (requires .NET SDK 10+):
+            - `dotnet pack` produces the top-level pointer package.
+            - `dotnet pack -r win-x64` produces the self-contained Native AOT package.
+            - `dotnet pack -r any -p:PublishAot=false` produces the framework-dependent fallback.
+            RID packages must be pushed to NuGet before the pointer package.
+        -->
         <PublishAot>true</PublishAot>
-        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <ToolPackageRuntimeIdentifiers>win-x64;any</ToolPackageRuntimeIdentifiers>
     </PropertyGroup>
 
     <ItemGroup>

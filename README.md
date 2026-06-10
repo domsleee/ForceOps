@@ -29,6 +29,8 @@ scoop update forceops --force
 dotnet tool install -g forceops
 ```
 
+On x64 Windows this installs the [Native AOT](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/) build (same fast startup as the scoop install). Other architectures get a framework-dependent build. Requires the .NET 10 SDK or later to install.
+
 To update:
 ```shell
 dotnet tool update -g forceops
