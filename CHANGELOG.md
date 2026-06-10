@@ -1,3 +1,8 @@
+## Release 1.6.0
+* Update to .NET 10 in https://github.com/domsleee/ForceOps/pull/47
+* Update GitHub Actions for node24 deprecation in https://github.com/domsleee/ForceOps/pull/52
+* Update packages and migrate to System.CommandLine 2.0.9 stable in https://github.com/domsleee/ForceOps/pull/53
+
 ## Release 1.5.1
 * Update dependencies and update to .net9 in https://github.com/domsleee/ForceOps/pull/44
 * Refactor CLI in https://github.com/domsleee/ForceOps/pull/45
