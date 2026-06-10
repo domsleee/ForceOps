@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1781079765761,
+  "lastUpdate": 1781082139555,
   "repoUrl": "https://github.com/domsleee/ForceOps",
   "entries": {
     "ForceOps Benchmarks": [
@@ -1632,6 +1632,54 @@ window.BENCHMARK_DATA = {
             "value": 332386647.72727275,
             "unit": "ns",
             "range": "± 68696080.37448663"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "domslee1@gmail.com",
+            "name": "Dominic Slee",
+            "username": "domsleee"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ef6700210084a7ae0077836bb8bdbf35997395dd",
+          "message": "chore: update GitHub Actions for node24 deprecation (#52)\n\n* chore: update GitHub Actions for node24 deprecation\n\n* checkout v4 -> v5, setup-dotnet v4 -> v5, actions-gh-pages v3 -> v4, action-gh-release v1 -> v2\n* Replace KageKirin/get-csproj-version (node20, deprecated set-output) with an inline PowerShell step\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n* chore: use dotnet msbuild -getProperty for version extraction\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+          "timestamp": "2026-06-10T18:58:28+10:00",
+          "tree_id": "8a13bda28fe39d389e184ef1b5c8495fd64ce998",
+          "url": "https://github.com/domsleee/ForceOps/commit/ef6700210084a7ae0077836bb8bdbf35997395dd"
+        },
+        "date": 1781082137480,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1000, FileSize: 10, IsInsideDirectory: False)",
+            "value": 178501597.33333334,
+            "unit": "ns",
+            "range": "± 8983313.77033047"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1000, FileSize: 10, IsInsideDirectory: False)",
+            "value": 177065644.2857143,
+            "unit": "ns",
+            "range": "± 8415607.912882626"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1000, FileSize: 10, IsInsideDirectory: True)",
+            "value": 342412451.8518519,
+            "unit": "ns",
+            "range": "± 9506884.084880903"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1000, FileSize: 10, IsInsideDirectory: True)",
+            "value": 341820908.6956522,
+            "unit": "ns",
+            "range": "± 8256152.833598657"
           }
         ]
       }
