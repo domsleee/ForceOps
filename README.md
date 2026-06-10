@@ -94,6 +94,17 @@ RelaunchHelpers.RunWithRelaunchAsElevated(() =>
 }, () => args.ToList(), forceOpsContext);
 ```
 
+## Performance
+
+Native AOT vs framework-dependent, measured with [hyperfine](https://github.com/sharkdp/hyperfine):
+
+| Scenario | Native AOT | Framework-dependent | Speedup |
+| --- | --- | --- | --- |
+| `forceops --help` (startup) | 9.8 ms ± 1.1 ms | 107.9 ms ± 6.9 ms | 11x |
+| `forceops rm` (directory with 1,000 files) | 151.4 ms ± 11.1 ms | 219.1 ms ± 15.8 ms | 1.45x |
+
+The scoop and GitHub release installs are Native AOT. `dotnet tool install` is framework-dependent.
+
 ## Context
 
 See [Benchmarks](https://domsleee.github.io/ForceOps/) on github pages.

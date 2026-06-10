@@ -1,10 +1,11 @@
 ﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Jobs;
 using ForceOps.Lib;
 
 namespace ForceOps.Benchmarks;
 
-// [SimpleJob(RuntimeMoniker.NativeAot80)]
-[SimpleJob]
+[SimpleJob(RuntimeMoniker.Net10_0, baseline: true)]
+[SimpleJob(RuntimeMoniker.NativeAot10_0)]
 public class FileAndDirectoryDeleterBenchmark
 {
 	readonly List<byte[]> fileDatas = new();
