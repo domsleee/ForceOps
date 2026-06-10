@@ -1,20 +1,20 @@
 ```
 
 
-BenchmarkDotNet v0.14.0, Windows 10 (10.0.20348.3561) (Hyper-V)
-AMD EPYC 7763, 1 CPU, 4 logical and 2 physical cores
-.NET SDK 9.0.203
-  [Host]     : .NET 9.0.4 (9.0.425.16305), X64 RyuJIT AVX2
-  Job-KYHFNN : .NET 9.0.4 (9.0.425.16305), X64 RyuJIT AVX2
+BenchmarkDotNet v0.14.0, Windows 11 (10.0.26100.32860) (Hyper-V)
+Unknown processor
+.NET SDK 10.0.301
+  [Host]     : .NET 10.0.9 (10.0.926.27113), X64 RyuJIT AVX-512F+CD+BW+DQ+VL+VBMI
+  Job-NAVFVV : .NET 10.0.9 (10.0.926.27113), X64 RyuJIT AVX-512F+CD+BW+DQ+VL+VBMI
 
 InvocationCount=1  UnrollFactor=1  
 
 ```
 
-| Method                               | NumFiles | FileSize | IsInsideDirectory | Mean     | Error   | StdDev  |
-|------------------------------------- |--------- |--------- |------------------ |---------:|--------:|--------:|
-| **ForceOps.Lib.FileAndDirectoryDeleter** | **1000**     | **10**       | **False**             | **108.2 ms** | **2.16 ms** | **5.10 ms** |
-| System.IO.Directory.Delete           | 1000     | 10       | False             | 106.8 ms | 2.07 ms | 2.97 ms |
-| **ForceOps.Lib.FileAndDirectoryDeleter** | **1000**     | **10**       | **True**              | **207.3 ms** | **4.11 ms** | **8.58 ms** |
-| System.IO.Directory.Delete           | 1000     | 10       | True              | 205.6 ms | 4.06 ms | 7.21 ms |
+| Method                               | NumFiles | FileSize | IsInsideDirectory | Mean     | Error    | StdDev   | Median   |
+|------------------------------------- |--------- |--------- |------------------ |---------:|---------:|---------:|---------:|
+| **ForceOps.Lib.FileAndDirectoryDeleter** | **1000**     | **10**       | **False**             | **168.3 ms** | **11.69 ms** | **33.37 ms** | **157.3 ms** |
+| System.IO.Directory.Delete           | 1000     | 10       | False             | 192.1 ms | 23.29 ms | 65.70 ms | 164.9 ms |
+| **ForceOps.Lib.FileAndDirectoryDeleter** | **1000**     | **10**       | **True**              | **304.3 ms** | **20.63 ms** | **56.13 ms** | **282.9 ms** |
+| System.IO.Directory.Delete           | 1000     | 10       | True              | 332.4 ms | 24.94 ms | 68.70 ms | 307.0 ms |
 
