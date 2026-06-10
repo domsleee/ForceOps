@@ -1,4 +1,5 @@
 using System.CommandLine;
+using System.CommandLine.Help;
 using System.Runtime.Versioning;
 
 namespace ForceOps;
@@ -19,7 +20,11 @@ internal class ForceOpsRunner
 
 	internal int Run()
 	{
-		var rootCommand = new RootCommand("By hook or by crook, perform operations on files and directories. If they are in use by a process, kill the process.");
+		// A named Command is used instead of RootCommand so the usage text shows
+		// "forceops" rather than the executable name ("ForceOps").
+		var rootCommand = new Command("forceops", "By hook or by crook, perform operations on files and directories. If they are in use by a process, kill the process.");
+		rootCommand.Options.Add(new HelpOption());
+		rootCommand.Options.Add(new VersionOption());
 		rootCommand.Subcommands.Add(CreateDeleteCommand());
 		rootCommand.Subcommands.Add(CreateListCommand());
 
