@@ -87,6 +87,34 @@ Could not delete file .*. Beginning retry 1/10 in 50ms. ForceOps process is not 
 Could not delete file .*. Beginning retry 1/10 in 50ms. ForceOps process is not elevated. Found 1 process to try to kill: \[\d+ \- powershell.exe\]", testContext.fakeLoggerFactory.GetAllLogsString());
 	}
 
+	[Fact]
+	public void DeletingFileWithReservedDeviceName()
+	{
+		var nulFilePath = Path.Combine(tempFolderPath, "nul");
+		var extendedPath = @"\\?\" + nulFilePath;
+
+		File.Create(extendedPath).Dispose();
+		Assert.True(File.Exists(extendedPath));
+
+		fileAndDirectoryDeleter.DeleteFileOrDirectory(nulFilePath, false);
+
+		Assert.False(File.Exists(extendedPath));
+	}
+
+	[Fact]
+	public void DeletingDirectoryContainingFileWithReservedDeviceName()
+	{
+		var nulFilePath = Path.Combine(tempFolderPath, "nul");
+		var extendedPath = @"\\?\" + nulFilePath;
+
+		File.Create(extendedPath).Dispose();
+		Assert.True(File.Exists(extendedPath));
+
+		fileAndDirectoryDeleter.DeleteDirectory(new DirectoryInfo(tempFolderPath));
+
+		Assert.False(Directory.Exists(tempFolderPath));
+	}
+
 	public ForceOpsMethodsTest()
 	{
 		tempFolderPath = GetTemporaryFileName();
