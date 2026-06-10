@@ -36,6 +36,10 @@ public class FileAndDirectoryDeleter
 			DeleteDirectory(new DirectoryInfo(fileOrDirectory));
 			return;
 		}
+		if (TryDeleteReservedDeviceNameFile(fileOrDirectory))
+		{
+			return;
+		}
 
 		if (!force)
 		{
@@ -54,9 +58,12 @@ public class FileAndDirectoryDeleter
 				file.Delete();
 				break;
 			}
-			catch when (!file.Exists) { }
+			catch when (!file.Exists && !IsReservedDeviceName(file.FullName)) { }
 			catch (Exception ex) when (ex is IOException || ex is System.UnauthorizedAccessException)
 			{
+				if (TryDeleteReservedDeviceNameFile(file.FullName))
+					return;
+
 				var getProcessesLockingFileFunc = () =>
 				{
 					try
