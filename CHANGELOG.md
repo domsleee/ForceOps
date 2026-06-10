@@ -1,3 +1,6 @@
+## Release 1.6.1
+* Package the dotnet tool as RID-specific Native AOT (win-x64) in https://github.com/domsleee/ForceOps/pull/49
+
 ## Release 1.6.0
 * Update to .NET 10 in https://github.com/domsleee/ForceOps/pull/47
 * Update GitHub Actions for node24 deprecation in https://github.com/domsleee/ForceOps/pull/52
