@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1781086488527,
+  "lastUpdate": 1781091447935,
   "repoUrl": "https://github.com/domsleee/ForceOps",
   "entries": {
     "ForceOps Benchmarks": [
@@ -1776,6 +1776,54 @@ window.BENCHMARK_DATA = {
             "value": 358268216.6666667,
             "unit": "ns",
             "range": "± 7636362.116121092"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "domslee1@gmail.com",
+            "name": "Dominic Slee",
+            "username": "domsleee"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c817b75de224837da80e1fc5a3ab70e668ad2eb1",
+          "message": "feat: RID-specific Native AOT dotnet tool packaging (#49)\n\n* Package the dotnet tool as RID-specific Native AOT (win-x64)\n\nUses .NET SDK 10 RID-specific tool packaging so `dotnet tool install\nforceops` installs the Native AOT binary on x64 Windows, with a\nframework-dependent `any` fallback for other platforms. Removes the\nUseAot conditional build and the separate AOT publish step.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n* Modernize AOT benchmark comment to NativeAot10_0\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n* Switch scoop install to the domsleee/scoop-bucket; publish sha256 sidecar\n\nThe bucket has checkver/autoupdate so manifests update automatically\nfrom releases; the .sha256 release asset feeds the autoupdate hash.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n* README: both scoop and dotnet tool installs are Native AOT now\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n* Trim RID packaging comment to a doc link\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+          "timestamp": "2026-06-10T21:32:51+10:00",
+          "tree_id": "f2bffab66fd653ce8c56ff077b12589135a4524b",
+          "url": "https://github.com/domsleee/ForceOps/commit/c817b75de224837da80e1fc5a3ab70e668ad2eb1"
+        },
+        "date": 1781091445825,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1000, FileSize: 10, IsInsideDirectory: False)",
+            "value": 167219007.7777778,
+            "unit": "ns",
+            "range": "± 9435727.025265837"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1000, FileSize: 10, IsInsideDirectory: False)",
+            "value": 173291852.17391303,
+            "unit": "ns",
+            "range": "± 9927445.658989679"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.Deleter(NumFiles: 1000, FileSize: 10, IsInsideDirectory: True)",
+            "value": 307976937.5,
+            "unit": "ns",
+            "range": "± 12155138.105530562"
+          },
+          {
+            "name": "ForceOps.Benchmarks.FileAndDirectoryDeleterBenchmark.DirectoryDelete(NumFiles: 1000, FileSize: 10, IsInsideDirectory: True)",
+            "value": 310018444.18604654,
+            "unit": "ns",
+            "range": "± 11277813.454644611"
           }
         ]
       }
