@@ -12,7 +12,7 @@ Uses [LockChecker](https://github.com/domsleee/LockCheck) to find processes lock
 ## Installation
 
 ### Install with [`scoop`](http://scoop.sh/) (recommended)
-It has a faster startup because it uses [Native AOT](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/):
+Installs the [Native AOT](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/) build and doesn't require the .NET SDK:
 
 ```shell
 scoop bucket add domsleee https://github.com/domsleee/scoop-bucket
@@ -30,7 +30,7 @@ scoop update forceops
 dotnet tool install -g forceops
 ```
 
-On x64 Windows this installs the [Native AOT](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/) build (same fast startup as the scoop install). Other architectures get a framework-dependent build. Requires the .NET 10 SDK or later to install.
+On x64 Windows this installs the same Native AOT build as the scoop install. Other architectures get a framework-dependent build. Requires the .NET 10 SDK or later to install.
 
 To update:
 ```shell
