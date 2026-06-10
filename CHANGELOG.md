@@ -1,3 +1,7 @@
+## Release 1.6.0
+* Update to .NET 10 in https://github.com/domsleee/ForceOps/pull/47
+* Package the dotnet tool as RID-specific Native AOT (win-x64), so `dotnet tool install` gets the fast-startup binary in https://github.com/domsleee/ForceOps/pull/49
+
 ## Release 1.5.1
 * Update dependencies and update to .net9 in https://github.com/domsleee/ForceOps/pull/44
 * Refactor CLI in https://github.com/domsleee/ForceOps/pull/45
