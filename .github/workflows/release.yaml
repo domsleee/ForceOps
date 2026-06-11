@@ -66,12 +66,13 @@ jobs:
           tag_name: "${{ steps.get_version.outputs.version }}"
 
       # RID-specific packages must be on the feed before the top-level pointer
-      # package, so the pointer package is pushed in a second step.
-      # bash (-e) aborts on the first failed push; pwsh would run the next line
-      # anyway and report the step green even if the RID packages never made it.
-      - name: Publish NuGet
+      # package. Separate steps so a failed RID push fails the job before the
+      # pointer is published (a multi-line pwsh step only reports the last
+      # command's exit code, which let the broken 1.6.1 release go green).
+      - name: Publish NuGet (RID packages)
         if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
-        shell: bash
-        run: |
-          dotnet nuget push -k ${{ secrets.NUGET_AUTH_TOKEN }} -s https://api.nuget.org/v3/index.json ForceOps/nupkg/ForceOps.win-x64.${{ steps.get_version.outputs.version }}.nupkg ForceOps/nupkg/ForceOps.any.${{ steps.get_version.outputs.version }}.nupkg ForceOps.Lib/nupkg/ForceOps.Lib.${{ steps.get_version.outputs.version }}.nupkg ForceOps.Lib/nupkg/ForceOps.Lib.${{ steps.get_version.outputs.version }}.snupkg --skip-duplicate
-          dotnet nuget push -k ${{ secrets.NUGET_AUTH_TOKEN }} -s https://api.nuget.org/v3/index.json ForceOps/nupkg/ForceOps.${{ steps.get_version.outputs.version }}.nupkg --skip-duplicate
+        run: dotnet nuget push -k ${{ secrets.NUGET_AUTH_TOKEN }} -s https://api.nuget.org/v3/index.json ForceOps/nupkg/ForceOps.win-x64.${{ steps.get_version.outputs.version }}.nupkg ForceOps/nupkg/ForceOps.any.${{ steps.get_version.outputs.version }}.nupkg ForceOps.Lib/nupkg/ForceOps.Lib.${{ steps.get_version.outputs.version }}.nupkg ForceOps.Lib/nupkg/ForceOps.Lib.${{ steps.get_version.outputs.version }}.snupkg --skip-duplicate
+
+      - name: Publish NuGet (pointer package)
+        if: ${{ github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'chore(release)') }}
+        run: dotnet nuget push -k ${{ secrets.NUGET_AUTH_TOKEN }} -s https://api.nuget.org/v3/index.json ForceOps/nupkg/ForceOps.${{ steps.get_version.outputs.version }}.nupkg --skip-duplicate
